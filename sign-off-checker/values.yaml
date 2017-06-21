@@ -1,0 +1,33 @@
+# Default values for sign-off-checker.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 1
+image:
+  repository: quay.io/srcd/sign-off-checker
+  tag: 50b29d2
+  pullPolicy: IfNotPresent
+service:
+  name: sign-off-checker
+  ## port where the sign-off-checker will be listen at the LoadBalancer.
+  port: 80
+  ## loadBalancerIP if not set an ephermeral IP will be used.
+  loadBalancerIP:
+settings:
+  ## sharedSecret is the value of SHARED_SECRET required by sign-off-checker
+  ## daemon. Set this to a random value that you supply as the "secret" when
+  ## configuring the webhook.
+  sharedSecret:
+  ## githubToken  is the value of GITHUB_TOKEN required by sign-off-checker
+  ## daemon. Set this to an personal access token for a github user that has
+  ## access to the repo in question. The webhook doesn't include details of the
+  ## commits so we have to fetch them. Unforutnately this requires full
+  ## read/write repo access scope even though we are just reading.
+  ## Create one of these at https://github.com/settings/tokens.
+  githubToken:
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
