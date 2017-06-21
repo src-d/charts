@@ -1,0 +1,17 @@
+sudo: required
+
+install:
+  - curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
+  - chmod 700 get_helm.sh
+  - ./get_helm.sh
+
+script:
+  - make repository
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  local_dir: repository
+  github_token: $GITHUB_TOKEN
+  on:
+    branch: master
