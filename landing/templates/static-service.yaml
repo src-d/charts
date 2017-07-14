@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: landing-static
+  labels:
+    app: landing-static
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.landingStatic.type }}
+  ports:
+    - port: {{ .Values.service.landingStatic.externalPort }}
+      targetPort: {{ .Values.service.landingStatic.internalPort }}
+      protocol: TCP
+      name: {{ .Values.service.landingStatic.name }}
+    - port: {{ .Values.service.landingApi.externalPort }}
+      targetPort: {{ .Values.service.landingApi.internalPort }}
+      protocol: TCP
+      name: {{ .Values.service.landingApi.name }}
+  selector:
+    app: landing-static
+    release: {{ .Release.Name }}

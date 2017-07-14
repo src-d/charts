@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: landing-slackin
+  labels:
+    app: landing-slackin
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.landingSlackin.type }}
+  ports:
+    - port: {{ .Values.service.landingSlackin.externalPort }}
+      targetPort: {{ .Values.service.landingSlackin.internalPort }}
+      protocol: TCP
+      name: {{ .Values.service.landingSlackin.name }}
+  selector:
+    app: landing-slackin
+    release: {{ .Release.Name }}

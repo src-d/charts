@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: landing-ingress
+  labels:
+    app: landing-ingress
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  annotations:
+    {{- range $key, $value := .Values.ingress.annotations }}
+      {{ $key }}: {{ $value | quote }}
+    {{- end }}
+spec:
+  rules:
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+        - backend:
+            serviceName: landing-static
+            servicePort: {{ .Values.service.landingStatic.externalPort }}
+          path: /*
+        #- backend:
+        #    serviceName: landing-static
+        #    servicePort: {{ .Values.service.landingApi.externalPort }}
+        #  path: /api/*
+        - backend:
+            serviceName: landing-slackin
+            servicePort: {{ .Values.service.landingSlackin.externalPort }}
+          path: /slackin/*

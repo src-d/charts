@@ -1,0 +1,59 @@
+# Default values for landing.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount:
+  landingStatic: 1
+  landingSlackin: 1
+image:
+  landingStatic:
+    repository: quay.io/srcd/landing
+    tag: v2.0.4
+    pullPolicy: IfNotPresent
+  landingSlackin:
+    repository: quay.io/rporres/landing
+    tag: slackin
+    pullPolicy: IfNotPresent
+service:
+  landingStatic:
+    name: landing-static
+    type: ClusterIP
+    externalPort: 8090
+    internalPort: 8090
+  landingApi:
+    name: landing-api
+    type: ClusterIP
+    externalPort: 8080
+    internalPort: 8080
+  landingSlackin:
+    name: landing-slackin
+    type: ClusterIP
+    externalPort: 3000
+    internalPort: 3000
+ingress:
+  enabled: false
+  # Used to create Ingress record (should used with service.type: ClusterIP).
+  host: sourced.run
+  annotations:
+    #kubernetes.io/ingress.class: gce
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.global-static-ip-name: landing-sourced-tech
+    ingress.kubernetes.io/rewrite-target: /
+    # kubernetes.io/tls-acme: "true"
+  tls:
+    # Secrets must be manually created in the namespace.
+    # - secretName: chart-example-tls
+    #   hosts:
+    #     - chart-example.local
+
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious 
+  # choice for the user. This also increases chances charts run on environments with little 
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following 
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  #requests:
+  #  cpu: 100m
+  #  memory: 128Mi
