@@ -1,9 +1,7 @@
 # Default values for landing.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-replicaCount:
-  landingStatic: 1
-  landingSlackin: 1
+replicaCount: 1
 image:
   landingStatic:
     repository: quay.io/srcd/landing
@@ -14,23 +12,16 @@ image:
     tag: slackin
     pullPolicy: IfNotPresent
 service:
+  type: ClusterIP
   landingStatic:
-    name: landing-static
-    type: ClusterIP
     externalPort: 8090
     internalPort: 8090
-  landingApi:
-    name: landing-api
-    type: ClusterIP
-    externalPort: 8080
-    internalPort: 8080
+    name: landing-static
   landingSlackin:
-    name: landing-slackin
-    type: ClusterIP
     externalPort: 3000
     internalPort: 3000
+    name: landing-slackin
 ingress:
-  enabled: false
   # Used to create Ingress record (should used with service.type: ClusterIP).
   host: sourced.run
   annotations:

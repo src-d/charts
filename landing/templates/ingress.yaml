@@ -17,14 +17,10 @@ spec:
     http:
       paths:
         - backend:
-            serviceName: landing-static
+            serviceName: {{ template "fullname" . }}
             servicePort: {{ .Values.service.landingStatic.externalPort }}
           path: /*
-        #- backend:
-        #    serviceName: landing-static
-        #    servicePort: {{ .Values.service.landingApi.externalPort }}
-        #  path: /api/*
         - backend:
-            serviceName: landing-slackin
+            serviceName: {{ template "fullname" . }}
             servicePort: {{ .Values.service.landingSlackin.externalPort }}
           path: /slackin/*
