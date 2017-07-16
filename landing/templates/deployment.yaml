@@ -69,4 +69,4 @@ spec:
 {{ toYaml .Values.nodeSelector | indent 8 }}
     {{- end }}
       imagePullSecrets:
-        - name: srcd-jbeardly-pull-secret
+        - name: landing-images-pull-secret

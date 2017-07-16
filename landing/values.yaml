@@ -48,3 +48,10 @@ resources: {}
   #requests:
   #  cpu: 100m
   #  memory: 128Mi
+  #
+
+# Below settings must be provided with helm install
+settings: {}
+  #imagePullSecretDockerConfigJson: XXXXXXX
+  #slackApiToken: TOKEN
+  #githubToken: TOKEN
