@@ -8,7 +8,7 @@ metadata:
     app: landing-load-balancer
 spec:
   type: LoadBalancer
-  loadBalancerIP: 130.211.75.214
+  loadBalancerIP: {{ .Values.settings.loadBalancerIP }}
   selector:
     app: landing-ingress
   ports:
@@ -16,3 +16,7 @@ spec:
       port: 80
       targetPort: 80
       name: http
+    - protocol: TCP
+      port: 443
+      targetPort: 443
+      name: https

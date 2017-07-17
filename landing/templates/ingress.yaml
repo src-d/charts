@@ -1,3 +1,6 @@
+{{- $serviceName := include "fullname" . -}}
+{{- $slackinPort := .Values.service.landingSlackin.externalPort -}}
+{{- $staticPort := .Values.service.landingStatic.externalPort -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -13,14 +16,25 @@ metadata:
     {{- end }}
 spec:
   rules:
-  - host: {{ .Values.ingress.host }}
+  # Cannot specify multiple hosts. See https://github.com/kubernetes/kubernetes/issues/43633
+  {{- range $host := .Values.settings.hosts }}
+  - host: {{ $host }}
     http:
       paths:
         - backend:
-            serviceName: {{ template "fullname" . }}
-            servicePort: {{ .Values.service.landingStatic.externalPort }}
+            serviceName: {{ $serviceName }}
+            servicePort: {{ $staticPort }}
           path: /*
         - backend:
-            serviceName: {{ template "fullname" . }}
-            servicePort: {{ .Values.service.landingSlackin.externalPort }}
+            serviceName: {{ $serviceName }}
+            servicePort: {{ $slackinPort }}
           path: /slackin/*
+  {{- end }}
+  {{- if .Values.ingress.tls }}
+  tls:
+    - secretName: landing-tls-secret
+      hosts:
+      {{- range $host := .Values.settings.hosts }}
+        - {{ $host }}
+      {{- end }}
+  {{- end }}
