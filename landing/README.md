@@ -21,6 +21,8 @@ settings.hosts={srcd.run,www.srcd.run}\
 "
 ```
 
+Currently `githubToken` is not used by the application, so you can put whatever string.
+
 ## Implementation details
 
 Landing currently consists of two docker containers:
