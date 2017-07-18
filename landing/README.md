@@ -15,11 +15,17 @@ All parameters under `settings` in [values.yaml](/landing/values.yaml) must be p
 helm install -n <release-name> <chart path> --set "\
 settings.slackApiToken=TOKEN,\
 settings.githubToken=TOKEN,\
-settings.imagePullSecretDockerConfigJson=TOKEN,\
 settings.loadBalancerIP=100.211.75.223,\
 settings.hosts={srcd.run,www.srcd.run}\
 "
 ```
+
+## Deployment optional settings
+
+If given, the following parameters will be added to the deployment config
+
+* `imagePullSecretName` to pull from a private repo
+* `nodeSelector` to deploy in certain nodes
 
 Currently `githubToken` is not used by the application, so you can put whatever string.
 

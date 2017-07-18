@@ -68,5 +68,7 @@ spec:
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
     {{- end }}
+    {{- if .Values.imagePullSecretsName }}
       imagePullSecrets:
-        - name: landing-images-pull-secret
+        - name: {{ .Values.settings.imagePullSecretsName }}
+    {{- end }}
