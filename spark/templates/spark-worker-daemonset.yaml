@@ -1,5 +1,5 @@
 apiVersion: extensions/v1beta1
-kind: Deployment
+kind: DaemonSet
 metadata:
   name: {{ template "worker-fullname" . }}
   labels:
@@ -8,12 +8,6 @@ metadata:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     component: "{{ .Release.Name }}-{{ .Values.Worker.Component }}"
 spec:
-  replicas: {{ default 1 .Values.Worker.Replicas }}
-  strategy:
-    type: RollingUpdate
-  selector:
-    matchLabels:
-      component: "{{ .Release.Name }}-{{ .Values.Worker.Component }}"
   template:
     metadata:
       labels:
@@ -25,7 +19,7 @@ spec:
       containers:
         - name: {{ template "worker-fullname" . }}
           image: "{{ .Values.Worker.Image }}:{{ .Values.Worker.ImageTag }}"
-          command: ["/opt/spark/bin/spark-class", "org.apache.spark.deploy.worker.Worker", "spark://{{ template "master-fullname" . }}:{{ .Values.Master.ServicePort }}", "--webui-port", "{{ .Values.Worker.ContainerPort }}"]
+          command: ["/opt/spark/sbin/start-slave.sh", "spark://{{ template "master-fullname" . }}:{{ .Values.Master.ServicePort }}", "--webui-port", "{{ .Values.Worker.ContainerPort }}"]
           ports:
             - containerPort: {{ .Values.Worker.ContainerPort }}
           resources:
@@ -37,3 +31,9 @@ spec:
             value: {{ default "1g" .Values.Worker.DaemonMemory | quote }}
           - name: SPARK_WORKER_MEMORY
             value: {{ default "1g" .Values.Worker.ExecutorMemory | quote }}
+          - name: SPARK_NO_DAEMONIZE
+            value: "yes"
+    {{- if .Values.Worker.NodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.Worker.NodeSelector | indent 8 }}
+    {{- end }}
