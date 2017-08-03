@@ -1,0 +1,67 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ template "webui-proxy-fullname" . }}
+spec:
+  ports:
+    - port: {{ .Values.WebUiProxy.ServicePort }}
+      targetPort: {{ .Values.WebUiProxy.ContainerPort }}
+  selector:
+    component: "{{ .Release.Name }}-{{ .Values.WebUiProxy.Component }}"
+  type: ClusterIP
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "webui-proxy-fullname" . }}
+  labels:
+    heritage: {{ .Release.Service | quote }}
+    release: {{ .Release.Name | quote }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    component: "{{ .Release.Name }}-{{ .Values.WebUiProxy.Component }}"
+spec:
+  replicas: {{ default 1 .Values.WebUiProxy.Replicas }}
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      component: "{{ .Release.Name }}-{{ .Values.WebUiProxy.Component }}"
+  template:
+    metadata:
+      labels:
+        heritage: {{ .Release.Service | quote }}
+        release: {{ .Release.Name | quote }}
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+        component: "{{ .Release.Name }}-{{ .Values.WebUiProxy.Component }}"
+    spec:
+      containers:
+        - name: {{ template "webui-proxy-fullname" . }}
+          image: "{{ .Values.WebUiProxy.Image }}:{{ .Values.WebUiProxy.ImageTag }}"
+          {{- if .Values.WebUiProxy.ReverseProxy.Deploy }}
+          env:
+            - name: REVERSE_PROXY
+              value: "yes"
+            - name: URL_PREFIX
+              value: "/{{ .Values.WebUiProxy.ReverseProxy.ApiPrefix }}/api/v1/namespaces/default/services/{{ template "webui-proxy-fullname" . }}:{{ .Values.WebUiProxy.ServicePort }}/proxy"
+            {{- if .Values.WebUiProxy.ReverseProxy.Debug }}
+            - name: DEBUG
+              value: "yes"
+            {{- end }}
+          {{- end }}
+          ports:
+            - containerPort: {{ .Values.WebUiProxy.ContainerPort }}
+          resources:
+            requests:
+              cpu: "{{ .Values.WebUiProxy.Cpu }}"
+          args:
+            - {{ template "webui-fullname" . }}:{{ .Values.WebUi.ServicePort }}
+          livenessProbe:
+              httpGet:
+                path: /
+                port: 80
+              initialDelaySeconds: 120
+              timeoutSeconds: 5
+    {{- if .Values.WebUiProxy.NodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.WebUiProxy.NodeSelector | indent 8 }}
+    {{- end }}
