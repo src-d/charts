@@ -33,6 +33,12 @@ spec:
             value: {{ default "1g" .Values.Worker.ExecutorMemory | quote }}
           - name: SPARK_NO_DAEMONIZE
             value: "yes"
+      {{- range $key, $value := .Values.Worker.AdditionalPodContainers }}
+      {{- if $value }}
+        - name: {{ $key }}
+{{ toYaml $value | indent 10 }}
+      {{- end }}
+      {{- end }}
     {{- if .Values.Worker.NodeSelector }}
       nodeSelector:
 {{ toYaml .Values.Worker.NodeSelector | indent 8 }}

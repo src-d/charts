@@ -79,22 +79,26 @@ $ kubectl proxy --api-prefix=/spark-ui-proxy
 
 ### Spark Worker
 
-| Parameter                    | Description                        | Default                                                    |
-| -----------------------      | ---------------------------------- | ---------------------------------------------------------- |
-| `Worker.Name`                | Spark worker name                  | `spark-worker`                                             |
-| `Worker.Image`               | Container image name               | `gcr.io/google_containers/spark`                           |
-| `Worker.ImageTag`            | Container image tag                | `1.5.1_v3`                                                 |
-| `Worker.Replicas`            | k8s hpa and deployment replicas    | `3`                                                        |
-| `Worker.ReplicasMax`         | k8s hpa max replicas               | `10`                                                       |
-| `Worker.Component`           | k8s selector key                   | `spark-worker`                                             |
-| `Worker.Cpu`                 | container requested cpu            | `100m`                                                     |
-| `Worker.Memory`              | container requested memory         | `512Mi`                                                    |
-| `Worker.ContainerPort`       | Container listening port           | `7077`                                                     |
-| `Worker.CpuTargetPercentage` | k8s hpa cpu targetPercentage       | `50`                                                       |
-| `Worker.DaemonMemory`        | Worker JVM Xms and Xmx setting     | `1g`                                                       |
-| `Worker.ExecutorMemory`      | Worker memory available for executor | `1g`                                                       |
-| `Worker.NodeSelector`        | Worker k8s node selector           | `{}`
+| Parameter                        | Description                          | Default                                                    |
+| -------------------------------- | ------------------------------------ | ---------------------------------------------------------- |
+| `Worker.Name`                    | Spark worker name                    | `spark-worker`                                             |
+| `Worker.Image`                   | Container image name                 | `gcr.io/google_containers/spark`                           |
+| `Worker.ImageTag`                | Container image tag                  | `1.5.1_v3`                                                 |
+| `Worker.Replicas`                | k8s hpa and deployment replicas      | `3`                                                        |
+| `Worker.ReplicasMax`             | k8s hpa max replicas                 | `10`                                                       |
+| `Worker.Component`               | k8s selector key                     | `spark-worker`                                             |
+| `Worker.Cpu`                     | container requested cpu              | `100m`                                                     |
+| `Worker.Memory`                  | container requested memory           | `512Mi`                                                    |
+| `Worker.ContainerPort`           | Container listening port             | `7077`                                                     |
+| `Worker.CpuTargetPercentage`     | k8s hpa cpu targetPercentage         | `50`                                                       |
+| `Worker.DaemonMemory`            | Worker JVM Xms and Xmx setting       | `1g`                                                       |
+| `Worker.ExecutorMemory`          | Worker memory available for executor | `1g`                                                       |
+| `Worker.NodeSelector`            | Worker k8s node selector             | `{}`                                                       |
+| `Worker.AdditionalPodContainers` | Container config to spawn            | `{}`                                                       |
 
+See [values.yaml](values.yaml) file to get an example of how to pass the `AdditionalPodContainers` configuration
+
+### Loading the chart
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
 

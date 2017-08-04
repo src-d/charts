@@ -53,4 +53,9 @@ Worker:
   # Set how much total memory workers have to give executors
   #ExecutorMemory: 1g
   #NodeSelector:
-    #srcd.host/type: worker
+  #  srcd.host/type: worker
+  #AdditionalPodContainers:
+  #  bblfsh-server:
+  #    image: bblfsh/server:latest
+  #    securityContext:
+  #      privileged: true
