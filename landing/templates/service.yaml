@@ -10,14 +10,18 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.landingStatic.externalPort }}
-      targetPort: {{ .Values.service.landingStatic.internalPort }}
+    - port: {{ .Values.service.landing.externalPort }}
+      targetPort: {{ .Values.service.landing.internalPort }}
       protocol: TCP
-      name: {{ .Values.service.landingStatic.name }}
+      name: {{ .Values.service.landing.name }}
     - port: {{ .Values.service.landingSlackin.externalPort }}
       targetPort: {{ .Values.service.landingSlackin.internalPort }}
       protocol: TCP
       name: {{ .Values.service.landingSlackin.name }}
+    - port: {{ .Values.service.landingApi.externalPort }}
+      targetPort: {{ .Values.service.landingApi.internalPort }}
+      protocol: TCP
+      name: {{ .Values.service.landingApi.name }}
   selector:
     app: {{ template "name" . }}
     release: {{ .Release.Name }}

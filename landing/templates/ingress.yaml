@@ -1,6 +1,7 @@
 {{- $serviceName := include "fullname" . -}}
 {{- $slackinPort := .Values.service.landingSlackin.externalPort -}}
-{{- $staticPort := .Values.service.landingStatic.externalPort -}}
+{{- $apiPort := .Values.service.landingApi.externalPort -}}
+{{- $landingPort := .Values.service.landing.externalPort -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -14,6 +15,9 @@ metadata:
     {{- range $key, $value := .Values.ingress.annotations }}
       {{ $key }}: {{ $value | quote }}
     {{- end }}
+    {{- if .Values.settings.globalStaticIpName }}
+      kubernetes.io/ingress.global-static-ip-name: {{ .Values.settings.globalStaticIpName }}
+    {{- end }}
 spec:
   rules:
   # Cannot specify multiple hosts. See https://github.com/kubernetes/kubernetes/issues/43633
@@ -23,12 +27,16 @@ spec:
       paths:
         - backend:
             serviceName: {{ $serviceName }}
-            servicePort: {{ $staticPort }}
+            servicePort: {{ $landingPort }}
           path: /*
         - backend:
             serviceName: {{ $serviceName }}
             servicePort: {{ $slackinPort }}
           path: /slackin/*
+        - backend:
+            serviceName: {{ $serviceName }}
+            servicePort: {{ $apiPort }}
+          path: /api/*
   {{- end }}
   {{- if .Values.ingress.tls }}
   tls:

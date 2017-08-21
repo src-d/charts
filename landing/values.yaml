@@ -4,35 +4,44 @@
 replicaCount: 1
 
 # If provided, these will be used by the deployment
-# imagePullSecretName: XXXXXXX
 # nodeSelector: XXXXXXX
 
 image:
-  landingStatic:
-    repository: quay.io/srcd/landing
-    tag: v2.0.4
-    pullPolicy: IfNotPresent
-  landingSlackin:
+  landing:
     repository: quay.io/rporres/landing
-    tag: slackin
+    tag: master
     pullPolicy: IfNotPresent
+    name: landing
+  landingSlackin:
+    repository: quay.io/rporres/landing-slackin
+    tag: master
+    pullPolicy: IfNotPresent
+    name: landing-slackin
+  landingApi:
+    repository: quay.io/rporres/landing-api
+    tag: master
+    pullPolicy: IfNotPresent
+    name: landing-api
 service:
-  type: ClusterIP
-  landingStatic:
+  type: NodePort
+  landing:
     externalPort: 8090
     internalPort: 8090
-    name: landing-static
+    name: landing
   landingSlackin:
     externalPort: 3000
     internalPort: 3000
     name: landing-slackin
+  landingApi:
+    externalPort: 8080
+    internalPort: 8080
+    name: landing-api
 ingress:
   annotations:
-    kubernetes.io/ingress.class: nginx
-    ingress.kubernetes.io/rewrite-target: /
-    kubernetes.io/tls-acme: "true"
-  tls:
-    secretName: landing-tls-secret
+    kubernetes.io/ingress.class: gce
+    #kubernetes.io/tls-acme: "true"
+    #tls:
+    #secretName: landing-tls-secret
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -50,8 +59,7 @@ resources: {}
 # Below settings must be provided with helm install or it will fail
 settings: {}
 #  slackApiToken: TOKEN
-#  githubToken: TOKEN
-#  loadBalancerIP: 130.211.75.214
+#  globalStaticIpName: "landing-srcd-run"
 #  hosts:
 #   - srcd.run
 #   - www.srcd.run
