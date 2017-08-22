@@ -1,0 +1,81 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Values.image.landing.name }}
+          image: "{{ .Values.image.landing.repository }}:{{ .Values.image.landing.tag }}"
+          imagePullPolicy: {{ .Values.image.landing.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.landing.internalPort }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.service.landing.internalPort }}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.service.landing.internalPort }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+        - name: {{ .Values.image.landingSlackin.name }}
+          image: "{{ .Values.image.landingSlackin.repository }}:{{ .Values.image.landingSlackin.tag }}"
+          imagePullPolicy: {{ .Values.image.landingSlackin.pullPolicy }}
+          env:
+            - name: SLACK_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "fullname" . }}
+                  key: slack-api-token
+          ports:
+            - containerPort: {{ .Values.service.landingSlackin.internalPort }}
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.service.landingSlackin.internalPort }}
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.service.landingSlackin.internalPort }}
+            initialDelaySeconds: 5
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+        - name: {{ .Values.image.landingApi.name }}
+          image: "{{ .Values.image.landingApi.repository }}:{{ .Values.image.landingApi.tag }}"
+          imagePullPolicy: {{ .Values.image.landingApi.pullPolicy }}
+          env:
+            - name: ADDR
+              value: ":{{ .Values.service.landingApi.internalPort }}"
+            - name: SLACKIN_URL
+              value: "http://localhost:{{ .Values.service.landingSlackin.internalPort }}/invite"
+          ports:
+            - containerPort: {{ .Values.service.landingApi.internalPort }}
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.service.landingApi.internalPort }}
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.service.landingApi.internalPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+    {{- end }}
