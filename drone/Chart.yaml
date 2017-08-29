@@ -1,0 +1,20 @@
+# This chart is based in
+# https://github.com/bacongobbler/kube-charts/commit/1e98bd58083cbcef19cd263a68a0a9a39450ee86
+# which is an underway kubernetes incubator project:
+# https://github.com/kubernetes/charts/pull/821/files
+# kubernetes/charts is licensed under the Apache License 2.0
+
+name: drone
+version: 0.1.0
+description: Drone CI
+keywords:
+- continuous-deployment
+- continuous-integration
+- docker
+- drone
+- drone.io
+- go
+sources:
+- http://readme.drone.io/
+maintainers:
+- email: infra@sourced.tech
