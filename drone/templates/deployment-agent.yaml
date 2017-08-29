@@ -8,7 +8,7 @@ metadata:
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
 spec:
-  replicas: 1
+  replicas: {{ .Values.agent.num_instances }}
   template:
     metadata:
       labels:
@@ -25,12 +25,12 @@ spec:
           - "agent"
         env:
           - name: DRONE_SERVER
-            value: ws://{{ template "fullname" . }}/ws/broker
+            value: ws://{{ template "fullname" . }}:{{ .Values.service.http.externalPort }}/ws/broker
           - name: DRONE_SECRET
             valueFrom:
               secretKeyRef:
                 name: {{ template "fullname" . }}
-                key: secret
+                key: drone_secret
           {{ range $key, $value := .Values.agent.env }}
           - name: {{ $key }}
             value: {{ $value | quote }}

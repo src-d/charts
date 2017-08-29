@@ -9,54 +9,65 @@ service:
   http:
     externalPort: 80
     internalPort: 8000
-  type: ClusterIP
+  type: NodePort
 
 ingress:
-  enabled: false
-  # enable TLS via kube-lego
-  tls: false
-  hostname: drone.example.com
+  enabled: true
+  tls: true
+  # hostname must be received as a parameter
+  # globalStaticIpName must be received as a parameter
+  annotations:
+    kubernetes.io/ingress.class: gce
+    # kubernetes.io/ingress.global-static-ip-name is defined in templates/ingress.yml. Do not override here.
+    kubernetes.io/tls-acme: "true"
 
 # Provide with 'helm install', and do NOT change it when doing 'helm upgrade'
-# shared_secret: ""
+secrets:
+  # drone_secret:
+  # github_client:
+  # github_secret:
 
 server:
+  # admins must be received as a parameter
+  db_path: "/var/lib/drone/"
+  db_disk: "data-prod-drone"
   # Drone server configuration. Values in here get injected as environment variables.
   # See http://readme.drone.io/admin/installation-reference#server-options for a list of possible values.
   env:
-    DRONE_DEBUG: "false"
+    DRONE_DEBUG: "true"
+    DRONE_BROKER_DEBUG: "true"
     DRONE_DATABASE_DRIVER: "sqlite3"
-    DRONE_DATABASE_DATASOURCE: "drone.sqlite"
-    # Drone requires some environment variables to bootstrap the git service or it won't start up.
-    # Uncomment this and add your own custom configuration.
-    #
-    # See http://readme.drone.io/admin/installation-reference/ for more info on these envvars.
-    #DRONE_OPEN: "true"
-    #DRONE_GITHUB: "true"
-    #DRONE_ORGS: "my-github-org,my-other-github-org"
-    #DRONE_GITHUB_CLIENT: "github-oauth2-client-id"
-    #DRONE_GITHUB_SECRET: "github-oauth2-client-secret"
-  resources:
-    requests:
-      memory: 32Mi
-      cpu: 40m
-    limits:
-      memory: 2Gi
-      cpu: 1
+    # Must match server.db_path
+    DRONE_DATABASE_DATASOURCE: "/var/lib/drone/drone.sqlite"
+    DRONE_OPEN: "true"
+    DRONE_GITHUB: "true"
+    # DRONE_ADMIN is defined in templates/deployment-server.yaml. Do not override here.
+    # DRONE_SECRET is defined in templates/secrets.yaml. Do not override here.
+    # DRONE_GITHUB_CLIENT is defined in templates/secrets.yaml. Do not override here.
+    # DRONE_GITHUB_SECRET is defined in templates/secrets.yaml. Do not override here.
+    # DRONE_HOST is defined in templates/deployment-server.yaml. Do not override here.
+  resources: {}
+    # requests:
+    #   memory: 32Mi
+    #   cpu: 40m
+    # limits:
+    #   memory: 2Gi
+    #   cpu: 1
 
 agent:
+  num_instances: 1
   # Drone agent configuration. Values in here get injected as environment variables.
-  # See http://readme.drone.io/admin/installation-reference#server-options for a list of possible values.
+  # See http://readme.drone.io/admin/installation-reference#agent-options for a list of possible values.
   env:
-    DRONE_DEBUG: "false"
-  resources:
-    requests:
-      memory: 32Mi
-      cpu: 40m
-    limits:
-      memory: 2Gi
-      cpu: 1
-
-# Uncomment this if you want to set a specific shared secret between
-# the agents and servers, otherwise this will be auto-generated.
-#shared_secret: supersecret
+    # DRONE_SECRET is defined in templates/secrets.yaml. Do not override here.
+    # DRONE_SERVER is defined in templates/deployment-agent.yaml. Do not override here.
+    DRONE_DEBUG: "true"
+    # Docker client version needs to match with the engine running in the GKE host
+    DOCKER_API_VERSION: 1.23
+  resources: {}
+    # requests:
+    #   memory: 32Mi
+    #   cpu: 40m
+    # limits:
+    #   memory: 2Gi
+    #   cpu: 1

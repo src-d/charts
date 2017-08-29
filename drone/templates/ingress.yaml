@@ -10,18 +10,19 @@ metadata:
     heritage: "{{ .Release.Service }}"
   annotations:
 {{ toYaml .Values.ingress.annotations | indent 4 }}
+    kubernetes.io/ingress.global-static-ip-name: {{ required "Static IP is missing" .Values.ingress.globalStaticIpName }}
 spec:
 {{- if .Values.ingress.tls }}
   tls:
   - hosts:
-    - {{ .Values.ingress.hostname }}
-    secretName: {{ template "fullname" . }}-tls
+    - {{ required "Hostname is missing" .Values.ingress.hostname }}
+    secretName: {{ .Values.ingress.hostname  | replace "." "-" }}-tls
 {{- end }}
   rules:
   - host: {{ .Values.ingress.hostname }}
     http:
       paths:
-      - path: /
+      - path: /*
         backend:
           serviceName: {{ template "fullname" . }}
           servicePort: {{ .Values.service.http.externalPort }}

@@ -22,11 +22,29 @@ spec:
         image: "{{ .Values.image.registry }}/{{ .Values.image.org }}/{{ .Values.image.name }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
+          - name: DRONE_HOST
+{{ if .Values.ingress.tls }}
+            value: "https://{{ .Values.ingress.hostname }}"
+{{ else }}
+            value: "http://{{ .Values.ingress.hostname }}"
+{{ end }}
+          - name: DRONE_ADMIN
+            value: {{ required "Admin user list is missing" .Values.server.admins | quote }}
           - name: DRONE_SECRET
             valueFrom:
               secretKeyRef:
                 name: {{ template "fullname" . }}
-                key: secret
+                key: drone_secret
+          - name: DRONE_GITHUB_CLIENT
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "fullname" . }}
+                key: github_client
+          - name: DRONE_GITHUB_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "fullname" . }}
+                key: github_secret
           {{ range $key, $value := .Values.server.env }}
           - name: {{ $key }}
             value: {{ $value | quote }}
@@ -40,3 +58,11 @@ spec:
             port: http
         resources:
 {{ toYaml .Values.server.resources | indent 10 }}
+        volumeMounts:
+        - mountPath: {{ .Values.server.db_path }}
+          name: {{ .Values.server.db_disk }}
+      volumes:
+      - name: {{ .Values.server.db_disk }}
+        gcePersistentDisk:
+          pdName: {{ .Values.server.db_disk }}
+          fsType: ext4
