@@ -33,6 +33,9 @@ spec:
             value: {{ default "1g" .Values.Worker.ExecutorMemory | quote }}
           - name: SPARK_NO_DAEMONIZE
             value: "yes"
+          volumeMounts:
+            - name: spark-temp-data
+              mountPath: /spark-temp-data
       {{- range $key, $value := .Values.Worker.AdditionalPodContainers }}
       {{- if $value }}
         - name: {{ $key }}
@@ -43,3 +46,7 @@ spec:
       nodeSelector:
 {{ toYaml .Values.Worker.NodeSelector | indent 8 }}
     {{- end }}
+      volumes:
+        - name: spark-temp-data
+          hostPath:
+            path: /data-a/spark-temp-data
