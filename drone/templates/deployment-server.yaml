@@ -62,7 +62,7 @@ spec:
         - mountPath: {{ .Values.server.db_path }}
           name: {{ .Values.server.db_disk }}
       volumes:
-      - name: {{ .Values.server.db_disk }}
+      - name: {{ required "External disk name is missing" .Values.server.db_disk }}
         gcePersistentDisk:
           pdName: {{ .Values.server.db_disk }}
           fsType: ext4

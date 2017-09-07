@@ -5,7 +5,7 @@
 # kubernetes/charts is licensed under the Apache License 2.0
 
 name: drone
-version: 0.1.0
+version: 0.1.1
 description: Drone CI
 keywords:
 - continuous-deployment
