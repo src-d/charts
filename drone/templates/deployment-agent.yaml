@@ -13,7 +13,6 @@ spec:
     metadata:
       labels:
         app: {{ template "fullname" . }}-agent
-        chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
         release: "{{ .Release.Name }}"
         heritage: "{{ .Release.Service }}"
     spec:
