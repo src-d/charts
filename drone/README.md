@@ -25,6 +25,7 @@ $ helm install --name <release-name> <path-to-chart> --set \
   secrets.github_secret=<client-secret>,\
   ingress.hostname=<hostname>,\
   ingress.globalStaticIpName=<static-ip>,\
+  server.db_disk=<external-disk>,\
   server.env.admins=<admin1\,admin2\,..>
 ```
 
@@ -69,7 +70,7 @@ Apart from the Drone environment variables, there are other important settings u
 | `ingress.globalStaticIpName` | Static IP (GCE resource's name)        | (*)                                                   |
 | `server.admins`              | Comma-separated list of admin users    | (*)                                                   |
 | `server.db_path`             | Persistent disk mounting point         | `/var/lib/drone`                                      |
-| `server.db_disk`             | GCE persistent disk GKE name           | `data-prod-drone`                                     |
+| `server.db_disk`             | GCE persistent disk GKE name           | (*)                                                   |
 | `agent.num_instances`        | Number of Drone agents                 | `1`                                                   |
 | `secrets.drone_secret`       | Drone shared secret                    | (*)                                                   |
 | `secrets.github_client`      | Github oauth2 client id                | (*)                                                   |

@@ -29,8 +29,9 @@ secrets:
 
 server:
   # admins must be received as a parameter
+  # db_disk must be received as a parameter
   db_path: "/var/lib/drone/"
-  db_disk: "data-prod-drone"
+
   # Drone server configuration. Values in here get injected as environment variables.
   # See http://readme.drone.io/admin/installation-reference#server-options for a list of possible values.
   env:
