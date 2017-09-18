@@ -29,6 +29,7 @@ secrets:
 
 server:
   # admins must be received as a parameter
+  # github_orgs must be received as a parameter
   # db_disk must be received as a parameter
   db_path: "/var/lib/drone/"
 
@@ -42,6 +43,7 @@ server:
     DRONE_DATABASE_DATASOURCE: "/var/lib/drone/drone.sqlite"
     DRONE_OPEN: "true"
     DRONE_GITHUB: "true"
+    # DRONE_ORGS is defined in templates/deployment-server.yaml. Do not override here.
     # DRONE_ADMIN is defined in templates/deployment-server.yaml. Do not override here.
     # DRONE_SECRET is defined in templates/secrets.yaml. Do not override here.
     # DRONE_GITHUB_CLIENT is defined in templates/secrets.yaml. Do not override here.

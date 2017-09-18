@@ -25,6 +25,7 @@ $ helm install --name <release-name> <path-to-chart> --set \
   secrets.github_secret=<client-secret>,\
   ingress.hostname=<hostname>,\
   ingress.globalStaticIpName=<static-ip>,\
+  server.github_orgs="org1\,org2\,..",\
   server.db_disk=<external-disk>,\
   server.env.admins=<admin1\,admin2\,..>
 ```
@@ -52,7 +53,7 @@ These tables show some relevant Drone environment variables and the default valu
 | `DRONE_SECRET`               | Shared secret. Agents' must match.     | Dynamically build. Do not override.                   |
 | `DRONE_GITHUB_CLIENT`        | Github oauth2 client id                | Dynamically build. Do not override.                   |
 | `DRONE_GITHUB_SECRET`        | Github oauth2 client secret            | Dynamically build. Do not override.                   |
-| `DRONE_HOST`                 | URL for drone server                   | Dynamically build. Do not override.                   |                                     |
+| `DRONE_HOST`                 | URL for drone server                   | Dynamically build. Do not override.                   |
 
 
 | Agent's ENV variable         | Description                            | Default                                               |
@@ -69,6 +70,7 @@ Apart from the Drone environment variables, there are other important settings u
 | `ingress.hostname`           | DNS for drone server                   | (*)                                                   |
 | `ingress.globalStaticIpName` | Static IP (GCE resource's name)        | (*)                                                   |
 | `server.admins`              | Comma-separated list of admin users    | (*)                                                   |
+| `server.github_orgs`         | Github orgs whose members can access   | (*)                                                   |
 | `server.db_path`             | Persistent disk mounting point         | `/var/lib/drone`                                      |
 | `server.db_disk`             | GCE persistent disk GKE name           | (*)                                                   |
 | `agent.num_instances`        | Number of Drone agents                 | `1`                                                   |
