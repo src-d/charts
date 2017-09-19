@@ -1,0 +1,34 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        args:
+{{- if .Values.settings.serverAddr }}
+        - -bblfsh-addr={{ .Values.serverAddr }}
+{{- else }}
+        - -bblfsh-addr=localhost:9432
+{{- end }}
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+{{- if not .Values.settings.serverAddr }}
+      - name: bblfsh-server
+        image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
+        imagePullPolicy: {{ .Values.server.image.pullPolicy }}
+        securityContext:
+          privileged: true
+        resources:
+{{ toYaml .Values.server.resources | indent 10 }}
+{{- end }}
