@@ -1,0 +1,29 @@
+# Default values for bblfsh-dashboard
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 1
+image:
+  repository: bblfsh/dashboard
+  tag: v0.2.0
+  pullPolicy: IfNotPresent
+service:
+  name: bblfsh-dashboard
+  ## port where the dashboard will be listen at the LoadBalancer.
+  port: 80
+  ## loadBalancerIP if not set an ephermeral IP will be used.
+  loadBalancerIP:
+settings:
+  ## serverAddr is the address to a bblfsh server, if empty a bblfsh server
+  ## will be deployed by this chart. This server is deployed as a container
+  ## inside of the main pod, so if multiple replicas are configured multiple
+  ## bblfsh servers will be deployed
+  serverAddr:
+resources: {}
+
+# configuration for build-in server if, settings.serverAddr is empty.
+server:
+  image:
+    repository: bblfsh/server
+    tag: v1.0.0
+    pullPolicy: IfNotPresent
+  resources: {}
