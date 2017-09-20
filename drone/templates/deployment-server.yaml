@@ -44,6 +44,8 @@ spec:
               secretKeyRef:
                 name: {{ template "fullname" . }}
                 key: github_secret
+          - name: DRONE_ORGS
+            value: {{ required "Github organization list is missing" .Values.server.github_orgs | quote }}
           {{ range $key, $value := .Values.server.env }}
           - name: {{ $key }}
             value: {{ $value | quote }}
