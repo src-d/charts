@@ -2,10 +2,6 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 replicaCount: 1
-image:
-  repository: srcd/spark-api-jupyter
-  tag: latest
-  pullPolicy: IfNotPresent
 service:
   name: spark-api-jupyter
   type: LoadBalancer
@@ -25,7 +21,16 @@ ingress:
     # - secretName: chart-example-tls
     #   hosts:
     #     - chart-example.local
-resources: {}
+jupyter:
+  image:
+    repository: srcd/spark-api-jupyter
+    tag: latest
+    pullPolicy: IfNotPresent
+  repositoriesPath: /repositories
+  #repositoriesDisk: repository-data
+  userPath: /home/jovyan/work
+  #userDataDisk: repository-data
+
   # We usually recommend not to specify default resources and to leave this as a conscious 
   # choice for the user. This also increases chances charts run on environments with little 
   # resources, such as Minikube. If you do want to specify resources, uncomment the following 
@@ -36,8 +41,13 @@ resources: {}
   #requests:
   #  cpu: 100m
   #  memory: 128Mi
-jupyter:
-  repositoriesPath: /repositories
-  #repositoriesDbDisk: repository-data
-  userPath: /home/jovyan/work
-  #userDbDisk: repository-data
+  resources: {}
+
+server:
+  image:
+    repository: bblfsh/bblfshd
+    tag: v2.0.0
+    pullPolicy: IfNotPresent
+  driversPath: /var/lib/bblfshd
+  #driversDisk: bblfsh-drivers
+  resources: {}
