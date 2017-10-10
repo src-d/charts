@@ -38,6 +38,6 @@ resources: {}
   #  memory: 128Mi
 jupyter:
   repositoriesPath: /repositories
-  repositoriesDbDisk: repository-data
+  #repositoriesDbDisk: repository-data
   userPath: /home/jovyan/work
   #userDbDisk: repository-data
