@@ -24,7 +24,7 @@ ingress:
 jupyter:
   image:
     repository: srcd/spark-api-jupyter
-    tag: latest
+    tag: v0.0.6
     pullPolicy: IfNotPresent
   repositoriesPath: /repositories
   #repositoriesDisk: repository-data

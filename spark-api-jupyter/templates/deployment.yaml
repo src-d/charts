@@ -24,6 +24,9 @@ spec:
           {{ end }}
           ports:
             - containerPort: {{ .Values.service.internalPort }}
+          env:
+            - name: BBLFSH_HOST
+              value: localhost
           livenessProbe:
             httpGet:
               path: /
