@@ -8,4 +8,4 @@ image:
   tag: v0.5.0-srcd-1
   pullPolicy: IfNotPresent
 args:
-  staging: true
+  acmeUrl: https://acme-staging.api.letsencrypt.org/directory
