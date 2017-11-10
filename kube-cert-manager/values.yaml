@@ -1,0 +1,11 @@
+# Default values for kube-cert-manager.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 1
+installCertificateType: true
+image:
+  repository: quay.io/srcd/kube-cert-manager
+  tag: latest
+  pullPolicy: IfNotPresent
+args:
+  staging: true
