@@ -23,11 +23,7 @@ spec:
             - "-data-dir=/var/lib/cert-manager"
             # We only support googlecloud for the moment in this chart
             - "-default-provider=googlecloud"
-            {{ if .Values.args.staging }}
-            - "-acme-url=https://acme-staging.api.letsencrypt.org/directory"
-            {{ else }}
-            - "-acme-url=https://acme-v01.api.letsencrypt.org/directory"
-            {{ end }}
+            - "-acme-url={{ .Values.args.acmeUrl }}"
             {{ if .Values.args.class }}
             # You can run multiple instances of kube-cert-manager for the same namespace(s),
             # each watching for a different value for the 'class' label
