@@ -5,7 +5,7 @@ replicaCount: 1
 installCertificateType: true
 image:
   repository: quay.io/srcd/kube-cert-manager
-  tag: latest
+  tag: v0.5.0-srcd-1
   pullPolicy: IfNotPresent
 args:
   staging: true
