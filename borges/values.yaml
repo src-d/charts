@@ -1,0 +1,61 @@
+# Default values for borges.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 1
+image:
+  repository: quay.io/srcd/borges
+  tag: v0.8.2
+  pullPolicy: IfNotPresent
+consumer:
+  workers: 12
+  loglevel: debug
+  timeout: 2h
+  profiler: false
+  profilerPort: 6061
+  metrics: true
+  metricsPort: 6062
+  sysdigConfig: true
+
+producer:
+  loglevel: info
+  profiler: false
+  profilerPort: 6061
+  metrics: true
+  metricsPort: 6062
+  sysdigConfig: true
+  mentionsQueue: rovers
+
+broker:
+  connectionString: amqp://guest:guest@rabbitmq:5672
+
+db:
+  user: testing
+  pass: testing
+  host: postgres
+  name: testing
+
+dir:
+  tmpRoot: /borges
+  tmp: /borges/tmp
+  rootRepositories: /borges/root-repositories
+
+hadoop:
+  userName: root
+  connectionString: hdfs-namenode:8020
+
+locking:
+  connectionString: etcd:http://etcd:2379
+
+#nodeSelector:
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious 
+  # choice for the user. This also increases chances charts run on environments with little 
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following 
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  #requests:
+  #  cpu: 100m
+  #  memory: 128Mi

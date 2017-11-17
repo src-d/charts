@@ -1,0 +1,67 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}-producer
+  labels:
+    app: {{ template "name" . }}-producer
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}-producer
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - borges
+            - producer
+            - --mentionsqueue={{ .Values.producer.mentionsQueue }}
+            - --loglevel={{ .Values.producer.loglevel }}
+            {{ if .Values.producer.profiler }}
+            - --profiler
+            - --profiler-port={{ .Values.producer.profilerPort }}
+            {{ end }}
+            {{ if .Values.producer.metrics }}
+            - --metrics
+            - --metrics-port={{ .Values.producer.metricsPort }}
+            {{ end }}
+
+          ports:
+            {{ if .Values.producer.profiler }}
+            - containerPort: {{ .Values.producer.profilerPort }}
+            {{ end }}
+            {{ if .Values.producer.metrics }}
+            - containerPort: {{ .Values.producer.metricsPort }}
+            {{ end }}
+          env:
+            - name: CONFIG_BROKER
+              value: {{ .Values.broker.connectionString }}
+            - name: CONFIG_DBUSER
+              value: {{ .Values.db.user }}
+            - name: CONFIG_DBPASS
+              value: {{ .Values.db.pass }}
+            - name: CONFIG_DBHOST
+              value: {{ .Values.db.host }}
+            - name: CONFIG_DBNAME
+              value: {{ .Values.db.name }}
+            {{ if .Values.producer.sysdigConfig }}
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: SYSDIG_AGENT_CONF
+              value: "{\"app_checks\":[{\"name\":\"borges-producer\",\"check_module\":\"go_expvar\",\"pattern\":{\"comm\":\"borges\", \"arg\": \"producer\"},\"conf\":{\"expvar_url\":\"http://$(POD_IP):{{ .Values.producer.metricsPort }}/debug/vars\"}}]}"
+            {{ end }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+    {{- end }}
