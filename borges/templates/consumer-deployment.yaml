@@ -1,0 +1,85 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}-consumer
+  labels:
+    app: {{ template "name" . }}-consumer
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}-consumer
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - borges
+            - consumer
+            - --workers={{ .Values.consumer.workers }}
+            - --loglevel={{ .Values.consumer.loglevel }}
+            - --timeout={{ .Values.consumer.timeout }}
+            {{ if .Values.consumer.profiler }}
+            - --profiler
+            - --profiler-port={{ .Values.consumer.profilerPort }}
+            {{ end }}
+            {{ if .Values.consumer.metrics }}
+            - --metrics
+            - --metrics-port={{ .Values.consumer.metricsPort }}
+            {{ end }}
+
+          ports:
+            {{ if .Values.consumer.profiler }}
+            - containerPort: {{ .Values.consumer.profilerPort }}
+            {{ end }}
+            {{ if .Values.consumer.metrics }}
+            - containerPort: {{ .Values.consumer.metricsPort }}
+            {{ end }}
+          env:
+            - name: CONFIG_BROKER
+              value: {{ .Values.broker.connectionString }}
+            - name: CONFIG_DBUSER
+              value: {{ .Values.db.user }}
+            - name: CONFIG_DBPASS
+              value: {{ .Values.db.pass }}
+            - name: CONFIG_DBHOST
+              value: {{ .Values.db.host }}
+            - name: CONFIG_DBNAME
+              value: {{ .Values.db.name }}
+            - name: CONFIG_TEMP_DIR
+              value: {{ .Values.dir.tmp }}
+            - name: CONFIG_ROOT_REPOSITORIES_DIR
+              value: {{ .Values.dir.rootRepositories }}
+            - name: CONFIG_LOCKING
+              value: {{ .Values.locking.connectionString }}
+            - name: HADOOP_USER_NAME
+              value: {{ .Values.hadoop.userName }}
+            - name: CONFIG_HDFS
+              value: {{ .Values.hadoop.connectionString }}
+            {{ if .Values.consumer.sysdigConfig }}
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: SYSDIG_AGENT_CONF
+              value: "{\"app_checks\":[{\"name\":\"borges-consumer\",\"check_module\":\"go_expvar\",\"pattern\":{\"comm\":\"borges\", \"arg\": \"consumer\"},\"conf\":{\"expvar_url\":\"http://$(POD_IP):{{ .Values.consumer.metricsPort }}/debug/vars\"}}]}"
+            {{ end }}
+          volumeMounts:
+            - mountPath: {{ .Values.dir.tmpRoot }}
+              name: tmp-vol
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+      volumes:
+        - name: tmp-vol
+          emptyDir:
+            medium: Memory
+    {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+    {{- end }}
