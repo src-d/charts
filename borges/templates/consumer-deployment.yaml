@@ -70,7 +70,29 @@ spec:
                 fieldRef:
                   fieldPath: status.podIP
             - name: SYSDIG_AGENT_CONF
-              value: "{\"app_checks\":[{\"name\":\"borges-consumer\",\"check_module\":\"go_expvar\",\"pattern\":{\"comm\":\"borges\", \"arg\": \"consumer\"},\"conf\":{\"expvar_url\":\"http://$(POD_IP):{{ .Values.consumer.metricsPort }}/debug/vars\"}}]}"
+              value: |
+                {
+                  "app_checks": [
+                    {
+                      "name": "borges-consumer",
+                      "check_module": "go_expvar",
+                      "pattern": {
+                        "comm": "borges",
+                        "arg": "consumer"
+                      },
+                      "conf": {
+                        "expvar_url": "http://$(POD_IP):{{ .Values.consumer.metricsPort }}/debug/vars",
+                        "metrics": [
+                          { "path": "repos_failed", "type": "rate", "alias": "borges.consumer.repos.failed" },
+                          { "path": "repos_not_found", "type": "rate", "alias": "borges.consumer.repos.not_found" },
+                          { "path": "repos_processed", "type": "rate", "alias": "borges.consumer.repos.processed" },
+                          { "path": "repos_processing_avgtime", "type": "gauge", "alias": "borges.consumer.repos.processing_avgtime" },
+                          { "path": "repos_skipped", "type": "rate", "alias": "borges.consumer.repos.skipped" }
+                        ]
+                      }
+                    }
+                  ]
+                }
             {{ end }}
           volumeMounts:
             - mountPath: {{ .Values.dir.tmpRoot }}

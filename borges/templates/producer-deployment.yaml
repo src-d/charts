@@ -57,7 +57,26 @@ spec:
                 fieldRef:
                   fieldPath: status.podIP
             - name: SYSDIG_AGENT_CONF
-              value: "{\"app_checks\":[{\"name\":\"borges-producer\",\"check_module\":\"go_expvar\",\"pattern\":{\"comm\":\"borges\", \"arg\": \"producer\"},\"conf\":{\"expvar_url\":\"http://$(POD_IP):{{ .Values.producer.metricsPort }}/debug/vars\"}}]}"
+              value: |
+                {
+                  "app_checks": [
+                    {
+                      "name": "borges-producer",
+                      "check_module": "go_expvar",
+                      "pattern": {
+                        "comm": "borges",
+                        "arg": "producer"
+                      },
+                      "conf": {
+                        "expvar_url": "http://$(POD_IP):{{ .Values.producer.metricsPort }}/debug/vars",
+                        "metrics": [
+                          { "path": "repos_produced", "type": "rate", "alias": "borges.producer.repos.produced" },
+                          { "path": "repos_produced_failed", "type": "rate", "alias": "borges.producer.repos.produced_failed" }
+                        ]
+                      }
+                    }
+                  ]
+                }
             {{ end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
