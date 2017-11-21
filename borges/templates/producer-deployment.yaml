@@ -42,15 +42,15 @@ spec:
             {{ end }}
           env:
             - name: CONFIG_BROKER
-              value: {{ .Values.broker.connectionString }}
+              value: "{{ .Values.broker.connectionString }}"
             - name: CONFIG_DBUSER
-              value: {{ .Values.db.user }}
+              value: "{{ .Values.db.user }}"
             - name: CONFIG_DBPASS
-              value: {{ .Values.db.pass }}
+              value: "{{ .Values.db.pass }}"
             - name: CONFIG_DBHOST
-              value: {{ .Values.db.host }}
+              value: "{{ .Values.db.host }}"
             - name: CONFIG_DBNAME
-              value: {{ .Values.db.name }}
+              value: "{{ .Values.db.name }}"
             {{ if .Values.producer.sysdigConfig }}
             - name: POD_IP
               valueFrom:

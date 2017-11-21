@@ -43,25 +43,27 @@ spec:
             {{ end }}
           env:
             - name: CONFIG_BROKER
-              value: {{ .Values.broker.connectionString }}
+              value: "{{ .Values.broker.connectionString }}"
             - name: CONFIG_DBUSER
-              value: {{ .Values.db.user }}
+              value: "{{ .Values.db.user }}"
             - name: CONFIG_DBPASS
-              value: {{ .Values.db.pass }}
+              value: "{{ .Values.db.pass }}"
             - name: CONFIG_DBHOST
-              value: {{ .Values.db.host }}
+              value: "{{ .Values.db.host }}"
             - name: CONFIG_DBNAME
-              value: {{ .Values.db.name }}
+              value: "{{ .Values.db.name }}"
             - name: CONFIG_TEMP_DIR
-              value: {{ .Values.dir.tmp }}
+              value: "{{ .Values.dir.tmp }}"
             - name: CONFIG_ROOT_REPOSITORIES_DIR
-              value: {{ .Values.dir.rootRepositories }}
+              value: "{{ .Values.dir.rootRepositories }}"
             - name: CONFIG_LOCKING
-              value: {{ .Values.locking.connectionString }}
+              value: "{{ .Values.locking.connectionString }}"
             - name: HADOOP_USER_NAME
-              value: {{ .Values.hadoop.userName }}
+              value: "{{ .Values.hadoop.userName }}"
             - name: CONFIG_HDFS
-              value: {{ .Values.hadoop.connectionString }}
+              value: "{{ .Values.hadoop.connectionString }}"
+            - name: CONFIG_BUCKETSIZE
+              value: "{{ .Values.consumer.bucketSize }}"
             {{ if .Values.consumer.sysdigConfig }}
             - name: POD_IP
               valueFrom:
@@ -70,8 +72,6 @@ spec:
             - name: SYSDIG_AGENT_CONF
               value: "{\"app_checks\":[{\"name\":\"borges-consumer\",\"check_module\":\"go_expvar\",\"pattern\":{\"comm\":\"borges\", \"arg\": \"consumer\"},\"conf\":{\"expvar_url\":\"http://$(POD_IP):{{ .Values.consumer.metricsPort }}/debug/vars\"}}]}"
             {{ end }}
-            - name: CONFIG_BUCKETSIZE
-              value: {{ .Values.consumer.bucketSize }}
           volumeMounts:
             - mountPath: {{ .Values.dir.tmpRoot }}
               name: tmp-vol
