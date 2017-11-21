@@ -70,6 +70,8 @@ spec:
             - name: SYSDIG_AGENT_CONF
               value: "{\"app_checks\":[{\"name\":\"borges-consumer\",\"check_module\":\"go_expvar\",\"pattern\":{\"comm\":\"borges\", \"arg\": \"consumer\"},\"conf\":{\"expvar_url\":\"http://$(POD_IP):{{ .Values.consumer.metricsPort }}/debug/vars\"}}]}"
             {{ end }}
+            - name: CONFIG_BUCKETSIZE
+              value: {{ .Values.consumer.bucketSize }}
           volumeMounts:
             - mountPath: {{ .Values.dir.tmpRoot }}
               name: tmp-vol
