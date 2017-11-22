@@ -1,7 +1,6 @@
 # Default values for borges.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-replicaCount: 1
 image:
   repository: quay.io/srcd/borges
   tag: v0.9.0
@@ -16,6 +15,7 @@ consumer:
   metricsPort: 6062
   sysdigConfig: true
   bucketSize: 2
+  replicaCount: 1
 
 producer:
   loglevel: info
@@ -25,6 +25,7 @@ producer:
   metricsPort: 6062
   sysdigConfig: true
   mentionsQueue: rovers
+  replicaCount: 1
 
 broker:
   connectionString: amqp://guest:guest@rabbitmq:5672
