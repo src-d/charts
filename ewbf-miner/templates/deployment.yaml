@@ -1,0 +1,57 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          tty: true
+          resources:
+            limits:
+              alpha.kubernetes.io/nvidia-gpu: {{ .Values.args.gpuNumber }}
+          volumeMounts:
+            - mountPath: "{{ .Values.nvidiaDrivers.lib.mountPath }}"
+              name: lib
+            - mountPath: "{{ .Values.nvidiaDrivers.bin.mountPath }}"
+              name: bin
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: ZCASH_WALLET
+              value: "{{ required "Missing args.zCashWallet" .Values.args.zCashWallet }}"
+            - name: ZPOOL_USER
+              value: "$(POD_NAME)"
+            - name: EMAIL
+              value: "{{ required "Missing args.email" .Values.args.email }}"
+            - name: TEMPLIMIT
+              value: "{{ .Values.args.tempLimit }}"
+            - name: LD_LIBRARY_PATH
+              value: "{{ .Values.nvidiaDrivers.lib.mountPath }}"
+      volumes:
+        - hostPath:
+            path: "{{ .Values.nvidiaDrivers.lib.hostPath }}"
+          name: lib
+        - hostPath:
+            path: "{{ .Values.nvidiaDrivers.bin.hostPath }}"
+          name: bin
+    {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+    {{- end }}
+
