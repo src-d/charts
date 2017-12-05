@@ -4,7 +4,7 @@
 image:
   repository: quay.io/srcd/borges
   # This value should be provided when releasing this chart
-  # tag: v0.9.1
+  # tag: v0.10.0
   pullPolicy: IfNotPresent
 consumer:
   workers: 12
@@ -17,6 +17,7 @@ consumer:
   sysdigConfig: true
   bucketSize: 2
   replicaCount: 1
+  cleanTmp: true
 
 producer:
   loglevel: info
