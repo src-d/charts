@@ -17,6 +17,7 @@ consumer:
   sysdigConfig: true
   bucketSize: 2
   replicaCount: 1
+  cleanTmp: true
 
 producer:
   loglevel: info
