@@ -1,0 +1,13 @@
+{{- if not .Values.settings.serverAddr }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: install-bblfshd-drivers
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+data:
+  install-bblfshd-drivers.sh: |
+    {{- range $language, $driver := .Values.server.drivers.languages }}
+    bblfshctl driver install {{ $language }} {{ $driver.repository }}:{{ $driver.tag }}
+    {{- end }}
+{{- end }}

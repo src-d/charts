@@ -4,13 +4,15 @@
 replicaCount: 1
 image:
   repository: bblfsh/dashboard
-  tag: v0.3.0
+  tag: v0.4.0
   pullPolicy: IfNotPresent
 service:
+  type: LoadBalancer
   name: bblfsh-dashboard
   ## port where the dashboard will be listen at the LoadBalancer.
   port: 80
   ## loadBalancerIP if not set an ephermeral IP will be used.
+  # This setting will only be used for LoadBalancer type
   loadBalancerIP:
 settings:
   ## serverAddr is the address to a bblfsh server, if empty a bblfsh server
@@ -23,7 +25,16 @@ resources: {}
 # configuration for build-in server if, settings.serverAddr is empty.
 server:
   image:
-    repository: bblfsh/server
-    tag: v1.2.0
+    repository: bblfsh/bblfshd
+    tag: v2.2.2
     pullPolicy: IfNotPresent
+  drivers:
+    install: true
+    languages:
+      python:
+        repository: bblfsh/python-driver
+        tag: v1.2.6
+      java:
+        repository: bblfsh/java-driver
+        tag: v1.2.2
   resources: {}
