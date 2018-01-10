@@ -48,6 +48,8 @@ Worker:
   Cpu: "100m"
   Memory: "512Mi"
   ContainerPort: 8081
+  # Set Spark's temporary files location
+  #TemporaryDir:
   # Set Worker JVM memory. Default 1g
   #DaemonMemory: 1g
   # Set how much total memory workers have to give executors
