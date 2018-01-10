@@ -1,3 +1,4 @@
+{{- if .Values.settings.serverAddr }}
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -16,19 +17,7 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         args:
-{{- if .Values.settings.serverAddr }}
-        - -bblfsh-addr={{ .Values.serverAddr }}
-{{- else }}
-        - -bblfsh-addr=localhost:9432
-{{- end }}
+        - -bblfsh-addr={{ .Values.settings.serverAddr }}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
-{{- if not .Values.settings.serverAddr }}
-      - name: bblfsh-server
-        image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
-        imagePullPolicy: {{ .Values.server.image.pullPolicy }}
-        securityContext:
-          privileged: true
-        resources:
-{{ toYaml .Values.server.resources | indent 10 }}
 {{- end }}
