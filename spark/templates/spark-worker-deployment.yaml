@@ -1,5 +1,5 @@
 apiVersion: extensions/v1beta1
-kind: DaemonSet
+kind: Deployment
 metadata:
   name: {{ template "worker-fullname" . }}
   labels:
@@ -8,6 +8,12 @@ metadata:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     component: "{{ .Release.Name }}-{{ .Values.Worker.Component }}"
 spec:
+  replicas: {{ default 1 .Values.Worker.Replicas }}
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      component: "{{ .Release.Name }}-{{ .Values.Worker.Component }}"
   template:
     metadata:
       labels:
@@ -16,6 +22,10 @@ spec:
         chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
         component: "{{ .Release.Name }}-{{ .Values.Worker.Component }}"
     spec:
+      volumes:
+        - name: spark-tmp
+          hostPath:
+            path: /data-a/spark-temp-data
       containers:
         - name: {{ template "worker-fullname" . }}
           image: "{{ .Values.Worker.Image }}:{{ .Values.Worker.ImageTag }}"
@@ -26,6 +36,9 @@ spec:
             requests:
               cpu: "{{ .Values.Worker.Cpu }}"
               memory: "{{ .Values.Worker.Memory }}"
+          volumeMounts:
+            - mountPath: /spark-temp-data
+              name: spark-tmp
           env:
           - name: SPARK_DAEMON_MEMORY
             value: {{ default "1g" .Values.Worker.DaemonMemory | quote }}
@@ -33,6 +46,8 @@ spec:
             value: {{ default "1g" .Values.Worker.ExecutorMemory | quote }}
           - name: SPARK_NO_DAEMONIZE
             value: "yes"
+          - name: SPARK_LOCAL_DIRS
+            value: "/spark-temp-data"
       {{- range $key, $value := .Values.Worker.AdditionalPodContainers }}
       {{- if $value }}
         - name: {{ $key }}
