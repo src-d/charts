@@ -95,6 +95,7 @@ $ kubectl proxy --api-prefix=/spark-ui-proxy
 | `Worker.ExecutorMemory`          | Worker memory available for executor | `1g`                                                       |
 | `Worker.NodeSelector`            | Worker k8s node selector             | `{}`                                                       |
 | `Worker.AdditionalPodContainers` | Container config to spawn            | `{}`                                                       |
+| `Worker.TemporaryDir`            | Host path for spark tmp dir          | None, it's mandatory                                       |
 
 See [values.yaml](values.yaml) file to get an example of how to pass the `AdditionalPodContainers` configuration
 
