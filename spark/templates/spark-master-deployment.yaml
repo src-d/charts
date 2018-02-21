@@ -72,6 +72,10 @@ spec:
             value: {{ default "1g" .Values.Master.DaemonMemory | quote }}
           - name: SPARK_NO_DAEMONIZE
             value: "yes"
+          {{- range $key, $value := .Values.Master.customSparkConfig }}
+          - name: {{ $key | quote }}
+            value: {{ $value | quote }}
+          {{- end }}
     {{- if .Values.Master.NodeSelector }}
       nodeSelector:
 {{ toYaml .Values.Master.NodeSelector | indent 8 }}
