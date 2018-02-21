@@ -41,6 +41,10 @@ spec:
             value: "yes"
           - name: SPARK_LOCAL_DIRS
             value: "/spark-temp-data"
+          {{- range $key, $value := .Values.Worker.customSparkConfig }}
+          - name: {{ $key | quote }}
+            value: {{ $value | quote }}
+          {{- end }}
       {{- range $key, $value := .Values.Worker.AdditionalPodContainers }}
       {{- if $value }}
         - name: {{ $key }}

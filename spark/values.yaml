@@ -5,14 +5,16 @@
 
 Master:
   Name: master
-  Image: "quay.io/srcd/spark"
-  ImageTag: "2.2.0_v1"
+  Image: "srcd/spark"
+  ImageTag: "2.2.0_v2"
   Replicas: 1
   Component: "spark-master"
   Cpu: "100m"
   Memory: "512Mi"
   ServicePort: 7077
   ContainerPort: 7077
+  # Custom Spark Config. See template to find which values are already set
+  customSparkConfig: {}
   # Set Master JVM memory. Default 1g
   #DaemonMemory: 1g
   #NodeSelector:
@@ -41,13 +43,15 @@ WebUiProxy:
 
 Worker:
   Name: worker
-  Image: "quay.io/srcd/spark"
-  ImageTag: "2.2.0_v1"
+  Image: "srcd/spark"
+  ImageTag: "2.2.0_v2"
   Replicas: 3
   Component: "spark-worker"
   Cpu: "100m"
   Memory: "512Mi"
   ContainerPort: 8081
+  # Custom Spark Config. See template to find which values are already set
+  customSparkConfig: {}
   # Set Spark's temporary files location
   #TemporaryDir:
   # Set Worker JVM memory. Default 1g
