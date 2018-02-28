@@ -1,5 +1,5 @@
 apiVersion: extensions/v1beta1
-kind: DaemonSet
+kind: Deployment
 metadata:
   name: {{ template "worker-fullname" . }}
   labels:
@@ -8,17 +8,43 @@ metadata:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     component: "{{ .Release.Name }}-{{ .Values.Worker.Component }}"
 spec:
+  replicas: {{ default 1 .Values.Worker.Replicas }}
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      component: "{{ .Release.Name }}-{{ .Values.Worker.Component }}"
   template:
     metadata:
       labels:
         heritage: {{ .Release.Service | quote }}
         release: {{ .Release.Name | quote }}
         component: "{{ .Release.Name }}-{{ .Values.Worker.Component }}"
+      annotations:
+        scheduler.alpha.kubernetes.io/affinity: >
+          {
+            "podAntiAffinity": {
+              "requiredDuringSchedulingIgnoredDuringExecution": [
+                {
+                  "topologyKey": "kubernetes.io/hostname",
+                  "labelSelector": {
+                    "matchExpressions": [
+                      {
+                        "key": "component",
+                        "operator": "In",
+                        "values": [ "{{ .Release.Name }}-{{ .Values.Worker.Component }}" ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
     spec:
       volumes:
         - name: spark-tmp
           hostPath:
-            path: {{ required "Volume for temporary files is missing" .Values.Worker.TemporaryDir | quote }}
+            path: {{ template "worker-temporary-dir" . }}
       containers:
         - name: {{ template "worker-fullname" . }}
           image: "{{ .Values.Worker.Image }}:{{ .Values.Worker.ImageTag }}"
