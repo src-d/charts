@@ -45,7 +45,7 @@ Worker:
   Name: worker
   Image: "srcd/spark"
   ImageTag: "2.2.0_v2"
-  Replicas: 3
+  Replicas: 1
   Component: "spark-worker"
   Cpu: "100m"
   Memory: "512Mi"
@@ -53,7 +53,7 @@ Worker:
   # Custom Spark Config. See template to find which values are already set
   customSparkConfig: {}
   # Set Spark's temporary files location
-  #TemporaryDir:
+  TemporaryDirRoot: /tmp
   # Set Worker JVM memory. Default 1g
   #DaemonMemory: 1g
   # Set how much total memory workers have to give executors
