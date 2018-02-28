@@ -11,14 +11,32 @@ spec:
   replicas: {{ .Values.replicaCount }}
   template:
     metadata:
+      # This is to upgrade the deployment if configmap changes
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/install-drivers-configmap.yaml") . | sha256sum }}
       labels:
         app: {{ template "name" . }}
         release: {{ .Release.Name }}
     spec:
+      volumes:
+        - configMap:
+            name: {{ template "fullname" . }}-install-drivers
+            items:
+            - key: install-bblfshd-drivers.sh
+              path: install-bblfshd-drivers.sh
+          name: install-bblfshd-drivers-volume
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: install-bblfshd-drivers-volume
+              mountPath: /opt/install-bblfshd-drivers.sh
+              subPath: install-bblfshd-drivers.sh
+          lifecycle:
+            postStart:
+              exec:
+                command: [ "sh", "/opt/install-bblfshd-drivers.sh" ]
           ports:
             - containerPort: {{ .Values.service.internalPort }}
           livenessProbe:

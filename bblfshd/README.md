@@ -17,7 +17,7 @@ Official project documentation found [here](https://doc.bblf.sh/)
 To install the chart with the release name `my-release`:
 
 ```bash
-$ helm install --name my-release bblfsh-server
+$ helm install --name my-release bblfshd
 ```
 
 ## Configuration
@@ -25,5 +25,5 @@ $ helm install --name my-release bblfsh-server
 See `values.yaml` for the available configuration parameters. Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example:
 
 ```bash
-$ helm install --name my-release --set image.tag=v0.5.0 bblfsh-server
+$ helm install --name my-release --set image.tag=v0.5.0 bblfshd
 ```
