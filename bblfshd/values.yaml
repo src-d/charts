@@ -1,17 +1,44 @@
-# Default values for bblfsh-server.
+# Default values for bblfshd.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 replicaCount: 1
 image:
-  repository: bblfsh/server
-  tag: v0.6.0
+  repository: bblfsh/bblfshd
+  tag: v2.4.1
   pullPolicy: IfNotPresent
 service:
-  name: bblfsh-server
+  name: bblfshd
   type: ClusterIP
   externalPort: 9432
   internalPort: 9432
   # loadBalancerIP: 1.2.3.4
+drivers:
+  install: true
+  languages:
+    python:
+      repository: bblfsh/python-driver
+      tag: latest
+    java:
+      repository: bblfsh/java-driver
+      tag: latest
+    javascript:
+      repository: bblfsh/javascript-driver
+      tag: latest
+    typescript:
+      repository: bblfsh/typescript-driver
+      tag: latest
+    bash:
+      repository: bblfsh/bash-driver
+      tag: latest
+    ruby:
+      repository: bblfsh/ruby-driver
+      tag: latest
+    go:
+      repository: bblfsh/go-driver
+      tag: latest
+    php:
+      repository: bblfsh/php-driver
+      tag: latest
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious 
   # choice for the user. This also increases chances charts run on environments with little 
