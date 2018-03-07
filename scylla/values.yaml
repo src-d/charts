@@ -1,0 +1,26 @@
+# Default values for scylla.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: scylladb/scylla
+  tag: 2.0.2
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  externalPort: 9042
+  internalPort: 9042
+  name: scylla
+
+statefulset:
+  intraPort: 7000
+  intraName: intra-node
+  tlsIntraPort: 7001
+  tlsIntraName: tls-intra-node
+  jmxPort: 7199
+  jmxName: jmx
+  cqlPort: 9042
+  cqlName: cql

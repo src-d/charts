@@ -1,0 +1,66 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name:  {{ template "scylla.fullname" . }}
+  labels:
+    app: {{ template "scylla.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  serviceName: {{ template "scylla.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "scylla.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "scylla.name" . }} 
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: {{ template "scylla.fullname" . }}
+        image:  "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+          - containerPort: {{ .Values.statefulset.intraPort }}
+            name: {{ .Values.statefulset.intraName }}
+          - containerPort: {{ .Values.statefulset.tlsIntraPort }}
+            name: {{ .Values.statefulset.tlsIntraName }}
+          - containerPort: {{ .Values.statefulset.jmxPort }}
+            name: {{ .Values.statefulset.jmxName }}
+          - containerPort: {{ .Values.statefulset.cqlPort }}
+            name: {{ .Values.statefulset.cqlName }}
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c", "PID=$(pidof scylla) && kill $PID && while ps -p $PID > /dev/null; do sleep 1; done"]
+        env:
+          - name: POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+        readinessProbe:
+          exec:
+            command:
+              - /bin/bash
+              - -c
+              - exec
+              - /opt/ready-probe.sh
+          initialDelaySeconds: 15
+          timeoutSeconds: 5
+        volumeMounts:
+          - name: scylla-data
+            mountPath: /var/lib/scylla
+          - name: scylla-ready-probe
+            mountPath: /opt/ready-probe.sh
+            subPath: ready-probe.sh
+      volumes: # TODO: data is discarded if pod restarts, change to something more persistant 
+        - name: scylla-data 
+          emptyDir:
+            medium: "Memory"
+        - name: scylla-ready-probe
+          configMap:
+            name: {{ template "scylla.fullname" . }}
