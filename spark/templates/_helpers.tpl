@@ -3,26 +3,26 @@
 Expand the name of the chart.
 */}}
 {{- define "name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 24 -}}
+{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 Create fully qualified names.
-We truncate at 24 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "master-fullname" -}}
-{{- $name := default .Chart.Name .Values.Master.Name -}}
-{{- printf "%s-%s" .Release.Name $name | trunc 24 -}}
+{{- $name := default .Chart.Name .Values.nameOverride -}}
+{{- printf "%s-%s-%s" .Release.Name $name .Values.Master.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{- define "webui-fullname" -}}
-{{- $name := default .Chart.Name .Values.WebUi.Name -}}
-{{- printf "%s-%s" .Release.Name $name | trunc 24 -}}
+{{- $name := default .Chart.Name .Values.nameOverride -}}
+{{- printf "%s-%s-%s" .Release.Name $name .Values.WebUi.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{- define "worker-fullname" -}}
-{{- $name := default .Chart.Name .Values.Worker.Name -}}
-{{- printf "%s-%s" .Release.Name $name | trunc 24 -}}
+{{- $name := default .Chart.Name .Values.nameOverride -}}
+{{- printf "%s-%s-%s" .Release.Name $name .Values.Worker.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{- define "worker-temporary-dir" -}}
@@ -31,6 +31,6 @@ We truncate at 24 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{- define "webui-proxy-fullname" -}}
-{{- $name := default .Chart.Name .Values.WebUiProxy.Name -}}
-{{- printf "%s-%s" .Release.Name $name | trunc 24 -}}
+{{- $name := default .Chart.Name .Values.nameOverride -}}
+{{- printf "%s-%s-%s" .Release.Name $name .Values.WebUiProxy.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
