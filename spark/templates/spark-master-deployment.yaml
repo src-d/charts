@@ -54,6 +54,7 @@ spec:
         release: {{ .Release.Name | quote }}
         component: "{{ .Release.Name }}-{{ .Values.Master.Component }}"
     spec:
+      hostNetwork: true
       containers:
         - name: {{ template "master-fullname" . }}
           image: "{{ .Values.Master.Image }}:{{ .Values.Master.ImageTag }}"

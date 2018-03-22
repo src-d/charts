@@ -41,6 +41,7 @@ spec:
             }
           }
     spec:
+      hostNetwork: true
       volumes:
         - name: spark-tmp
           hostPath:
