@@ -58,6 +58,8 @@ spec:
               value: "{{ .Values.consumer.cleanTmp }}"
             - name: CONFIG_ROOT_REPOSITORIES_DIR
               value: "{{ .Values.dir.rootRepositories }}"
+            - name: CONFIG_ROOT_REPOSITORIES_TEMP_DIR
+              value: "{{ .Values.dir.rootRepositoriesTemp }}"
             - name: CONFIG_LOCKING
               value: "{{ .Values.locking.connectionString }}"
             - name: HADOOP_USER_NAME
