@@ -62,12 +62,14 @@ spec:
               value: "{{ .Values.dir.rootRepositoriesTemp }}"
             - name: CONFIG_LOCKING
               value: "{{ .Values.locking.connectionString }}"
-            - name: HADOOP_USER_NAME
-              value: "{{ .Values.hadoop.userName }}"
-            - name: CONFIG_HDFS
-              value: "{{ .Values.hadoop.connectionString }}"
             - name: CONFIG_BUCKETSIZE
               value: "{{ .Values.consumer.bucketSize }}"
+            {{ if .Values.hadoop }}
+            - name: HADOOP_USER_NAME
+              value: "{{ required "Missing hadoop.userName" .Values.hadoop.userName }}"
+            - name: CONFIG_HDFS
+              value: "{{ required "Missing hadoop.connectionString" .Values.hadoop.connectionString }}"
+            {{ end }}
             {{ if .Values.consumer.sysdigConfig }}
             - name: POD_IP
               valueFrom:
@@ -99,14 +101,25 @@ spec:
                 }
             {{ end }}
           volumeMounts:
-            - mountPath: {{ .Values.dir.tmpRoot }}
+            # we can safely assume leading "/" as mountPath must be absolute
+            - mountPath: /{{ (split "/" .Values.dir.tmp)._1 }}
               name: tmp-vol
+            {{- if .Values.glusterfs }}
+            - mountPath: /{{ (split "/" .Values.dir.rootRepositories)._1 }}
+              name: glusterfs-vol
+            {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
       volumes:
         - name: tmp-vol
           emptyDir:
             medium: Memory
+        {{- if .Values.glusterfs }}
+        - name: glusterfs-vol
+          glusterfs:
+            endpoints: {{ required "Missing glusterfs.endpoint" .Values.glusterfs.endpoint }}
+            path: {{ required "Missing glusterfs.volume" .Values.glusterfs.volume }}
+        {{- end }}
     {{- if .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
