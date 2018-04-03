@@ -39,14 +39,17 @@ db:
   name: testing
 
 dir:
-  tmpRoot: /borges
-  tmp: /borges/tmp
+  tmp: /borges-tmp/tmp
   rootRepositories: /borges/root-repositories
   rootRepositoriesTemp: /borges/tmp
 
-hadoop:
-  userName: root
-  connectionString: hdfs-namenode:8020
+#hadoop:
+#  userName: root
+#  connectionString: hdfs-namenode:8020
+
+#glusterfs:
+#  endpoints: glusterfs-cluster
+#  volume: siva-volume
 
 locking:
   connectionString: etcd:http://etcd:2379

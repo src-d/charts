@@ -9,22 +9,26 @@ This chart deploys [borges](https://github.com/src-d/borges)
 
 ## Scope
 
-This is intended to use Google DNS for Let's Encrypt challenges. `borges` supports more challenges, but we're currently only interested in those.
+This chart supports Borges writing to HDFS or Gluster
 
 ## Installing the Chart
 
-To install the chart with the release name `borges`
+* To install Borges using Gluster as storage
 
-```bash
-helm install -n borgess-release . borges
+```sh
+$ helm install --name borges-release --set \
+glusterfs.endpoint=<gluster k8s endpoint>,\
+glusterfs.volume=<gluster volume>
+```
+
+* To install Borges using HDFS as storage
+
+```sh
+$ helm install --name borges-release --set \
+hadoop.userName=<hadoop user name>,\
+hadoop.connectionString=<hadoop-host:hadoop-port>
 ```
 
 ## Configuration
 
 See `values.yaml` for the available configuration parameters.
-
-For example, to define where pods will be deployed, we can use `nodeSelector' property
-
-```sh
-$ helm install --name borges-release --set nodeSelector."srcd\.host/type"=worker
-```
