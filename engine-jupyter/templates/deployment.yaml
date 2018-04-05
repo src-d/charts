@@ -1,0 +1,94 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      volumes:
+        # TODO: Add PVC support
+        {{- if .Values.notebooks.volumes }}
+        - name: notebooks-dir
+          {{- if .Values.notebooks.volumes.hostPath }}
+          hostPath:
+            path: {{ .Values.notebooks.volumes.hostPath }}
+          {{- end }}
+        {{- end }}
+{{- if .Values.bblfshd.enabled }}
+        - configMap:
+            name: {{ template "fullname" . }}-install-drivers
+            items:
+              - key: install-bblfshd-drivers.sh
+                path: install-bblfshd-drivers.sh
+          name: install-bblfshd-drivers-volume
+{{- end }}
+      containers:
+        - name: jupyter
+          image: "{{ .Values.jupyter.image.repository }}:{{ .Values.jupyter.image.tag }}"
+          imagePullPolicy: {{ .Values.jupyter.image.pullPolicy }}
+          {{- if .Values.jupyter.password }}
+          command: ["jupyter", "notebook", "--ip=0.0.0.0", "--allow-root", "--password={{ .Values.jupyter.password }}"]
+          {{- end }}
+          workingDir: /home
+          ports:
+            - containerPort: {{ .Values.service.internalPort }}
+          env:
+            - name: SPARK_OPTS
+              value: {{ .Values.jupyter.sparkOpts }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.service.internalPort }}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.service.internalPort }}
+          {{- if .Values.notebooks.volumes }}
+          volumeMounts:
+            - mountPath: /home
+              name: notebooks-dir
+          {{- end }}
+          resources:
+{{ toYaml .Values.jupyter.resources | indent 12 }}
+{{- if .Values.bblfshd.enabled }}
+        - name: bblfshd
+          image: "{{ .Values.bblfshd.image.repository }}:{{ .Values.bblfshd.image.tag }}"
+          imagePullPolicy: {{ .Values.bblfshd.image.pullPolicy }}
+          securityContext:
+            privileged: true
+          lifecycle:
+            postStart:
+              exec:
+                command: [ "sh", "/opt/install-bblfshd-drivers.sh" ]
+          livenessProbe:
+            tcpSocket:
+              port: 9432
+          readinessProbe:
+            tcpSocket:
+              port: 9432
+          volumeMounts:
+            - name: install-bblfshd-drivers-volume
+              mountPath: /opt/install-bblfshd-drivers.sh
+              subPath: install-bblfshd-drivers.sh
+          resources:
+{{ toYaml .Values.bblfshd.resources | indent 12 }}
+{{- end }}
+    # to ease the pain of writing this, especially from terraform
+    {{- if .Values.hostnameNodeSelector }}
+      nodeSelector:
+        kubernetes.io/hostname: {{ .Values.hostnameNodeSelector }}
+    {{- end }}
+    {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+    {{- end }}

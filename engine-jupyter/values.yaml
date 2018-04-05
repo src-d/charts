@@ -1,0 +1,89 @@
+# Default values for engine-jupyter.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 1
+service:
+  name: engine-jupyter
+  type: LoadBalancer
+  externalPort: 80
+  internalPort: 8888
+  #loadBalancerIP:
+ingress:
+  enabled: false
+  # Used to create Ingress record (should used with service.type: ClusterIP).
+  hosts:
+    - chart-example.local
+  annotations:
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  tls:
+    # Secrets must be manually created in the namespace.
+    # - secretName: chart-example-tls
+    #   hosts:
+    #     - chart-example.local
+notebooks: {}
+  # Notebooks can be persisted on a host path.
+  # volumes:
+  #   hostPath: /data-a/notebooks
+jupyter:
+  image:
+    repository: srcd/jupyter-spark
+    tag: v5.2.1
+    pullPolicy: IfNotPresent
+  # Password can be setup here. See Jupyter docs to see how to generate
+  # a hashed password in this format:
+  # http://jupyter-notebook.readthedocs.io/en/stable/public_server.html#preparing-a-hashed-password
+  #password: sha1:35d3ad496d8f:a75b5817db28b439a586b587b40e75613dea8218
+  # SPARK_OPTS passed to Jupyter. If this is not set, a local Spark cluster
+  # will be used (Spark defaults). See Spark documentation for possible values:
+  # https://spark.apache.org/docs/latest/submitting-applications.html
+  sparkOpts: "--master 'local[*]' --packages 'tech.sourced:engine:0.5.7' --driver-memory 16g"
+  #sparkOpts: "--master 'spark://spark-master:7077' --packages 'tech.sourced:engine:0.5.7' --total-executor-cores 32 --driver-memory 16g --executor-memory 4g  --conf spark.sql.warehouse.dir='hdfs://hdfs-namenode/tmp/engine-jupyter-spark-warehouse'"
+
+  # We usually recommend not to specify default resources and to leave this as a conscious 
+  # choice for the user. This also increases chances charts run on environments with little 
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following 
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  #requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+  resources: {}
+# Based on the bblfshd chart.
+bblfshd:
+  # If false, no bblfshd will be deployed.
+  enabled: true
+  image:
+    repository: bblfsh/bblfshd
+    tag: v2.4.2
+    pullPolicy: IfNotPresent
+  drivers:
+    install: true
+    languages:
+      python:
+        repository: bblfsh/python-driver
+        tag: latest
+      java:
+        repository: bblfsh/java-driver
+        tag: latest
+      javascript:
+        repository: bblfsh/javascript-driver
+        tag: latest
+      typescript:
+        repository: bblfsh/typescript-driver
+        tag: latest
+      bash:
+        repository: bblfsh/bash-driver
+        tag: latest
+      ruby:
+        repository: bblfsh/ruby-driver
+        tag: latest
+      go:
+        repository: bblfsh/go-driver
+        tag: latest
+      php:
+        repository: bblfsh/php-driver
+        tag: latest
+  resources: {}
