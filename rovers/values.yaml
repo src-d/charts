@@ -1,0 +1,49 @@
+# Default values for rovers.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 1
+
+image:
+  repository: quay.io/srcd/rovers
+  tag: v2.6.0
+  pullPolicy: IfNotPresent
+
+db:
+  user: testing
+  pass: testing
+  host: postgres
+  name: testing
+
+broker:
+  connectionString: amqp://guest:guest@rabbitmq:5672
+
+args:
+  action: repos
+  queueName: rovers
+  # by default all providers are considered unless
+  # any is specified. In that case, only those are considered
+  providers: {}
+  # github: true
+  # bitbucket: true
+  # cgit: true
+
+# Secrets must be either explictly given
+# secrets:
+#   githubToken: xxxxx
+#   bingKey: xxxx
+#
+# or through an already present secret in the cluster
+# See secret.yaml file to get the expected key names
+# secretName: "existing name"
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  #requests:
+  #  cpu: 100m
+  #  memory: 128Mi
