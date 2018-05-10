@@ -30,12 +30,16 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         args:
         - -bblfsh-addr=localhost:9432
+        - -bblfshctl-addr=localhost:9433
         resources:
 {{ toYaml .Values.resources | indent 10 }}
       - name: bblfshd
         image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
         imagePullPolicy: {{ .Values.server.image.pullPolicy }}
         {{- if .Values.server.drivers.install }}
+        args:
+        - -ctl-network=tcp
+        - -ctl-address=localhost:9433
         volumeMounts:
           - name: install-bblfshd-drivers-volume
             mountPath: /opt/install-bblfshd-drivers.sh
