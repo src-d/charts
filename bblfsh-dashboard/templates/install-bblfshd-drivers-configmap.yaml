@@ -8,6 +8,6 @@ metadata:
 data:
   install-bblfshd-drivers.sh: |
     {{- range $language, $driver := .Values.server.drivers.languages }}
-    bblfshctl driver install {{ $language }} {{ $driver.repository }}:{{ $driver.tag }}
+    bblfshctl driver install {{ $language }} {{ $driver.repository }}:{{ $driver.tag }} --ctl-endpoint=tcp --ctl-address=localhost:9433
     {{- end }}
 {{- end }}
