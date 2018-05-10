@@ -20,6 +20,10 @@ spec:
         app: {{ template "scylla.name" . }} 
         release: {{ .Release.Name }}
     spec:
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- end }}
       containers:
       - name: {{ template "scylla.fullname" . }}
         image:  "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -57,10 +61,16 @@ spec:
           - name: scylla-ready-probe
             mountPath: /opt/ready-probe.sh
             subPath: ready-probe.sh
-      volumes: # TODO: data is discarded if pod restarts, change to something more persistant 
-        - name: scylla-data 
+      volumes:
+        - name: scylla-data
+          {{- if .Values.statefulset.hostPath }}
+          hostPath:
+            path: {{ .Values.statefulset.hostPath }}
+            type: ""
+          {{- else }}
           emptyDir:
             medium: "Memory"
+          {{- end }}
         - name: scylla-ready-probe
           configMap:
             name: {{ template "scylla.fullname" . }}
