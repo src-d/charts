@@ -24,6 +24,7 @@ spec:
             - consumer
             - --workers={{ .Values.consumer.workers }}
             - --loglevel={{ .Values.consumer.loglevel }}
+            - --logformat={{ .Values.logging.format }}
             - --timeout={{ .Values.consumer.timeout }}
             {{ if .Values.consumer.profiler }}
             - --profiler

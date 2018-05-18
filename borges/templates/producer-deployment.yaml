@@ -22,8 +22,10 @@ spec:
           command:
             - borges
             - producer
-            - --mentionsqueue={{ .Values.producer.mentionsQueue }}
+            - mentions
+            - --mentions-queue={{ .Values.producer.mentionsQueue }}
             - --loglevel={{ .Values.producer.loglevel }}
+            - --logformat={{ .Values.logging.format }}
             {{ if .Values.producer.profiler }}
             - --profiler
             - --profiler-port={{ .Values.producer.profilerPort }}
