@@ -24,8 +24,6 @@ spec:
             - producer
             - mentions
             - --mentions-queue={{ .Values.producer.mentionsQueue }}
-            - --loglevel={{ .Values.producer.loglevel }}
-            - --logformat={{ .Values.logging.format }}
             {{ if .Values.producer.profiler }}
             - --profiler
             - --profiler-port={{ .Values.producer.profilerPort }}
@@ -53,6 +51,10 @@ spec:
               value: "{{ .Values.db.host }}"
             - name: CONFIG_DBNAME
               value: "{{ .Values.db.name }}"
+            - name: LOG_LEVEL
+              value: "{{ .Values.producer.loglevel }}"
+            - name: LOG_FORMAT
+              value: "{{ .Values.producer.logformat }}"
             {{ if .Values.producer.sysdigConfig }}
             - name: POD_IP
               valueFrom:
