@@ -14,6 +14,10 @@ spec:
       labels:
         app: {{ template "name" . }}-consumer
         release: {{ .Release.Name }}
+      {{- if .Values.consumer.fluentbitParser }}
+      annotations:
+        logging.parser: {{ .Values.consumer.fluentbitParser }}
+      {{- end }}
     spec:
       containers:
         - name: {{ .Chart.Name }}

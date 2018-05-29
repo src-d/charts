@@ -19,6 +19,7 @@ consumer:
   replicaCount: 1
   cleanTmp: true
   logformat: json
+  # fluenbitParser: docker_json
 
 producer:
   loglevel: info
@@ -30,6 +31,7 @@ producer:
   mentionsQueue: rovers
   replicaCount: 1
   logformat: json
+  # fluenbitParser: docker_json
 
 broker:
   connectionString: amqp://guest:guest@rabbitmq:5672
