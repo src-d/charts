@@ -1,0 +1,13 @@
+{{- if not .Values.settings.bblfshdServer }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "gitbase-playground.fullname" . }}-install-bblfshd-drivers
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+data:
+  install-bblfshd-drivers.sh: |
+    {{- range $language, $driver := .Values.bblfshdServer.drivers.languages }}
+    bblfshctl driver install {{ $language }} {{ $driver.repository }}:{{ $driver.tag }}
+    {{- end }}
+{{- end }}
