@@ -1,0 +1,157 @@
+{{- if and (not .Values.settings.bblfshdServer) (not .Values.settings.gitbaseServer) }}
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  name: {{ template "gitbase-playground.fullname" . }}
+  labels:
+    app: {{ template "gitbase-playground.name" . }}
+    chart: {{ template "gitbase-playground.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  serviceName: {{ template "gitbase-playground.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "gitbase-playground.name" . }}
+      release: {{ .Release.Name }}
+  volumeClaimTemplates:
+    - metadata:
+        name: bblfshd-drivers-volume
+      spec:
+      {{- if .Values.bblfshdServer.storage.class }}
+      {{- if (eq "-" .Values.bblfshdServer.storage.class) }}
+        storageClassName: ""
+      {{- else }}
+        storageClassName: "{{ .Values.bblfshdServer.storage.class }}"
+      {{- end }}
+      {{- end }}
+        persistentVolumeReclaimPolicy: Delete
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: "{{ .Values.gitbaseServer.storage.size }}"
+    - metadata:
+        name: gitbase-repos-volume
+      spec:
+      {{- if .Values.gitbaseServer.storage.class }}
+      {{- if (eq "-" .Values.gitbaseServer.storage.class) }}
+        storageClassName: ""
+      {{- else }}
+        storageClassName: "{{ .Values.gitbaseServer.storage.class }}"
+      {{- end }}
+      {{- end }}
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: "{{ .Values.gitbaseServer.storage.size }}"
+  template:
+    metadata:
+      labels:
+        app: {{ template "gitbase-playground.name" . }}
+        release: {{ .Release.Name }}
+      # This is to upgrade the deployment if configmap changes
+      annotations:
+        checksum/install-bblfshd-drivers: {{ include (print $.Template.BasePath "/install-bblfshd-drivers-configmap.yaml") . | sha256sum }} 
+        checksum/clone-git-repositories: {{ include (print $.Template.BasePath "/clone-git-repositories-configmap.yaml") . | sha256sum }} 
+    spec:
+      volumes:
+        - configMap:
+            name: {{ template "gitbase-playground.fullname" . }}-install-bblfshd-drivers
+            items:
+            - key: install-bblfshd-drivers.sh
+              path: install-bblfshd-drivers.sh
+          name: install-bblfshd-drivers-volume
+        - configMap:
+            name: {{ template "gitbase-playground.fullname" . }}-clone-git-repositories
+            items:
+            - key: clone-git-repositories.sh
+              path: clone-git-repositories.sh
+          name: clone-git-repositories-volume
+      initContainers:
+        - name: clone-git-repositories
+          image: "{{ .Values.gitbaseServer.image.repository }}:{{ .Values.gitbaseServer.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          command: [ 'sh', '/opt/clone-git-repositories.sh' ]
+          volumeMounts:
+            - name: clone-git-repositories-volume
+              mountPath: /opt/clone-git-repositories.sh
+              subPath: clone-git-repositories.sh
+            - name: gitbase-repos-volume
+              mountPath: {{ .Values.gitbaseServer.repositoriesDir }}
+      containers:
+        - name: gitbase-playground
+          image: "{{ .Values.gitbasePlayground.image.repository }}:{{ required "Missing gitbasePlayground.image.tag" .Values.gitbasePlayground.image.tag }}"
+          imagePullPolicy: {{ .Values.gitbasePlayground.image.pullPolicy }}
+          env:
+            - name: PORT
+              value: "{{ .Values.service.internalPort }}"
+            - name: GITBASEPG_ENV
+              value: "{{ .Values.gitbasePlayground.env }}"
+            - name: GITBASEPG_DB_CONNECTION
+              value: "gitbase@tcp(127.0.0.1:3306)/none?maxAllowedPacket={{ .Values.gitbasePlayground.gitbaseMaxAllowedPacket }}"
+            - name: GITBASEPG_BBLFSH_SERVER_URL
+              value: "127.0.0.1:9432"
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.internalPort }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+        - name: bblfshd
+          image: "{{ .Values.bblfshdServer.image.repository }}:{{ .Values.bblfshdServer.image.tag }}"
+          imagePullPolicy: {{ .Values.bblfshdServer.image.pullPolicy }}
+          volumeMounts:
+            - name: install-bblfshd-drivers-volume
+              mountPath: /opt/install-bblfshd-drivers.sh
+              subPath: install-bblfshd-drivers.sh
+            - name: bblfshd-drivers-volume
+              mountPath: /var/lib/bblfshd
+          securityContext:
+            privileged: true
+          lifecycle:
+            postStart:
+              exec:
+                command: [ "sh", "/opt/install-bblfshd-drivers.sh" ] 
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+        - name: gitbase
+          image: "{{ .Values.gitbaseServer.image.repository }}:{{ .Values.gitbaseServer.image.tag }}"
+          imagePullPolicy: {{ .Values.gitbaseServer.image.pullPolicy }}
+          volumeMounts:
+            - name: gitbase-repos-volume
+              mountPath: {{ .Values.gitbaseServer.repositoriesDir }}
+          env:
+            - name: BBLFSH_ENDPOINT
+              value: "127.0.0.1:9432"
+            - name: GITBASE_USER
+              value: "gitbase"
+            - name: GITBASE_PASSWORD
+              value: ""
+            - name: LOG_LEVEL
+              value: "{{ .Values.gitbaseServer.logLevel }}"
+            - name: GITBASE_REPOS
+              value: "{{ .Values.gitbaseServer.repositoriesDir }}"
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+{{- end }}

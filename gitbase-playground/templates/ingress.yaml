@@ -1,0 +1,32 @@
+{{- if .Values.ingress.enabled -}}
+{{- $serviceName := include "gitbase-playground.fullname" . -}}
+{{- $servicePort := .Values.service.port -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "gitbase-playground.fullname" . }}
+  labels:
+    app: {{ template "gitbase-playground.name" . }}
+    chart: {{ template "gitbase-playground.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  annotations:
+    {{- range $key, $value := .Values.ingress.annotations }}
+      {{ $key }}: {{ $value | quote }}
+    {{- end }}
+      kubernetes.io/ingress.global-static-ip-name: {{ required "Static IP is missing" .Values.ingress.globalStaticIpName }}
+
+spec:
+  rules:
+    - host: {{ required "Hostname is missing" .Values.ingress.hostname }}
+      http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: {{ $serviceName }}
+              servicePort: {{ $servicePort }}
+  tls:
+    - secretName: {{ .Values.ingress.hostname | replace "." "-" }}-tls
+      hosts:
+        - {{ .Values.ingress.hostname }}
+{{- end }}
