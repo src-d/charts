@@ -31,8 +31,8 @@ WebUiProxy:
   ContainerPort: 80
   Component: "spark-webui-proxy"
   Replicas: 1
-  Image: "quay.io/srcd/spark-ui-proxy"
-  ImageTag: "1.0"
+  Image: "srcd/spark-ui-proxy"
+  ImageTag: "1.2.0"
   Cpu: "100m"
   ReverseProxy:
     Deploy: true
