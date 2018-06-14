@@ -27,7 +27,12 @@ spec:
             - borges
             - producer
             - mentions
-            - --mentions-queue={{ .Values.producer.mentionsQueue }}
+            {{ if .Values.broker.mentionsQueue }}
+            - --mentions-queue={{ .Values.broker.mentionsQueue }}
+            {{ end }}
+            {{ if .Values.broker.jobsQueue }}
+            - --queue={{ .Values.broker.jobsQueue }}
+            {{ end }}
             {{ if .Values.producer.profiler }}
             - --profiler
             - --profiler-port={{ .Values.producer.profilerPort }}

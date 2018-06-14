@@ -1,0 +1,74 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}-republish
+  labels:
+    app: {{ template "name" . }}-republish
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.republish.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}-republish
+        release: {{ .Release.Name }}
+      {{- if .Values.republish.fluentbitParser }}
+      annotations:
+        logging.parser: {{ .Values.republish.fluentbitParser }}
+      {{- end }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ required "Missing borges image tag" .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - borges
+            - producer
+            - republish
+            {{ if .Values.broker.jobsQueue }}
+            - --queue={{ .Values.broker.jobsQueue }}
+            {{ end }}
+            {{ if .Values.republish.profiler }}
+            - --profiler
+            - --profiler-port={{ .Values.republish.profilerPort }}
+            {{ end }}
+            {{ if .Values.republish.metrics }}
+            - --metrics
+            - --metrics-port={{ .Values.republish.metricsPort }}
+            {{ end }}
+            {{ if .Values.republish.cycle }}
+            - --time={{ .Values.republish.cycle}}
+            {{ end }}
+
+          ports:
+            {{ if .Values.republish.profiler }}
+            - containerPort: {{ .Values.republish.profilerPort }}
+            {{ end }}
+            {{ if .Values.republish.metrics }}
+            - containerPort: {{ .Values.republish.metricsPort }}
+            {{ end }}
+          env:
+            - name: AMQP_BURIED_TIMEOUT
+              value: "{{ .Values.republish.timeout }}"
+            - name: CONFIG_BROKER
+              value: "{{ .Values.broker.connectionString }}"
+            - name: CONFIG_DBUSER
+              value: "{{ .Values.db.user }}"
+            - name: CONFIG_DBPASS
+              value: "{{ .Values.db.pass }}"
+            - name: CONFIG_DBHOST
+              value: "{{ .Values.db.host }}"
+            - name: CONFIG_DBNAME
+              value: "{{ .Values.db.name }}"
+            - name: LOG_LEVEL
+              value: "{{ .Values.republish.loglevel }}"
+            - name: LOG_FORMAT
+              value: "{{ .Values.republish.logformat }}"
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+    {{- end }}

@@ -36,6 +36,9 @@ spec:
             - --metrics
             - --metrics-port={{ .Values.consumer.metricsPort }}
             {{ end }}
+            {{ if .Values.broker.jobsQueue }}
+            - --queue={{ .Values.broker.jobsQueue }}
+            {{ end }}
 
           ports:
             {{ if .Values.consumer.profiler }}
