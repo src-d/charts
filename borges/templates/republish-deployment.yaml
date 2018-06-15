@@ -27,28 +27,28 @@ spec:
             - borges
             - producer
             - republish
-            {{ if .Values.broker.jobsQueue }}
+            {{- if .Values.broker.jobsQueue }}
             - --queue={{ .Values.broker.jobsQueue }}
-            {{ end }}
-            {{ if .Values.republish.profiler }}
+            {{- end }}
+            {{- if .Values.republish.profiler }}
             - --profiler
             - --profiler-port={{ .Values.republish.profilerPort }}
-            {{ end }}
-            {{ if .Values.republish.metrics }}
+            {{- end }}
+            {{- if .Values.republish.metrics }}
             - --metrics
             - --metrics-port={{ .Values.republish.metricsPort }}
-            {{ end }}
-            {{ if .Values.republish.cycle }}
+            {{- end }}
+            {{- if .Values.republish.cycle }}
             - --time={{ .Values.republish.cycle}}
-            {{ end }}
+            {{- end }}
 
           ports:
-            {{ if .Values.republish.profiler }}
+            {{- if .Values.republish.profiler }}
             - containerPort: {{ .Values.republish.profilerPort }}
-            {{ end }}
-            {{ if .Values.republish.metrics }}
+            {{- end }}
+            {{- if .Values.republish.metrics }}
             - containerPort: {{ .Values.republish.metricsPort }}
-            {{ end }}
+            {{- end }}
           env:
             - name: AMQP_BURIED_TIMEOUT
               value: "{{ .Values.republish.timeout }}"

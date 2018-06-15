@@ -28,25 +28,25 @@ spec:
             - consumer
             - --workers={{ .Values.consumer.workers }}
             - --timeout={{ .Values.consumer.timeout }}
-            {{ if .Values.consumer.profiler }}
+            {{- if .Values.consumer.profiler }}
             - --profiler
             - --profiler-port={{ .Values.consumer.profilerPort }}
-            {{ end }}
-            {{ if .Values.consumer.metrics }}
+            {{- end }}
+            {{- if .Values.consumer.metrics }}
             - --metrics
             - --metrics-port={{ .Values.consumer.metricsPort }}
-            {{ end }}
-            {{ if .Values.broker.jobsQueue }}
+            {{- end }}
+            {{- if .Values.broker.jobsQueue }}
             - --queue={{ .Values.broker.jobsQueue }}
-            {{ end }}
+            {{- end }}
 
           ports:
-            {{ if .Values.consumer.profiler }}
+            {{- if .Values.consumer.profiler }}
             - containerPort: {{ .Values.consumer.profilerPort }}
-            {{ end }}
-            {{ if .Values.consumer.metrics }}
+            {{- end }}
+            {{- if .Values.consumer.metrics }}
             - containerPort: {{ .Values.consumer.metricsPort }}
-            {{ end }}
+            {{- end }}
           env:
             - name: CONFIG_BROKER
               value: "{{ .Values.broker.connectionString }}"
@@ -74,13 +74,13 @@ spec:
               value: "{{ .Values.consumer.loglevel }}"
             - name: LOG_FORMAT
               value: "{{ .Values.consumer.logformat }}"
-            {{ if .Values.hadoop }}
+            {{- if .Values.hadoop }}
             - name: HADOOP_USER_NAME
               value: "{{ required "Missing hadoop.userName" .Values.hadoop.userName }}"
             - name: CONFIG_HDFS
               value: "{{ required "Missing hadoop.connectionString" .Values.hadoop.connectionString }}"
-            {{ end }}
-            {{ if .Values.consumer.sysdigConfig }}
+            {{- end }}
+            {{- if .Values.consumer.sysdigConfig }}
             - name: POD_IP
               valueFrom:
                 fieldRef:
@@ -109,7 +109,7 @@ spec:
                     }
                   ]
                 }
-            {{ end }}
+            {{- end }}
           volumeMounts:
             # we can safely assume leading "/" as mountPath must be absolute
             - mountPath: /{{ (split "/" .Values.dir.tmp)._1 }}
