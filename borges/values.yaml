@@ -4,7 +4,7 @@
 image:
   repository: quay.io/srcd/borges
   # This value should be provided when releasing this chart
-  # tag: v0.15.0
+  # tag: v0.16.2
   pullPolicy: IfNotPresent
 consumer:
   workers: 12
@@ -28,13 +28,29 @@ producer:
   metrics: true
   metricsPort: 6062
   sysdigConfig: true
-  mentionsQueue: rovers
+  replicaCount: 1
+  logformat: json
+  # fluenbitParser: docker_json
+
+republish:
+  # Use 0 to do a one time republish. Add a time unit prefix to specify
+  # cycle time (s = seconds, m = minutes, h = hours).
+  cycle: 1h
+  # Time in milliseconds to wait for a new job.
+  timeout: 500
+  loglevel: info
+  profiler: false
+  profilerPort: 6061
+  metrics: true
+  metricsPort: 6062
   replicaCount: 1
   logformat: json
   # fluenbitParser: docker_json
 
 broker:
   connectionString: amqp://guest:guest@rabbitmq:5672
+  jobsQueue: borges
+  mentionsQueue: rovers
 
 db:
   user: testing

@@ -27,23 +27,28 @@ spec:
             - borges
             - producer
             - mentions
-            - --mentions-queue={{ .Values.producer.mentionsQueue }}
-            {{ if .Values.producer.profiler }}
+            {{- if .Values.broker.mentionsQueue }}
+            - --mentions-queue={{ .Values.broker.mentionsQueue }}
+            {{- end }}
+            {{- if .Values.broker.jobsQueue }}
+            - --queue={{ .Values.broker.jobsQueue }}
+            {{- end }}
+            {{- if .Values.producer.profiler }}
             - --profiler
             - --profiler-port={{ .Values.producer.profilerPort }}
-            {{ end }}
-            {{ if .Values.producer.metrics }}
+            {{- end }}
+            {{- if .Values.producer.metrics }}
             - --metrics
             - --metrics-port={{ .Values.producer.metricsPort }}
-            {{ end }}
+            {{- end }}
 
           ports:
-            {{ if .Values.producer.profiler }}
+            {{- if .Values.producer.profiler }}
             - containerPort: {{ .Values.producer.profilerPort }}
-            {{ end }}
-            {{ if .Values.producer.metrics }}
+            {{- end }}
+            {{- if .Values.producer.metrics }}
             - containerPort: {{ .Values.producer.metricsPort }}
-            {{ end }}
+            {{- end }}
           env:
             - name: CONFIG_BROKER
               value: "{{ .Values.broker.connectionString }}"
@@ -59,7 +64,7 @@ spec:
               value: "{{ .Values.producer.loglevel }}"
             - name: LOG_FORMAT
               value: "{{ .Values.producer.logformat }}"
-            {{ if .Values.producer.sysdigConfig }}
+            {{- if .Values.producer.sysdigConfig }}
             - name: POD_IP
               valueFrom:
                 fieldRef:
@@ -85,7 +90,7 @@ spec:
                     }
                   ]
                 }
-            {{ end }}
+            {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- if .Values.nodeSelector }}
