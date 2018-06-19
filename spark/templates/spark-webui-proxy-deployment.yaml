@@ -41,7 +41,7 @@ spec:
             - name: REVERSE_PROXY
               value: "yes"
             - name: URL_PREFIX
-              value: "/{{ .Values.WebUiProxy.ReverseProxy.ApiPrefix }}/api/v1/namespaces/default/services/{{ template "webui-proxy-fullname" . }}:{{ .Values.WebUiProxy.ServicePort }}/proxy"
+              value: "/{{ .Values.WebUiProxy.ReverseProxy.ApiPrefix }}/api/v1/namespaces/{{ .Release.Namespace }}/services/{{ template "webui-proxy-fullname" . }}:{{ .Values.WebUiProxy.ServicePort }}/proxy"
             {{- if .Values.WebUiProxy.ReverseProxy.Debug }}
             - name: DEBUG
               value: "yes"
