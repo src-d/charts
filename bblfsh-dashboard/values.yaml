@@ -19,9 +19,7 @@ settings:
   ## will be deployed by this chart. This server is deployed as a container
   ## inside of the main pod, so if multiple replicas are configured multiple
   ## bblfsh servers will be deployed
-  ## serverCtlAddr will be used for control protocol if serverAddr is provided
   serverAddr:
-  serverCtlAddr:
 resources: {}
 
 # configuration for build-in server if, settings.serverAddr is empty.
