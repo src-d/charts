@@ -43,6 +43,8 @@ spec:
               value: "{{ .Values.settings.bblfshdServer.address }}:{{ default "9432" .Values.settings.bblfshdServer.port }}"
             - name: GITBASEPG_ENV
               value: "{{ .Values.gitbasePlayground.env }}"
+            - name: GITBASEPG_FOOTER_HTML
+              value: "{{ .Values.gitbasePlayground.footerHTML }}"
           ports:
             - name: http
               containerPort: {{ .Values.service.internalPort }}

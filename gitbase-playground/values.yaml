@@ -35,6 +35,7 @@ gitbasePlayground:
     repository: srcd/gitbase-playground
     # tag must be received as a parameter
     pullPolicy: IfNotPresent
+  #footerHTML: base64 encoded
 
 bblfshdServer:
   storage:
