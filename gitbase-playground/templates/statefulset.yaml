@@ -140,8 +140,14 @@ spec:
               value: "{{ .Values.gitbaseServer.logLevel }}"
             - name: GITBASE_REPOS
               value: "{{ .Values.gitbaseServer.repositoriesDir }}"
+            {{- if ..Values.gitbaseServer.squashEnable }}
             - name: GITBASE_UNSTABLE_SQUASH_ENABLE
               value: "{{ .Values.gitbaseServer.squashEnable }}"
+            {{- end }}
+            {{- if .Values.gitbaseServer.readonly }}
+            - name: GITBASE_READONLY
+              value: "{{ .Values.gitbaseServer.readonly }}"
+            {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
