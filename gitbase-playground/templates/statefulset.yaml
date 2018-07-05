@@ -140,7 +140,7 @@ spec:
               value: "{{ .Values.gitbaseServer.logLevel }}"
             - name: GITBASE_REPOS
               value: "{{ .Values.gitbaseServer.repositoriesDir }}"
-            {{- if ..Values.gitbaseServer.squashEnable }}
+            {{- if .Values.gitbaseServer.squashEnable }}
             - name: GITBASE_UNSTABLE_SQUASH_ENABLE
               value: "{{ .Values.gitbaseServer.squashEnable }}"
             {{- end }}
