@@ -76,7 +76,8 @@ gitbaseServer:
   storage:
     size: 10Gi
   logLevel: debug
-  squashEnable: ""
+  # squashEnable: "true"
+  # readonly: "true"
   repositoriesDir: /opt/repos
   # commit defaults to HEAD unless given
   repositories:
