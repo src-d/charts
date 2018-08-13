@@ -8,6 +8,13 @@
 # nameOverride:
 # fullnameOverride:
 
+Nginx:
+  Image: "nginx"
+  ImageTag: "stable-alpine"
+  ImagePullPolicy: "Always"
+  Port: 9090
+  ServiceType: LoadBalancer
+  ServiceAnnotations: {}
 Master:
   Name: jenkins-master
   Image: "jenkins/jenkins"

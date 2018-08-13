@@ -199,6 +199,16 @@ spec:
               mountPath: /usr/share/jenkins/ref/secrets/
               name: secrets-dir
               readOnly: false
+        - name: nginx
+          image: "{{ .Values.Nginx.Image }}:{{ .Values.Nginx.ImageTag }}"
+          imagePullPolicy: "{{ .Values.Nginx.ImagePullPolicy }}"
+          ports:
+            - name: http
+              containerPort: {{ .Values.Nginx.Port }}
+          volumeMounts:
+            - mountPath: /etc/nginx/
+              name: nginx-config
+              readOnly: true
       volumes:
 {{- if .Values.Persistence.volumes }}
 {{ toYaml .Values.Persistence.volumes | indent 6 }}
@@ -206,6 +216,9 @@ spec:
       - name: jenkins-config
         configMap:
           name: {{ template "jenkins.fullname" . }}
+      - name: nginx-config
+        configMap:
+          name: "nginx-config"
       {{- if .Values.Master.CredentialsXmlSecret }}
       - name: jenkins-credentials
         secret:
