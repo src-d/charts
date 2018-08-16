@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "lookout.fullname" . }}
+  labels:
+    app: {{ template "lookout.name" . }}
+    chart: {{ template "lookout.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    metadata:
+      name: {{ template "lookout.fullname" . }}
+      labels:
+        app: {{ template "lookout.name" . }}
+        chart: {{ template "lookout.chart" . }}
+        release: {{ .Release.Name }}
+        heritage: {{ .Release.Service }}
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: lookout-initdb
+          image: "{{ .Values.image.lookout.repository }}:{{ required "Missing image.lookout.tag" .Values.image.lookout.tag  }}"
+          imagePullPolicy: {{ .Values.image.lookout.pullPolicy }}
+          args:
+            - migrate
+          env:
+            - name: LOOKOUT_DB
+              value: "{{ required "Missing app.lookout.dbConnectionString " .Values.app.lookout.dbConnectionString }}"
+            - name: LOG_FORMAT
+              value: "{{ .Values.app.lookout.logFormat }}"

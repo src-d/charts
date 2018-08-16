@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "lookout.fullname" . }}-lookout-configuration
+  labels:
+    app: {{ template "lookout.name" . }}
+    chart: {{ template "lookout.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  config.yaml: |
+    analyzers:
+      - name: Dummy
+        addr: "ipv4://{{ template "lookout.fullname" . }}-dummy-analyzer:{{ .Values.service.dummyAnalyzer.port }}"
+    {{- with .Values.analyzers }}
+{{ toYaml . | indent 6 }}
+    {{- end }}
+    {{- with .Values.providers }}
+    providers:
+{{ toYaml . | indent 6 }}
+    {{- end }}
