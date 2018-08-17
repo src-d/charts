@@ -1,4 +1,4 @@
-# Default values for gitbase-playground.
+# Default values for gitbase-web.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -28,11 +28,11 @@ settings: {}
   # This specifies an external gitbase server
   #gitbaseServer:
 
-gitbasePlayground:
+gitbaseWeb:
   gitbaseMaxAllowedPacket: "4194304"
   env: dev
   image:
-    repository: srcd/gitbase-playground
+    repository: srcd/gitbase-web
     # tag must be received as a parameter
     pullPolicy: IfNotPresent
   #footerHTML: base64 encoded
@@ -86,8 +86,8 @@ gitbaseServer:
       #commit: v4.4.0
     gitbase:
       url: https://github.com/src-d/gitbase.git
-    gitbase-playground:
-      url: https://github.com/src-d/gitbase-playground.git
+    gitbase-web:
+      url: https://github.com/src-d/gitbase-web.git
     bblfshd:
       url: https://github.com/bblfsh/bblfshd.git
   image:

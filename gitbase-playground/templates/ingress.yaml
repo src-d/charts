@@ -1,13 +1,13 @@
 {{- if .Values.ingress.enabled -}}
-{{- $serviceName := include "gitbase-playground.fullname" . -}}
+{{- $serviceName := include "gitbase-web.fullname" . -}}
 {{- $servicePort := .Values.service.port -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ template "gitbase-playground.fullname" . }}
+  name: {{ template "gitbase-web.fullname" . }}
   labels:
-    app: {{ template "gitbase-playground.name" . }}
-    chart: {{ template "gitbase-playground.chart" . }}
+    app: {{ template "gitbase-web.name" . }}
+    chart: {{ template "gitbase-web.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
   annotations:

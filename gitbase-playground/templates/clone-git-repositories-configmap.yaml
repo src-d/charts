@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "gitbase-playground.fullname" . }}-clone-git-repositories
+  name: {{ template "gitbase-web.fullname" . }}-clone-git-repositories
   labels:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
 data:

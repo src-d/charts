@@ -1,6 +1,6 @@
-# Gitbase playground
+# Gitbase Web
 
-This chart deploys [Gitbase playground](https://github.com/src-d/gitbase-playground)
+This chart deploys [Gitbase web](https://github.com/src-d/gitbase-web)
 
 It has two modes:
 
@@ -21,7 +21,7 @@ It has two modes:
   ```bash
   $ helm upgrade my-release . --install --set \
   ingress.enabled=false,\
-  gitbasePlayground.image.tag=latest
+  gitbaseWeb.image.tag=latest
   ```
 
 * To install the chart with the release name `my-release` with ingress resource:
@@ -30,7 +30,7 @@ It has two modes:
   $ helm upgrade my-release . --install --set \
   ingress.globalStaticIpName=<global ip name>,\
   ingress.hostname=<dns record>,\
-  gitbasePlayground.image.tag=latest
+  gitbaseWeb.image.tag=latest
   ```
 
 ## Configuration
