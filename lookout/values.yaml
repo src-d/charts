@@ -12,7 +12,7 @@ image:
     #tag: latest
     pullPolicy: IfNotPresent
   dummyAnalyzer:
-    repository: smacker/dummy-analyzer
+    repository: srcd/lookout-dummy-analyzer
     tag: latest
     pullPolicy: Always
 
