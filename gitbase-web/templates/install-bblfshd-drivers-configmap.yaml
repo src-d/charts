@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "gitbase-playground.fullname" . }}-install-bblfshd-drivers
+  name: {{ template "gitbase-web.fullname" . }}-install-bblfshd-drivers
   labels:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
 data:

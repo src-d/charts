@@ -6,46 +6,46 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ template "gitbase-playground.fullname" . }}
+  name: {{ template "gitbase-web.fullname" . }}
   labels:
-    app: {{ template "gitbase-playground.name" . }}
-    chart: {{ template "gitbase-playground.chart" . }}
+    app: {{ template "gitbase-web.name" . }}
+    chart: {{ template "gitbase-web.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "gitbase-playground.name" . }}
+      app: {{ template "gitbase-web.name" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "gitbase-playground.name" . }}
+        app: {{ template "gitbase-web.name" . }}
         release: {{ .Release.Name }}
     spec:
       containers:
-        - name: gitbase-playground
-          image: "{{ .Values.gitbasePlayground.image.repository }}:{{ required "Missing gitbasePlayground.image.tag" .Values.gitbasePlayground.image.tag }}"
-          imagePullPolicy: {{ .Values.gitbasePlayground.image.pullPolicy }}
+        - name: gitbase-web
+          image: "{{ .Values.gitbaseWeb.image.repository }}:{{ required "Missing gitbaseWeb.image.tag" .Values.gitbaseWeb.image.tag }}"
+          imagePullPolicy: {{ .Values.gitbaseWeb.image.pullPolicy }}
           env:
             - name: PORT
               value: "{{ .Values.service.internalPort }}"
             - name: GITBASEPG_ENV
-              value: "{{ .Values.settings.gitbasePlaygroundEnv }}"
+              value: "{{ .Values.settings.gitbaseWebEnv }}"
             - name: GITBASEPG_DB_CONNECTION
             {{- if .Values.settings.gitbaseServer.password }}
-              value: {{ printf "%s:%s@tcp(%s:%s)/%s?maxAllowedPacket=%s" $user .Values.settings.gitbaseServer.password $address $port $database .Values.gitbasePlayground.gitbaseMaxAllowedPacket }}
+              value: {{ printf "%s:%s@tcp(%s:%s)/%s?maxAllowedPacket=%s" $user .Values.settings.gitbaseServer.password $address $port $database .Values.gitbaseWeb.gitbaseMaxAllowedPacket }}
             {{- else }}
-              value: {{ printf "%s@tcp(%s:%s)/%s?maxAllowedPacket=%s" $user $address $port $database .Values.gitbasePlayground.gitbaseMaxAllowedPacket }}
+              value: {{ printf "%s@tcp(%s:%s)/%s?maxAllowedPacket=%s" $user $address $port $database .Values.gitbaseWeb.gitbaseMaxAllowedPacket }}
             {{- end }}
             - name: GITBASEPG_BBLFSH_SERVER_URL
               value: "{{ .Values.settings.bblfshdServer.address }}:{{ default "9432" .Values.settings.bblfshdServer.port }}"
             - name: GITBASEPG_ENV
-              value: "{{ .Values.gitbasePlayground.env }}"
-            {{- if .Values.gitbasePlayground.footerHTML }}
+              value: "{{ .Values.gitbaseWeb.env }}"
+            {{- if .Values.gitbaseWeb.footerHTML }}
             - name: GITBASEPG_FOOTER_HTML
-              value: "{{ .Values.gitbasePlayground.footerHTML }}"
+              value: "{{ .Values.gitbaseWeb.footerHTML }}"
             {{- end }}
           ports:
             - name: http

@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "gitbase-playground.fullname" . }}
+  name: {{ template "gitbase-web.fullname" . }}
   labels:
-    app: {{ template "gitbase-playground.name" . }}
-    chart: {{ template "gitbase-playground.chart" . }}
+    app: {{ template "gitbase-web.name" . }}
+    chart: {{ template "gitbase-web.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
@@ -15,5 +15,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: {{ template "gitbase-playground.name" . }}
+    app: {{ template "gitbase-web.name" . }}
     release: {{ .Release.Name }}

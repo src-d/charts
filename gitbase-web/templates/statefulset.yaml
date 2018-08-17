@@ -2,18 +2,18 @@
 apiVersion: apps/v1beta2
 kind: StatefulSet
 metadata:
-  name: {{ template "gitbase-playground.fullname" . }}
+  name: {{ template "gitbase-web.fullname" . }}
   labels:
-    app: {{ template "gitbase-playground.name" . }}
-    chart: {{ template "gitbase-playground.chart" . }}
+    app: {{ template "gitbase-web.name" . }}
+    chart: {{ template "gitbase-web.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  serviceName: {{ template "gitbase-playground.fullname" . }}
+  serviceName: {{ template "gitbase-web.fullname" . }}
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "gitbase-playground.name" . }}
+      app: {{ template "gitbase-web.name" . }}
       release: {{ .Release.Name }}
   volumeClaimTemplates:
     - metadata:
@@ -48,7 +48,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ template "gitbase-playground.name" . }}
+        app: {{ template "gitbase-web.name" . }}
         release: {{ .Release.Name }}
       # This is to upgrade the deployment if configmap changes
       annotations:
@@ -57,13 +57,13 @@ spec:
     spec:
       volumes:
         - configMap:
-            name: {{ template "gitbase-playground.fullname" . }}-install-bblfshd-drivers
+            name: {{ template "gitbase-web.fullname" . }}-install-bblfshd-drivers
             items:
             - key: install-bblfshd-drivers.sh
               path: install-bblfshd-drivers.sh
           name: install-bblfshd-drivers-volume
         - configMap:
-            name: {{ template "gitbase-playground.fullname" . }}-clone-git-repositories
+            name: {{ template "gitbase-web.fullname" . }}-clone-git-repositories
             items:
             - key: clone-git-repositories.sh
               path: clone-git-repositories.sh
@@ -80,16 +80,16 @@ spec:
             - name: gitbase-repos-volume
               mountPath: {{ .Values.gitbaseServer.repositoriesDir }}
       containers:
-        - name: gitbase-playground
-          image: "{{ .Values.gitbasePlayground.image.repository }}:{{ required "Missing gitbasePlayground.image.tag" .Values.gitbasePlayground.image.tag }}"
-          imagePullPolicy: {{ .Values.gitbasePlayground.image.pullPolicy }}
+        - name: gitbase-web
+          image: "{{ .Values.gitbaseWeb.image.repository }}:{{ required "Missing gitbaseWeb.image.tag" .Values.gitbaseWeb.image.tag }}"
+          imagePullPolicy: {{ .Values.gitbaseWeb.image.pullPolicy }}
           env:
             - name: PORT
               value: "{{ .Values.service.internalPort }}"
             - name: GITBASEPG_ENV
-              value: "{{ .Values.gitbasePlayground.env }}"
+              value: "{{ .Values.gitbaseWeb.env }}"
             - name: GITBASEPG_DB_CONNECTION
-              value: "gitbase@tcp(127.0.0.1:3306)/none?maxAllowedPacket={{ .Values.gitbasePlayground.gitbaseMaxAllowedPacket }}"
+              value: "gitbase@tcp(127.0.0.1:3306)/none?maxAllowedPacket={{ .Values.gitbaseWeb.gitbaseMaxAllowedPacket }}"
             - name: GITBASEPG_BBLFSH_SERVER_URL
               value: "127.0.0.1:9432"
           ports:
