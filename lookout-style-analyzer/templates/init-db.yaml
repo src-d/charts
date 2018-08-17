@@ -1,0 +1,47 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "lookout-style-analyzer.fullname" . }}
+  labels:
+    app: {{ template "lookout-style-analyzer.name" . }}
+    chart: {{ template "lookout-style-analyzer.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    metadata:
+      name: {{ template "lookout-style-analyzer.fullname" . }}
+      labels:
+        app: {{ template "lookout-style-analyzer.name" . }}
+        chart: {{ template "lookout-style-analyzer.chart" . }}
+        release: {{ .Release.Name }}
+        heritage: {{ .Release.Service }}
+    spec:
+      restartPolicy: Never
+      volumes:
+        - name: data
+          {{- if .Values.app.volume.hostPath }}
+          hostPath:
+            path: {{ .Values.app.volume.hostPath }}
+          {{- else }}
+          persistentVolumeClaim:
+            claimName: {{ template "lookout-style-analyzer.fullname" . }}
+          {{- end }}
+      containers:
+        - name: initdb
+          image: "{{ .Values.image.repository }}:{{ required "Missing image.tag" .Values.image.tag  }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: [ "python3" ]
+          args:
+            - lookout
+            - init
+            - --db
+            - {{ .Values.app.dbConnectionString }}
+            - --fs
+            - /tmp/models
+          volumeMounts:
+            - name: data
+              mountPath: /tmp/models

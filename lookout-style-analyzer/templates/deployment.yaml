@@ -1,0 +1,84 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "lookout-style-analyzer.fullname" . }}
+  labels:
+    app: {{ template "lookout-style-analyzer.name" . }}
+    chart: {{ template "lookout-style-analyzer.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "lookout-style-analyzer.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "lookout-style-analyzer.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      volumes:
+        - name: data
+          {{- if .Values.app.volume.hostPath }}
+          hostPath:
+            path: {{ .Values.app.volume.hostPath }}
+          {{- else }}
+          persistentVolumeClaim:
+            claimName: {{ template "lookout-style-analyzer.fullname" . }}
+          {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - run
+            - lookout.style.format
+            - --server
+            - 0.0.0.0:{{ .Values.app.port }}
+            - --request-server
+            - {{ required "Missing app.requestServer" .Values.app.requestServer }}
+            - --db
+            - {{ required "Missing app.dbConnectionString" .Values.app.dbConnectionString }}
+            - --fs
+            - /tmp/models
+            {{- if .Values.app.log.structured }}
+            - --log-structured
+            {{- end }}
+            - --log-level
+            - {{ .Values.app.log.level | upper }}
+            {{- if .Values.app.workers }}
+            - --workers
+            - {{ .Values.app.workers }}
+            {{- end }}
+          env:
+            - name: MODELFORGE_VENDOR
+              value: "{{ default "source{d}" .Values.app.modelforgeVendor }}"
+          volumeMounts:
+            - name: data
+              mountPath: /tmp/models
+          ports:
+            - containerPort: {{ .Values.app.port }}
+              protocol: TCP
+          # TODO: We should have proper app probes
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.app.port }}
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.app.port }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
