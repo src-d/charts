@@ -25,7 +25,6 @@ spec:
           imagePullPolicy: {{ .Values.image.dummyAnalyzer.pullPolicy }}
           args:
             - serve
-            - {{ .Values.app.lookout.repository }}
           env:
             - name: LOOKOUT_DATA_SERVER
               value: "ipv4://{{ template "lookout.fullname" . }}:{{ .Values.service.lookout.port }}"
