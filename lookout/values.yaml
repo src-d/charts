@@ -1,0 +1,69 @@
+# Default values for lookout.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+#
+deployDummyAnalyzer: true
+
+replicaCount:
+  lookout: 1
+  dummyAnalyzer: 1
+
+image:
+  lookout:
+    repository: srcd/lookout
+    #tag: latest
+    pullPolicy: IfNotPresent
+  dummyAnalyzer:
+    repository: srcd/lookout-dummy-analyzer
+    tag: latest
+    pullPolicy: Always
+
+service:
+  lookout:
+    type: ClusterIP
+    port: 10301
+  dummyAnalyzer:
+    type: ClusterIP
+    port: 10302
+
+app:
+  lookout:
+    port: 10301
+    repository: github.com/src-d/lookout
+    logFormat: json
+    logLevel: info
+  # dbConnectionString: postgres://lookout:lookout@postgres-postgresql:5432/lookout?sslmode=disable
+  # bblfshdConnectionString: ipv4://bblfshd-bblfshd:9432
+  # secretName:
+  # secrets:
+  #   githubUser: user
+  #   githubToken: token
+  dummyAnalyzer:
+    port: 10302
+
+
+resources:
+  lookout: {}
+  dummyAnalyzer: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+nodeSelector:
+  lookout: {}
+  dummyAnalyzer: {}
+
+tolerations:
+  lookout: []
+  dummyAnalyzer: []
+
+affinity:
+  lookout: {}
+  dummyAnalyzer: {}
