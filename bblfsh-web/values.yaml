@@ -1,15 +1,15 @@
-# Default values for bblfsh-dashboard
+# Default values for bblfsh-web
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 replicaCount: 1
 image:
-  repository: bblfsh/dashboard
+  repository: bblfsh/web
   tag: latest
   pullPolicy: IfNotPresent
 service:
   type: LoadBalancer
-  name: bblfsh-dashboard
-  ## port where the dashboard will be listen at the LoadBalancer.
+  name: bblfsh-web
+  ## port where the web client will be listen at the LoadBalancer.
   port: 80
   ## loadBalancerIP if not set an ephermeral IP will be used.
   # This setting will only be used for LoadBalancer type
