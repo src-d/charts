@@ -16,6 +16,8 @@ spec:
       release: {{ .Release.Name }}
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/lookout-configmap.yaml") . | sha256sum }}
       labels:
         app: {{ template "lookout.name" . }}
         release: {{ .Release.Name }}
