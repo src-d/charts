@@ -16,7 +16,7 @@ service:
 app:
   port: 2000
   # dbConnectionString: postgresql://lookout:lookout@postgres-postgresql:5432/lookout-style-analyzer
-  # requestServer: ipv4://lookout:10301
+  # requestServer: lookout:10301
   log:
     structured: true
     level: info
