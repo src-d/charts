@@ -21,3 +21,7 @@ data:
     providers:
 {{ toYaml . | indent 6 }}
     {{- end }}
+    {{- with .Values.repositories }}
+    repositories:
+{{ toYaml . | indent 6 }}
+    {{- end }}
