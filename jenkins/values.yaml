@@ -137,6 +137,9 @@ Master:
     # - secretName: jenkins.cluster.local
     #   hosts:
     #     - jenkins.cluster.local
+  ConfigXml:
+    SecurityRealm:
+    AuthorizationStrategy:
 
 Agent:
   Enabled: true
