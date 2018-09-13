@@ -31,16 +31,19 @@ spec:
               value: "ipv4://{{ template "lookout.fullname" . }}:{{ .Values.service.lookout.port }}"
             - name: LOOKOUT_ANALYZER
               value: "ipv4://0.0.0.0:{{ .Values.app.dummyAnalyzer.port }}"
+            - name: LOOKOUT_ANALYZER_PROBES_ADDRESS
+              value: "{{ .Values.app.dummyAnalyzer.probesAddr }}"
           ports:
             - containerPort: {{ .Values.app.dummyAnalyzer.port }}
               protocol: TCP
-          # TODO: These are bare-minimum probes. We should have something better
           livenessProbe:
-            tcpSocket:
-              port: {{ .Values.app.dummyAnalyzer.port }}
+            httpGet:
+              path: /health/liveness
+              port: {{ .Values.app.dummyAnalyzer.probesAddr }}
           readinessProbe:
-            tcpSocket:
-              port: {{ .Values.app.dummyAnalyzer.port }}
+            httpGet:
+              path: /health/readiness
+              port: {{ .Values.app.dummyAnalyzer.probesAddr }}
           resources:
 {{ toYaml .Values.resources.dummyAnalyzer | indent 12 }}
     {{- with .Values.nodeSelector.dummyAnalyzer }}

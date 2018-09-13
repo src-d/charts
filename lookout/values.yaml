@@ -32,6 +32,7 @@ app:
     repository: github.com/src-d/lookout
     logFormat: json
     logLevel: info
+    probesAddr: 0.0.0.0:8090
   # dbConnectionString: postgres://lookout:lookout@postgres-postgresql:5432/lookout?sslmode=disable
   # bblfshdConnectionString: ipv4://bblfshd-bblfshd:9432
   # secretName:
@@ -40,6 +41,7 @@ app:
   #   githubToken: token
   dummyAnalyzer:
     port: 10302
+    probesAddr: 0.0.0.0:8091
 
 
 resources:
