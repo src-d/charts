@@ -71,19 +71,22 @@ spec:
             - name: LOOKOUT_GRPC_MAX_MSG_SIZE
               value: "{{ .Values.app.lookout.grpcMaxMsgSize }}"
             {{- end }}
+            - name: LOOKOUT_PROBES_ADDRESS
+              value: "{{ .Values.app.lookout.probesAddr }}"
           volumeMounts:
             - name: lookout-configuration-volume
               mountPath: /local/lookout
           ports:
             - containerPort: {{ .Values.app.lookout.port }}
               protocol: TCP
-          # TODO: These are bare-minimum probes. We should have something better
           livenessProbe:
-            tcpSocket:
-              port: {{ .Values.app.lookout.port }}
+            httpGet:
+              path: /health/liveness
+              port: {{ .Values.app.lookout.probesAddr }}
           readinessProbe:
-            tcpSocket:
-              port: {{ .Values.app.lookout.port }}
+            httpGet:
+              path: /health/readiness
+              port: {{ .Values.app.lookout.probesAddr }}
           resources:
 {{ toYaml .Values.resources.lookout | indent 12 }}
     {{- with .Values.nodeSelector.lookout }}
