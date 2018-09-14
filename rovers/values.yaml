@@ -4,7 +4,7 @@
 replicaCount: 1
 
 image:
-  repository: quay.io/srcd/rovers
+  repository: srcd/rovers
   tag: v2.6.0
   pullPolicy: IfNotPresent
 
