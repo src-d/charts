@@ -32,18 +32,18 @@ spec:
             - name: LOOKOUT_ANALYZER
               value: "ipv4://0.0.0.0:{{ .Values.app.dummyAnalyzer.port }}"
             - name: LOOKOUT_ANALYZER_PROBES_ADDRESS
-              value: "{{ .Values.app.dummyAnalyzer.probesAddr }}"
+              value: "0.0.0.0:{{ .Values.app.dummyAnalyzer.probesPort }}"
           ports:
             - containerPort: {{ .Values.app.dummyAnalyzer.port }}
               protocol: TCP
           livenessProbe:
             httpGet:
               path: /health/liveness
-              port: {{ .Values.app.dummyAnalyzer.probesAddr }}
+              port: {{ .Values.app.dummyAnalyzer.probesPort }}
           readinessProbe:
             httpGet:
               path: /health/readiness
-              port: {{ .Values.app.dummyAnalyzer.probesAddr }}
+              port: {{ .Values.app.dummyAnalyzer.probesPort }}
           resources:
 {{ toYaml .Values.resources.dummyAnalyzer | indent 12 }}
     {{- with .Values.nodeSelector.dummyAnalyzer }}
