@@ -29,7 +29,6 @@ service:
 app:
   lookout:
     port: 10301
-    repository: github.com/src-d/lookout
     logFormat: json
     logLevel: info
     probesPort: 8090
@@ -42,7 +41,6 @@ app:
   dummyAnalyzer:
     port: 10302
     probesPort: 8091
-
 
 resources:
   lookout: {}
