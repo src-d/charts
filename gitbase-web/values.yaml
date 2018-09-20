@@ -43,7 +43,7 @@ bblfshdServer:
   image:
     repository: bblfsh/bblfshd
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
   drivers:
     install: true
     languages:
