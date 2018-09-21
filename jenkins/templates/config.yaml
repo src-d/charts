@@ -106,6 +106,9 @@ data:
               <imagePullSecrets/>
 {{- end }}
               <nodeProperties/>
+{{- if .Values.Agent.RawYAML }}
+              <yaml>{{ .Values.Agent.RawYAML }}</yaml>
+{{- end}}
               <podRetention class="org.csanchez.jenkins.plugins.kubernetes.pod.retention.Default"/>
             </org.csanchez.jenkins.plugins.kubernetes.PodTemplate>
 {{- end -}}
