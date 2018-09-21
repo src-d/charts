@@ -29,6 +29,14 @@ spec:
             items:
               - key: config.yaml
                 path: config.yaml
+        {{- if .Values.providers.github.secretName }}
+        - name: lookout-github-key-volume
+          secret:
+            secretName: {{ Values.providers.github.secretName }}
+            items:
+              - key:  {{ required "Missing providers.github.private_key" Values.providers.github.private_key }}
+                path: {{ required "Missing providers.github.private_key"  Values.providers.github.private_key }}
+        {{- end }}
       containers:
         - name: lookout
           image: "{{ .Values.image.lookout.repository }}:{{ required "Missing image.lookout.tag" .Values.image.lookout.tag }}"
@@ -75,6 +83,10 @@ spec:
           volumeMounts:
             - name: lookout-configuration-volume
               mountPath: /local/lookout
+            {{- if .Values.providers.github.secretName }}
+            - name: lookout-github-key-volume
+              mountPath: /local/lookout
+            {{- end }}
           ports:
             - containerPort: {{ .Values.app.lookout.port }}
               protocol: TCP
