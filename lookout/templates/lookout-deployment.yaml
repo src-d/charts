@@ -32,10 +32,10 @@ spec:
         {{- if .Values.providers.github.secretName }}
         - name: lookout-github-key-volume
           secret:
-            secretName: {{ Values.providers.github.secretName }}
+            secretName: {{ .Values.providers.github.secretName }}
             items:
-              - key:  {{ required "Missing providers.github.private_key" Values.providers.github.private_key }}
-                path: {{ required "Missing providers.github.private_key"  Values.providers.github.private_key }}
+              - key:  {{ required "Missing providers.github.private_key" .Values.providers.github.private_key }}
+                path: {{ required "Missing providers.github.private_key"  .Values.providers.github.private_key }}
         {{- end }}
       containers:
         - name: lookout
