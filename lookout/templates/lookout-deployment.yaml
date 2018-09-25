@@ -88,6 +88,7 @@ spec:
           volumeMounts:
             - name: lookout-configuration-volume
               mountPath: /local/lookout
+              subPath: config.yml
             {{- if .Values.providers.github.secretName }}
             - name: lookout-github-key-volume
               {{- $pathParts := splitList "/" .Values.providers.github.private_key }}
