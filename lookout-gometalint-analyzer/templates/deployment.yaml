@@ -1,0 +1,55 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "lookout-gometalint-analyzer.fullname" . }}
+  labels:
+    app: {{ template "lookout-gometalint-analyzer.name" . }}
+    chart: {{ template "lookout-gometalint-analyzer.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "lookout-gometalint-analyzer.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "lookout-gometalint-analyzer.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: GOMETALINT_DATA_SERVICE_URL
+              value: "{{ required "Missing app.dataServiceUrl" .Values.app.dataServiceUrl }}"
+            - name: GOMETALINT_PORT
+              value: "{{ .Values.app.port }}"
+            - name: GOMETALINT_LOG_LEVEL
+              value: "{{ .Values.app.logLevel }}"
+          ports:
+            - containerPort: {{ .Values.app.port }}
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.app.port }}
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.app.port }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
