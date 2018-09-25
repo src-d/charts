@@ -39,7 +39,7 @@ spec:
             - --metrics-port={{ .Values.republish.metricsPort }}
             {{- end }}
             {{- if .Values.republish.cycle }}
-            - --time={{ .Values.republish.cycle}}
+            - --interval={{ .Values.republish.cycle}}
             {{- end }}
 
           ports:
@@ -52,16 +52,10 @@ spec:
           env:
             - name: AMQP_BURIED_TIMEOUT
               value: "{{ .Values.republish.timeout }}"
-            - name: CONFIG_BROKER
+            - name: BORGES_BROKER
               value: "{{ .Values.broker.connectionString }}"
-            - name: CONFIG_DBUSER
-              value: "{{ .Values.db.user }}"
-            - name: CONFIG_DBPASS
-              value: "{{ .Values.db.pass }}"
-            - name: CONFIG_DBHOST
-              value: "{{ .Values.db.host }}"
-            - name: CONFIG_DBNAME
-              value: "{{ .Values.db.name }}"
+            - name: BORGES_DATABASE
+              value: "{{ template "database" .Values.db }}"
             - name: LOG_LEVEL
               value: "{{ .Values.republish.loglevel }}"
             - name: LOG_FORMAT

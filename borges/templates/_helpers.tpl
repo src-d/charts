@@ -14,3 +14,10 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- $name := default .Chart.Name .Values.nameOverride -}}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/*
+Create database connection string
+*/}}
+{{- define "database" -}}
+postgres://{{ .user }}:{{ .pass }}@{{ .host }}/{{ .name }}?application_name=borges&sslmode=disable&connect_timeout=30
+{{- end -}}
