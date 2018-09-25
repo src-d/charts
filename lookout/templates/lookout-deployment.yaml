@@ -36,8 +36,9 @@ spec:
           secret:
             secretName: {{ .Values.providers.github.secretName }}
             items:
-              - key:  {{ required "Missing providers.github.private_key" .Values.providers.github.private_key }}
-                path: {{ required "Missing providers.github.private_key"  .Values.providers.github.private_key }}
+            {{- $pathParts := splitList "/" .Values.providers.github.private_key }}
+              - key:  {{ last $pathParts }}
+                path: {{ last $pathParts }}
         {{- end }}
       containers:
         - name: lookout
@@ -89,7 +90,9 @@ spec:
               mountPath: /local/lookout
             {{- if .Values.providers.github.secretName }}
             - name: lookout-github-key-volume
-              mountPath: /local/lookout
+              {{- $pathParts := splitList "/" .Values.providers.github.private_key }}
+              mountPath: {{ initial $pathParts | join "/" }}
+              subPath: {{ last $pathParts }}
             {{- end }}
           ports:
             - containerPort: {{ .Values.app.lookout.port }}
