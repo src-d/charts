@@ -1,4 +1,6 @@
-{{- $secretName := default (include "lookout.fullname" .) .Values.app.lookout.secretName -}}
+{{- if eq (empty .Values.app.lookout.secretName) (empty .Values.providers.github.private_key) }}
+{{- fail "You have to set either app.lookout.secretName or providers.github.private_key but not both" }}
+{{- end }}
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -46,16 +48,18 @@ spec:
           env:
             - name: LOOKOUT_DATA_SERVER
               value: "ipv4://0.0.0.0:{{ .Values.app.lookout.port }}"
+            {{- if .Values.app.lookout.secretName }}
             - name: GITHUB_USER
               valueFrom:
                 secretKeyRef:
-                  name: {{ $secretName }}
+                  name: {{ .Values.app.lookout.secretName }}
                   key: githubUser
             - name: GITHUB_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: {{ $secretName }}
+                  name: {{ .Values.app.lookout.secretName }}
                   key: githubToken
+            {{- end }}
             - name: LOOKOUT_BBLFSHD
               value: "{{ required "Missing app.lookout.bblfshdConnectionString " .Values.app.lookout.bblfshdConnectionString }}"
             - name: LOOKOUT_DB
