@@ -1,7 +1,0 @@
-sign-off-checker can be accessed via port 8080 on the following DNS for testing
-goals from within your cluster: {{ template "fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
-
-The webhook should be configuring with the following URL:
-  {{- if .Values.service.loadBalancerIP }}
-  http://{{ default "" .Values.service.loadBalancerIP }}:{{ .Values.service.port }}/webhook
-  {{- end }}
