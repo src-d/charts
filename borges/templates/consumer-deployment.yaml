@@ -51,7 +51,7 @@ spec:
             - name: BORGES_BROKER
               value: "{{ .Values.broker.connectionString }}"
             - name: BORGES_DATABASE
-              value: "{{ template "database" .Values.db }}"
+              value: "{{ .Values.db.connectionString }}"
             - name: BORGES_TEMP_DIR
               value: "{{ .Values.dir.tmp }}"
             - name: BORGES_TEMP_DIR_CLEAN

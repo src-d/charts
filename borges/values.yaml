@@ -53,10 +53,7 @@ broker:
   mentionsQueue: rovers
 
 db:
-  user: testing
-  pass: testing
-  host: postgres
-  name: testing
+  connectionString: postgres://testing:testing@postgres/testing?application_name=borges&sslmode=disable&connect_timeout=30
 
 dir:
   tmp: /borges-tmp/tmp
