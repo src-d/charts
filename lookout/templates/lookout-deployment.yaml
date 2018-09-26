@@ -87,12 +87,12 @@ spec:
               value: "0.0.0.0:{{ .Values.app.lookout.probesPort }}"
           volumeMounts:
             - name: lookout-configuration-volume
-              mountPath: /local/lookout
+              mountPath: /local/lookout/config.yaml
               subPath: config.yaml
             {{- if .Values.providers.github.secretName }}
             - name: lookout-github-key-volume
               {{- $pathParts := splitList "/" .Values.providers.github.private_key }}
-              mountPath: {{ initial $pathParts | join "/" }}
+              mountPath: {{ .Values.providers.github.private_key }}
               subPath: {{ last $pathParts }}
             {{- end }}
           ports:
