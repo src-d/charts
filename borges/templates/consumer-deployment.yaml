@@ -48,27 +48,19 @@ spec:
             - containerPort: {{ .Values.consumer.metricsPort }}
             {{- end }}
           env:
-            - name: CONFIG_BROKER
+            - name: BORGES_BROKER
               value: "{{ .Values.broker.connectionString }}"
-            - name: CONFIG_DBUSER
-              value: "{{ .Values.db.user }}"
-            - name: CONFIG_DBPASS
-              value: "{{ .Values.db.pass }}"
-            - name: CONFIG_DBHOST
-              value: "{{ .Values.db.host }}"
-            - name: CONFIG_DBNAME
-              value: "{{ .Values.db.name }}"
-            - name: CONFIG_TEMP_DIR
+            - name: BORGES_DATABASE
+              value: "{{ .Values.db.connectionString }}"
+            - name: BORGES_TEMP_DIR
               value: "{{ .Values.dir.tmp }}"
-            - name: CONFIG_CLEAN_TEMP_DIR
+            - name: BORGES_TEMP_DIR_CLEAN
               value: "{{ .Values.consumer.cleanTmp }}"
-            - name: CONFIG_ROOT_REPOSITORIES_DIR
+            - name: BORGES_ROOT_REPOSITORIES_DIR
               value: "{{ .Values.dir.rootRepositories }}"
-            - name: CONFIG_ROOT_REPOSITORIES_TEMP_DIR
-              value: "{{ .Values.dir.rootRepositoriesTemp }}"
-            - name: CONFIG_LOCKING
+            - name: BORGES_LOCKING
               value: "{{ .Values.locking.connectionString }}"
-            - name: CONFIG_BUCKETSIZE
+            - name: BORGES_BUCKETSIZE
               value: "{{ .Values.consumer.bucketSize }}"
             - name: LOG_LEVEL
               value: "{{ .Values.consumer.loglevel }}"
@@ -77,8 +69,6 @@ spec:
             {{- if .Values.hadoop }}
             - name: HADOOP_USER_NAME
               value: "{{ required "Missing hadoop.userName" .Values.hadoop.userName }}"
-            - name: CONFIG_HDFS
-              value: "{{ required "Missing hadoop.connectionString" .Values.hadoop.connectionString }}"
             {{- end }}
             {{- if .Values.consumer.sysdigConfig }}
             - name: POD_IP

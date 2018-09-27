@@ -28,13 +28,13 @@ spec:
             - producer
             - mentions
             {{- if .Values.broker.mentionsQueue }}
-            - --mentions-queue={{ .Values.broker.mentionsQueue }}
+            - --queue-mentions={{ .Values.broker.mentionsQueue }}
             {{- end }}
             {{- if .Values.broker.jobsQueue }}
             - --queue={{ .Values.broker.jobsQueue }}
             {{- end }}
             {{- if .Values.producer.profiler }}
-            - --profiler
+            - --profiler-http
             - --profiler-port={{ .Values.producer.profilerPort }}
             {{- end }}
             {{- if .Values.producer.metrics }}
@@ -50,16 +50,10 @@ spec:
             - containerPort: {{ .Values.producer.metricsPort }}
             {{- end }}
           env:
-            - name: CONFIG_BROKER
+            - name: BORGES_BROKER
               value: "{{ .Values.broker.connectionString }}"
-            - name: CONFIG_DBUSER
-              value: "{{ .Values.db.user }}"
-            - name: CONFIG_DBPASS
-              value: "{{ .Values.db.pass }}"
-            - name: CONFIG_DBHOST
-              value: "{{ .Values.db.host }}"
-            - name: CONFIG_DBNAME
-              value: "{{ .Values.db.name }}"
+            - name: BORGES_DATABASE
+              value: "{{ .Values.db.connectionString }}"
             - name: LOG_LEVEL
               value: "{{ .Values.producer.loglevel }}"
             - name: LOG_FORMAT

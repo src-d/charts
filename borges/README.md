@@ -5,7 +5,7 @@ This chart deploys [borges](https://github.com/src-d/borges)
 ## Pre-requisites
 
 - Kubernetes 1.4+
-- borges v0.17.0+
+- borges v0.18.0+
 
 ## Scope
 
