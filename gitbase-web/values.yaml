@@ -32,6 +32,7 @@ gitbaseWeb:
   gitbaseMaxAllowedPacket: "4194304"
   env: dev
   image:
+    # This must be an Alpine based container for the init scripts to work
     repository: srcd/gitbase-web
     # tag must be received as a parameter
     pullPolicy: IfNotPresent
