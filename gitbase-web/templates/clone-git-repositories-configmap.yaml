@@ -10,6 +10,8 @@ data:
     # Quick and dirty way to have the same state in case of multiple replicas
     # if a certain commit is given per repository
     set -x
+    apk update
+    apk add git
     cd {{ .Values.gitbaseServer.repositoriesDir }}
     {{- range $name, $config := .Values.gitbaseServer.repositories }}
     {{- $url := required "Missing url in repo" $config.url }}
