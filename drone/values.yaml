@@ -56,6 +56,7 @@ server:
     # limits:
     #   memory: 2Gi
     #   cpu: 1
+  nodeSelector: {}
 
 agent:
   num_instances: 1
@@ -74,3 +75,4 @@ agent:
     # limits:
     #   memory: 2Gi
     #   cpu: 1
+  nodeSelector: {}
