@@ -67,3 +67,7 @@ spec:
         gcePersistentDisk:
           pdName: {{ .Values.server.db_disk }}
           fsType: ext4
+    {{- with .Values.server.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
