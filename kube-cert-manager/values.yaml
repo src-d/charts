@@ -9,3 +9,5 @@ image:
   pullPolicy: IfNotPresent
 args:
   acmeUrl: https://acme-staging.api.letsencrypt.org/directory
+
+nodeSelector: {}

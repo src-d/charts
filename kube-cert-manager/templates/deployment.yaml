@@ -57,4 +57,7 @@ spec:
         - name: google-application-credentials
           secret:
             secretName: {{ template "fullname" . }}-google-key
-
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
