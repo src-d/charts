@@ -20,4 +20,8 @@ spec:
         - -bblfsh-addr={{ .Values.settings.serverAddr }}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
 {{- end }}
