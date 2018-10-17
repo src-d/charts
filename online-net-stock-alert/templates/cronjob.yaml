@@ -1,0 +1,40 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "online-net-stock-alert.fullname" . }}
+spec:
+  schedule: "{{ .Values.schedule }}"
+  failedJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 1
+  suspend: {{ .Values.suspend }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: {{ .Chart.Name }}
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}   
+            command: [ "/opt/online.sh", "{{ .Values.serverType }}" ]
+            env:
+              - name: SLACKTEE_WEBHOOK
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ required "secretName is missing" .Values.secretName}}
+                    key: SLACKTEE_WEBHOOK
+            resources:
+{{ toYaml .Values.resources | indent 14 }}
+      {{- with .Values.nodeSelector }}
+        nodeSelector:
+{{ toYaml . | indent 10 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+        affinity:
+{{ toYaml . | indent 10 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+        tolerations:
+{{ toYaml . | indent 10 }}
+      {{- end }}
