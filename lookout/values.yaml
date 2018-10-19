@@ -32,7 +32,6 @@ app:
     logFormat: json
     logLevel: info
     probesPort: 8090
-  # dbConnectionString: postgres://lookout:lookout@postgres-postgresql:5432/lookout?sslmode=disable
   # bblfshdConnectionString: ipv4://bblfshd-bblfshd:9432
 
   # Do not set this and providers.github.private_key
@@ -43,6 +42,18 @@ app:
 
 providers:
   github: {}
+
+databases:
+  postgres:
+    cloudSQL: false
+
+    # For use without Cloud SQL:
+    # dbConnectionString: postgresql://lookout:lookout@postgres-postgresql:5432/lookout-style-analyzer
+    
+    # For use with Cloud SQL:
+    # instanceConnectionName: 
+    # serviceAccountSecret: 
+    # connectionDetailsSecret: 
 
 resources:
   lookout: {}
