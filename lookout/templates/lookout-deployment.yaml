@@ -88,9 +88,6 @@ spec:
                 secretKeyRef:
                   name: {{ required "Missing databases.postgres.connectionDetailsSecret" .Values.databases.postgres.connectionDetailsSecret }}
                   key: LOOKOUT_DB
-              {{- else }}
-              value: {{ required "missing databases.postgres.dbConnectionString" .Values.databases.postgres.dbConnectionString }}
-              {{- end }}
             - name: LOG_FORMAT
               value: "{{ .Values.app.lookout.logFormat }}"
             - name: LOOKOUT_CONFIG_FILE

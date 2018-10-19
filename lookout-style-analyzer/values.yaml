@@ -15,13 +15,24 @@ service:
 
 app:
   port: 2000
-  # dbConnectionString: postgresql://lookout:lookout@postgres-postgresql:5432/lookout-style-analyzer
   # requestServer: lookout:10301
   log:
     structured: true
     level: info
   volume:
     hostPath: /tmp
+
+databases:
+  postgres:
+    cloudSQL: false
+
+    # For use without Cloud SQL:
+    # dbConnectionString: postgresql://lookout:lookout@postgres-postgresql:5432/lookout-style-analyzer
+    
+    # For use with Cloud SQL:
+    # instanceConnectionName: 
+    # serviceAccountSecret: 
+    # connectionDetailsSecret: 
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

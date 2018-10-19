@@ -30,7 +30,26 @@ spec:
           persistentVolumeClaim:
             claimName: {{ template "lookout-style-analyzer.fullname" . }}
           {{- end }}
+        {{- if .Values.databases.postgres.cloudSQL }}
+        - name: cloudsql-instance-credentials
+          secret:
+            secretName: {{ required "missing databases.postgres.serviceAccountSecret" .Values.databases.postgres.serviceAccountSecret }}
+        {{- end }}
       containers:
+      {{- if .Values.databases.postgres.cloudSQL }}
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.11
+          command: ["/cloud_sql_proxy",
+                    "-instances={{ required "missing databases.postgres.instanceConnectionName" .Values.databases.postgres.instanceConnectionName }}=tcp:5432",
+                    "-credential_file=/secrets/cloudsql/credentials.json"]
+          securityContext:
+            runAsUser: 2  # non-root user
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+      {{- end }}
         - name: initdb
           image: "{{ .Values.image.repository }}:{{ required "Missing image.tag" .Values.image.tag  }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -39,9 +58,19 @@ spec:
             - lookout
             - init
             - --db
-            - {{ .Values.app.dbConnectionString }}
+            - $(LOOKOUT_DB)
             - --fs
             - /tmp/models
+           env:
+            - name: LOOKOUT_DB
+              {{- if .Values.databases.postgres.cloudSQL }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "Missing databases.postgres.connectionDetailsSecret" .Values.databases.postgres.connectionDetailsSecret }}
+                  key: LOOKOUT_DB
+              {{- else }}
+              value: {{ required "missing databases.postgres.dbConnectionString" .Values.databases.postgres.dbConnectionString }}
+              {{- end }}
           volumeMounts:
             - name: data
               mountPath: /tmp/models
