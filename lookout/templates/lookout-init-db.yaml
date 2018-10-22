@@ -22,6 +22,20 @@ spec:
     spec:
       restartPolicy: Never
       containers:
+      {{- if .Values.databases.postgres.cloudSQL }}
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.11
+          command: ["/cloud_sql_proxy",
+                    "-instances={{ required "missing databases.postgres.instanceConnectionName" .Values.databases.postgres.instanceConnectionName }}=tcp:5432",
+                    "-credential_file=/secrets/cloudsql/credentials.json"]
+          securityContext:
+            runAsUser: 2  # non-root user
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+        {{- end }}
         - name: lookout-initdb
           image: "{{ .Values.image.lookout.repository }}:{{ required "Missing image.lookout.tag" .Values.image.lookout.tag  }}"
           imagePullPolicy: {{ .Values.image.lookout.pullPolicy }}
@@ -29,6 +43,19 @@ spec:
             - migrate
           env:
             - name: LOOKOUT_DB
-              value: "{{ required "Missing app.lookout.dbConnectionString " .Values.app.lookout.dbConnectionString }}"
+              {{- if .Values.databases.postgres.cloudSQL }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "Missing databases.postgres.connectionDetailsSecret" .Values.databases.postgres.connectionDetailsSecret }}
+                  key: LOOKOUT_DB
+              {{- else }}
+              value: {{ required "missing databases.postgres.dbConnectionString" .Values.databases.postgres.dbConnectionString }}
+              {{- end }}
             - name: LOG_FORMAT
               value: "{{ .Values.app.lookout.logFormat }}"
+      {{- if .Values.databases.postgres.cloudSQL }}
+      volumes:
+        - name: cloudsql-instance-credentials
+          secret:
+            secretName: {{ required "missing databases.postgres.serviceAccountSecret" .Values.databases.postgres.serviceAccountSecret }}
+      {{- end }}
