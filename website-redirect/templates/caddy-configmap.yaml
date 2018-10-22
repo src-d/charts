@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "website-redirect.fullname" . }}-caddyfile
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+data:
+  Caddyfile: |
+    :80 {
+      redir / {{ required "missing redirect.to" .Values.redirect.to }}{{ if .Values.redirect.withPath }}{uri}{{ end }} 301
+    }
+
