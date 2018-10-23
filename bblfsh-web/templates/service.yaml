@@ -10,7 +10,7 @@ spec:
   loadBalancerIP: {{ default "" .Values.service.loadBalancerIP }}
   {{- end }}
   ports:
-  - targetPort: 80
+  - targetPort: 8080
     port: {{ .Values.service.port }}
     protocol: TCP
   selector:
