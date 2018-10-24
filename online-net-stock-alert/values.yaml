@@ -10,7 +10,7 @@ schedule: "* * * * *"
 
 image:
   repository: meyskens/online-net-stock-alert
-  tag: amd64-0.1.0
+  tag: amd64-0.1.1
   pullPolicy: IfNotPresent
 
 resources: {}
