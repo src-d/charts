@@ -2,44 +2,32 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 #
-deployDummyAnalyzer: true
-
 replicaCount:
-  lookout: 1
-  dummyAnalyzer: 1
+  watch: 1
+  work: 1
 
 image:
   lookout:
     repository: srcd/lookout
     #tag: latest
     pullPolicy: IfNotPresent
-  dummyAnalyzer:
-    repository: srcd/lookout-dummy-analyzer
-    tag: latest
-    pullPolicy: Always
 
 service:
-  lookout:
+  work:
     type: ClusterIP
     port: 10301
-  dummyAnalyzer:
-    type: ClusterIP
-    port: 10302
 
 app:
-  lookout:
-    port: 10301
+  lookout: # Shared between watchers and workers
     logFormat: json
     logLevel: info
     probesPort: 8090
-  # bblfshdConnectionString: ipv4://bblfshd-bblfshd:9432
-
-  # Do not set this and providers.github.private_key
-  # secretName:
-  dummyAnalyzer:
-    port: 10302
-    probesPort: 8091
-
+    queue: lookout
+  watch:
+    workers: 1
+  work:
+    workers: 1
+    port: 10301
 providers:
   github: {}
 
@@ -57,7 +45,6 @@ databases:
 
 resources:
   lookout: {}
-  dummyAnalyzer: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -71,12 +58,14 @@ resources:
 
 nodeSelector:
   lookout: {}
-  dummyAnalyzer: {}
 
 tolerations:
   lookout: []
-  dummyAnalyzer: []
 
 affinity:
   lookout: {}
-  dummyAnalyzer: {}
+
+# These settings are for the rabbitmq-ha chart that is included
+rabbitmq-ha: 
+  rabbitmqUsername: guest
+  rabbitmqPassword: guest
