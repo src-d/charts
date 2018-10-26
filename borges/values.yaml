@@ -71,6 +71,7 @@ dir:
 
 locking:
   connectionString: etcd:http://etcd:2379
+  timeout: 2m
 
 #nodeSelector:
 

@@ -60,6 +60,8 @@ spec:
               value: "{{ .Values.dir.rootRepositories }}"
             - name: BORGES_LOCKING
               value: "{{ .Values.locking.connectionString }}"
+            - name: BORGES_LOCKING_TIMEOUT
+              value: "{{ .Values.locking.timeout }}"
             - name: BORGES_BUCKETSIZE
               value: "{{ .Values.consumer.bucketSize }}"
             - name: LOG_LEVEL
