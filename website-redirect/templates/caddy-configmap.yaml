@@ -6,6 +6,10 @@ metadata:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
 data:
   Caddyfile: |
+    :80/health {
+      status 200 /health
+    }
+
     :80 {
       redir / {{ required "missing redirect.to" .Values.redirect.to }}{{ if .Values.redirect.withPath }}{uri}{{ end }} 301
     }
