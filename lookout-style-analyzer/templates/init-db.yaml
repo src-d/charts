@@ -22,6 +22,8 @@ spec:
     spec:
       restartPolicy: Never
       volumes:
+        - name: tmp-pod
+          emptyDir: {}
         - name: data
           {{- if .Values.app.volume.hostPath }}
           hostPath:
@@ -39,9 +41,16 @@ spec:
       {{- if .Values.databases.postgres.cloudSQL }}
         - name: cloudsql-proxy
           image: gcr.io/cloudsql-docker/gce-proxy:1.11
-          command: ["/cloud_sql_proxy",
-                    "-instances={{ required "missing databases.postgres.instanceConnectionName" .Values.databases.postgres.instanceConnectionName }}=tcp:5432",
-                    "-credential_file=/secrets/cloudsql/credentials.json"]
+          command: ["/bin/sh", "-c"]
+            # The following is a hack needed as Kubernetes wants the 2 containers to exit to complete the job
+            # See https://github.com/kubernetes/kubernetes/issues/25908 
+          args:
+          - |
+            /cloud_sql_proxy --dir=/cloudsql -instances={{ required "missing databases.postgres.instanceConnectionName" .Values.databases.postgres.instanceConnectionName }}=tcp:5432 -credential_file=/secrets/cloudsql/credentials.json &
+            CHILD_PID=$!
+            (while true; do if [[ -f "/tmp/pod/main-terminated" ]]; then kill $CHILD_PID; echo "Killed $CHILD_PID as the main container terminated."; fi; sleep 1; done) &
+            wait $CHILD_PID
+            if [[ -f "/tmp/pod/main-terminated" ]]; then exit 0; echo "Job completed. Exiting..."; fi
           securityContext:
             runAsUser: 2  # non-root user
             allowPrivilegeEscalation: false
@@ -49,18 +58,17 @@ spec:
             - name: cloudsql-instance-credentials
               mountPath: /secrets/cloudsql
               readOnly: true
+            - name: tmp-pod
+              mountPath: /tmp/pod
       {{- end }}
         - name: initdb
           image: "{{ .Values.image.repository }}:{{ required "Missing image.tag" .Values.image.tag  }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: [ "python3" ]
+          command: ["/bin/sh", "-c"]
           args:
-            - lookout
-            - init
-            - --db
-            - $(LOOKOUT_DB)
-            - --fs
-            - /tmp/models
+          - |
+            trap "touch /tmp/pod/main-terminated" EXIT
+            python3 lookout init --db $(LOOKOUT_DB) --fs /tmp/models
            env:
             - name: LOOKOUT_DB
               {{- if .Values.databases.postgres.cloudSQL }}
@@ -74,3 +82,5 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /tmp/models
+            - name: tmp-pod
+              mountPath: /tmp/pod
