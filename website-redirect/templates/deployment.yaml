@@ -35,11 +35,13 @@ spec:
               containerPort: 80
               protocol: TCP
           livenessProbe:
-            tcpSocket:
+            httpGet:
               port: http
+              path: /health
           readinessProbe:
-            tcpSocket:
+            httpGet:
               port: http
+              path: /health
           volumeMounts:
             - name: caddyfile-volume
               mountPath: /etc/Caddyfile
