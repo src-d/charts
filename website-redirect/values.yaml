@@ -14,7 +14,8 @@ redirect:
   withPath: false
 
 service:
-  type: ClusterIP
+  # NodePort is needed to work properly with default ingress
+  type: NodePort
   port: 80
 
 ingress:
