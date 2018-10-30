@@ -62,7 +62,7 @@ spec:
               value: "{{ .Values.locking.connectionString }}"
             - name: BORGES_LOCKING_TIMEOUT
               value: "{{ .Values.locking.timeout }}"
-            - name: BORGES_BUCKETSIZE
+            - name: BORGES_BUCKET_SIZE
               value: "{{ .Values.consumer.bucketSize }}"
             - name: LOG_LEVEL
               value: "{{ .Values.consumer.loglevel }}"
