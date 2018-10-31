@@ -35,7 +35,7 @@ spec:
         {{- end }}
       containers:
       {{- if .Values.databases.postgres.cloudSQL }}
-       - name: cloudsql-proxy
+        - name: cloudsql-proxy
           image: gcr.io/cloudsql-docker/gce-proxy:1.11
           command: ["/cloud_sql_proxy",
                     "-instances={{ required "missing databases.postgres.instanceConnectionName" .Values.databases.postgres.instanceConnectionName }}=tcp:5432",

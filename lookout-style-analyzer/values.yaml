@@ -20,7 +20,9 @@ app:
     structured: true
     level: info
   volume:
-    hostPath: /tmp
+    pvc:
+      storageClassName: standard
+      size: 10Gi
 
 databases:
   postgres:
