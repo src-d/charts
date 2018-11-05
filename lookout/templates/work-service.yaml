@@ -14,5 +14,5 @@ spec:
       targetPort: {{ .Values.app.work.port }}
       protocol: TCP
   selector:
-    app: {{ template "lookout.name" . }}
+    app: {{ template "lookout.name" . }}-work
     release: {{ .Release.Name }}
