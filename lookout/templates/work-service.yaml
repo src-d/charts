@@ -1,17 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "lookout.fullname" . }}
+  name: {{ template "lookout.fullname" . }}-work
   labels:
-    app: {{ template "lookout.name" . }}
+    app: {{ template "lookout.name" . }}-work
     chart: {{ template "lookout.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  type: {{ .Values.service.lookout.type }}
+  type: {{ .Values.service.work.type }}
   ports:
-    - port: {{ .Values.service.lookout.port }}
-      targetPort: {{ .Values.app.lookout.port }}
+    - port: {{ .Values.service.work.port }}
+      targetPort: {{ .Values.app.work.port }}
       protocol: TCP
   selector:
     app: {{ template "lookout.name" . }}

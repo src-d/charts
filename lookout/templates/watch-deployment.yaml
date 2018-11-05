@@ -4,24 +4,24 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "lookout.fullname" . }}
+  name: {{ template "lookout.fullname" . }}-watch
   labels:
-    app: {{ template "lookout.name" . }}
+    app: {{ template "lookout.name" . }}-watch
     chart: {{ template "lookout.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  replicas: {{ .Values.replicaCount.lookout }}
+  replicas: {{ .Values.replicaCount.watch }}
   selector:
     matchLabels:
-      app: {{ template "lookout.name" . }}
+      app: {{ template "lookout.name" . }}-watch
       release: {{ .Release.Name }}
   template:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/lookout-configmap.yaml") . | sha256sum }}
       labels:
-        app: {{ template "lookout.name" . }}
+        app: {{ template "lookout.name" . }}-watch
         release: {{ .Release.Name }}
     spec:
       volumes:
@@ -40,31 +40,12 @@ spec:
               - key:  {{ last $pathParts }}
                 path: {{ last $pathParts }}
         {{- end }}
-        {{- if .Values.databases.postgres.cloudSQL }}
-        - name: cloudsql-instance-credentials
-          secret:
-            secretName: {{ required "missing databases.postgres.serviceAccountSecret" .Values.databases.postgres.serviceAccountSecret }}
-        {{- end }}
       containers:
-      {{- if .Values.databases.postgres.cloudSQL }}
-        - name: cloudsql-proxy
-          image: gcr.io/cloudsql-docker/gce-proxy:1.11
-          command: ["/cloud_sql_proxy",
-                    "-instances={{ required "missing databases.postgres.instanceConnectionName" .Values.databases.postgres.instanceConnectionName }}=tcp:5432",
-                    "-credential_file=/secrets/cloudsql/credentials.json"]
-          securityContext:
-            runAsUser: 2  # non-root user
-            allowPrivilegeEscalation: false
-          volumeMounts:
-            - name: cloudsql-instance-credentials
-              mountPath: /secrets/cloudsql
-              readOnly: true
-      {{- end }}
-        - name: lookout
+        - name: lookout-watch
           image: "{{ .Values.image.lookout.repository }}:{{ required "Missing image.lookout.tag" .Values.image.lookout.tag }}"
           imagePullPolicy: {{ .Values.image.lookout.pullPolicy }}
           args:
-            - serve
+            - watch
           env:
             - name: LOOKOUT_DATA_SERVER
               value: "ipv4://0.0.0.0:{{ .Values.app.lookout.port }}"
@@ -80,15 +61,6 @@ spec:
                   name: {{ .Values.app.lookout.secretName }}
                   key: githubToken
             {{- end }}
-            - name: LOOKOUT_BBLFSHD
-              value: "{{ required "Missing app.lookout.bblfshdConnectionString " .Values.app.lookout.bblfshdConnectionString }}"
-            - name: LOOKOUT_DB
-              {{- if .Values.databases.postgres.cloudSQL }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ required "Missing databases.postgres.connectionDetailsSecret" .Values.databases.postgres.connectionDetailsSecret }}
-                  key: LOOKOUT_DB
-              {{- end }}
             - name: LOG_FORMAT
               value: "{{ .Values.app.lookout.logFormat }}"
             - name: LOOKOUT_CONFIG_FILE
@@ -109,6 +81,12 @@ spec:
             {{- end }}
             - name: LOOKOUT_PROBES_ADDRESS
               value: "0.0.0.0:{{ .Values.app.lookout.probesPort }}"
+            - name: LOOKOUT_QUEUE
+              value: "{{ .Values.app.lookout.queue }}"
+            - name: LOOKOUT_BROKER
+              value: "amqp://{{ template "lookout.fullname" . }}-rabbitmq-ha:5672"
+            - name: LOOKOUT_WORKERS
+              value: "{{ .Values.app.watch.workers }}"
           volumeMounts:
             - name: lookout-configuration-volume
               mountPath: /local/lookout/config.yaml
@@ -119,9 +97,6 @@ spec:
               mountPath: {{ .Values.providers.github.private_key }}
               subPath: {{ last $pathParts }}
             {{- end }}
-          ports:
-            - containerPort: {{ .Values.app.lookout.port }}
-              protocol: TCP
           livenessProbe:
             httpGet:
               path: /health/liveness
@@ -132,15 +107,15 @@ spec:
               port: {{ .Values.app.lookout.probesPort }}
           resources:
 {{ toYaml .Values.resources.lookout | indent 12 }}
-    {{- with .Values.nodeSelector.lookout }}
+    {{- with .Values.nodeSelector.work }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- with .Values.affinity.lookout }}
+    {{- with .Values.affinity.work }}
       affinity:
 {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- with .Values.tolerations.lookout }}
+    {{- with .Values.tolerations.work }}
       tolerations:
 {{ toYaml . | indent 8 }}
     {{- end }}

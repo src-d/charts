@@ -1,0 +1,153 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "lookout.fullname" . }}-work
+  labels:
+    app: {{ template "lookout.name" . }}-work
+    chart: {{ template "lookout.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount.work }}
+  selector:
+    matchLabels:
+      app: {{ template "lookout.name" . }}-work
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/lookout-configmap.yaml") . | sha256sum }}
+      labels:
+        app: {{ template "lookout.name" . }}-work
+        release: {{ .Release.Name }}
+    spec:
+      volumes:
+{{ include "bblfshd-sidecar.volumes" . | indent 8 }}
+        - name: lookout-configuration-volume
+          configMap:
+            name: {{ template "lookout.fullname" . }}-lookout-configuration
+            items:
+              - key: config.yaml
+                path: config.yaml
+        {{- if .Values.providers.github.secretName }}
+        - name: lookout-github-key-volume
+          secret:
+            secretName: {{ .Values.providers.github.secretName }}
+            items:
+            {{- $pathParts := splitList "/" .Values.providers.github.private_key }}
+              - key:  {{ last $pathParts }}
+                path: {{ last $pathParts }}
+        {{- end }}
+        {{- if .Values.databases.postgres.cloudSQL }}
+        - name: cloudsql-instance-credentials
+          secret:
+            secretName: {{ required "missing databases.postgres.serviceAccountSecret" .Values.databases.postgres.serviceAccountSecret }}
+        {{- end }}
+      containers:
+      {{- if .Values.databases.postgres.cloudSQL }}
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.11
+          command: ["/cloud_sql_proxy",
+                    "-instances={{ required "missing databases.postgres.instanceConnectionName" .Values.databases.postgres.instanceConnectionName }}=tcp:5432",
+                    "-credential_file=/secrets/cloudsql/credentials.json"]
+          securityContext:
+            runAsUser: 2  # non-root user
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+      {{- end }}
+{{ include "bblfshd-sidecar.containers" . | indent 8 }}
+        - name: lookout-work
+          image: "{{ .Values.image.lookout.repository }}:{{ required "Missing image.lookout.tag" .Values.image.lookout.tag }}"
+          imagePullPolicy: {{ .Values.image.lookout.pullPolicy }}
+          args:
+            - work
+          env:
+            - name: LOOKOUT_DATA_SERVER
+              value: "ipv4://0.0.0.0:{{ .Values.app.work.port }}"
+            {{- if .Values.app.lookout.secretName }}
+            - name: GITHUB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.app.lookout.secretName }}
+                  key: githubUser
+            - name: GITHUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.app.lookout.secretName }}
+                  key: githubToken
+            {{- end }}
+            - name: LOOKOUT_BBLFSHD
+              value: "ipv4://localhost:9432"
+            - name: LOOKOUT_DB
+              {{- if .Values.databases.postgres.cloudSQL }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "Missing databases.postgres.connectionDetailsSecret" .Values.databases.postgres.connectionDetailsSecret }}
+                  key: LOOKOUT_DB
+              {{- else }}
+              value: {{ required "missing databases.postgres.dbConnectionString" .Values.databases.postgres.dbConnectionString }}
+              {{- end }}
+            - name: LOG_FORMAT
+              value: "{{ .Values.app.lookout.logFormat }}"
+            - name: LOOKOUT_CONFIG_FILE
+              value: "/local/lookout/config.yaml"
+            - name: LOG_LEVEL
+              value: "{{ .Values.app.lookout.logLevel }}"
+            {{- if .Values.app.lookout.logFields }}
+            - name: LOG_FIELDS
+              value: "{{ .Values.app.lookout.logFields }}"
+            {{- end }}
+            {{- if .Values.app.lookout.logForceFormat }}
+            - name: LOG_FORCE_FORMAT
+              value: "{{ .Values.app.lookout.logForceFormat }}"
+            {{- end }}
+            {{- if .Values.app.lookout.grpcMaxMsgSize }}
+            - name: LOOKOUT_GRPC_MAX_MSG_SIZE
+              value: "{{ .Values.app.lookout.grpcMaxMsgSize }}"
+            {{- end }}
+            - name: LOOKOUT_PROBES_ADDRESS
+              value: "0.0.0.0:{{ .Values.app.lookout.probesPort }}"
+            - name: LOOKOUT_QUEUE
+              value: "{{ .Values.app.lookout.queue }}"
+            - name: LOOKOUT_BROKER
+              value: "amqp://{{ template "lookout.fullname" . }}-rabbitmq-ha:5672"
+            - name: LOOKOUT_WORKERS
+              value: "{{ .Values.app.watch.workers }}"
+          volumeMounts:
+            - name: lookout-configuration-volume
+              mountPath: /local/lookout/config.yaml
+              subPath: config.yaml
+            {{- if .Values.providers.github.secretName }}
+            - name: lookout-github-key-volume
+              {{- $pathParts := splitList "/" .Values.providers.github.private_key }}
+              mountPath: {{ .Values.providers.github.private_key }}
+              subPath: {{ last $pathParts }}
+            {{- end }}
+          ports:
+            - containerPort: {{ .Values.app.work.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health/liveness
+              port: {{ .Values.app.lookout.probesPort }}
+          readinessProbe:
+            httpGet:
+              path: /health/readiness
+              port: {{ .Values.app.lookout.probesPort }}
+          resources:
+{{ toYaml .Values.resources.lookout | indent 12 }}
+    {{- with .Values.nodeSelector.lookout }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity.lookout }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations.lookout }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}

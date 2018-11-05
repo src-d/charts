@@ -10,10 +10,6 @@ metadata:
 data:
   config.yaml: |
     analyzers:
-      {{- if .Values.deployDummyAnalyzer }}
-      - name: Dummy
-        addr: "ipv4://{{ template "lookout.fullname" . }}-dummy-analyzer:{{ .Values.service.dummyAnalyzer.port }}"
-      {{- end }}
     {{- with .Values.analyzers }}
 {{ toYaml . | indent 6 }}
     {{- end }}
