@@ -26,7 +26,7 @@ spec:
             path: {{ .Values.app.volume.hostPath }}
           {{- else }}
           persistentVolumeClaim:
-            claimName: {{ template "lookout-style-analyzer.fullname" . }}
+            claimName: {{ required "missing app.volume.pvcName" .Values.app.volume.pvcName }}
           {{- end }}
         {{- if .Values.databases.postgres.cloudSQL }}
         - name: cloudsql-instance-credentials

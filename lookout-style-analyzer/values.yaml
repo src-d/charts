@@ -16,13 +16,11 @@ service:
 app:
   port: 2000
   # requestServer: lookout:10301
+  # volume:
+  #   pvcName: the-name
   log:
     structured: true
     level: info
-  volume:
-    pvc:
-      storageClassName: standard
-      size: 10Gi
 
 databases:
   postgres:
