@@ -68,7 +68,7 @@ spec:
           args:
             - |
               trap "touch /tmp/pod/main-terminated" EXIT
-              python3 lookout init --db $(LOOKOUT_DB) --fs /tmp/models
+              analyzer init -f /tmp/models -d $(LOOKOUT_DB)
           env:
             - name: LOOKOUT_DB
               {{- if .Values.databases.postgres.cloudSQL }}
