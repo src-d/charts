@@ -24,11 +24,11 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            - name: GOMETALINT_DATA_SERVICE_URL
+            - name: LOOKOUT_TERRAFORM_DATA_SERVICE_URL
               value: "{{ required "Missing app.dataServiceUrl" .Values.app.dataServiceUrl }}"
-            - name: GOMETALINT_PORT
+            - name: LOOKOUT_TERRAFORM_PORT
               value: "{{ .Values.app.port }}"
-            - name: GOMETALINT_LOG_LEVEL
+            - name: LOOKOUT_TERRAFORM_LOG_LEVEL
               value: "{{ .Values.app.logLevel }}"
           ports:
             - containerPort: {{ .Values.app.port }}
