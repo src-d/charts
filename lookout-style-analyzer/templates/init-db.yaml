@@ -8,7 +8,7 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
   annotations:
-    "helm.sh/hook": pre-install
+    "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-delete-policy": hook-succeeded
 spec:
   template:
@@ -30,7 +30,7 @@ spec:
             path: {{ .Values.app.volume.hostPath }}
           {{- else }}
           persistentVolumeClaim:
-            claimName: {{ template "lookout-style-analyzer.fullname" . }}
+            claimName: {{ required "missing app.volume.pvcName" .Values.app.volume.pvcName }}
           {{- end }}
         {{- if .Values.databases.postgres.cloudSQL }}
         - name: cloudsql-instance-credentials
@@ -66,10 +66,10 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ["/bin/sh", "-c"]
           args:
-          - |
-            trap "touch /tmp/pod/main-terminated" EXIT
-            python3 lookout init --db $(LOOKOUT_DB) --fs /tmp/models
-           env:
+            - |
+              trap "touch /tmp/pod/main-terminated" EXIT
+              analyzer init -f /tmp/models -d $(LOOKOUT_DB)
+          env:
             - name: LOOKOUT_DB
               {{- if .Values.databases.postgres.cloudSQL }}
               valueFrom:
@@ -84,3 +84,15 @@ spec:
               mountPath: /tmp/models
             - name: tmp-pod
               mountPath: /tmp/pod
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
