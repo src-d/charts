@@ -31,6 +31,10 @@ app:
 providers:
   github: {}
 
+queues:
+  rabbitmq: {}
+    #connectionString: amqp://lookout-rabbitmq-ha:5672"
+
 databases:
   postgres:
     cloudSQL: false
@@ -64,8 +68,3 @@ tolerations:
 
 affinity:
   lookout: {}
-
-# These settings are for the rabbitmq-ha chart that is included
-rabbitmq-ha: 
-  rabbitmqUsername: guest
-  rabbitmqPassword: guest
