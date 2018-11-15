@@ -113,7 +113,7 @@ spec:
             - name: LOOKOUT_QUEUE
               value: "{{ .Values.app.lookout.queue }}"
             - name: LOOKOUT_BROKER
-              value: "amqp://{{ template "lookout.fullname" . }}-rabbitmq-ha:5672"
+              value: "{{ required "missing queues.rabbitmq.connectionString" .Values.queues.rabbitmq.connectionString }}"
             - name: LOOKOUT_WORKERS
               value: "{{ .Values.app.watch.workers }}"
           volumeMounts:
