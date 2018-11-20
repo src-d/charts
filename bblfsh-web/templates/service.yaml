@@ -3,15 +3,17 @@ kind: Service
 metadata:
   name: {{ template "fullname" . }}
   labels:
+    app: {{ template "fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
   type: {{ .Values.service.type }}
-  {{- if and ( eq .Values.service.type "LoadBalancer" ) .Values.service.loadBalancerIP }}
-  loadBalancerIP: {{ default "" .Values.service.loadBalancerIP }}
-  {{- end }}
   ports:
-  - targetPort: 80
-    port: {{ .Values.service.port }}
-    protocol: TCP
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      protocol: TCP
+      name: http
   selector:
     app: {{ template "fullname" . }}
+    release: {{ .Release.Name }}

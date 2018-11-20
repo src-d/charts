@@ -2,18 +2,33 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 replicaCount: 1
+
 image:
   repository: bblfsh/web
-  tag: latest
+  #tag: v0.8.0
   pullPolicy: IfNotPresent
+
 service:
-  type: LoadBalancer
-  name: bblfsh-web
-  ## port where the web client will be listen at the LoadBalancer.
+  type: NodePort
   port: 80
-  ## loadBalancerIP if not set an ephermeral IP will be used.
-  # This setting will only be used for LoadBalancer type
-  loadBalancerIP:
+  targetPort: 8080
+
+ingress:
+  enabled: true
+  # globalStaticIpName must be received as a parameter
+  # hostname must be received as a parameter
+  # hosts defined in templates/ingress.yml. Do not override here.
+  annotations:
+    kubernetes.io/ingress.class: gce
+    kubernetes.io/tls-acme: "true"
+    # kubernetes.io/ingress.global-static-ip-name is defined in templates/ingress.yml. Do not override here.
+  tls: true
+    # secretName and hosts are defined in templates/ingress.yml. Do not override here.
+
+bblfshd-sidecar:
+  image:
+    tag: v2.9.1
+
 settings:
   ## serverAddr is the address to a bblfsh server, if empty a bblfsh server
   ## will be deployed by this chart. This server is deployed as a container

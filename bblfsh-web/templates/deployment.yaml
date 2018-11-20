@@ -1,4 +1,3 @@
-{{- if .Values.settings.serverAddr }}
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -12,16 +11,22 @@ spec:
       labels:
         app: {{ template "fullname" . }}
     spec:
+      volumes:
+{{- if not .Values.settings.serverAddr }}
+{{ include "bblfshd-sidecar.volumes" . | indent 6 }}
+{{- end }}
       containers:
+{{- if not .Values.settings.serverAddr }}
+{{ include "bblfshd-sidecar.containers" . | indent 6 }}
+{{- end }}
       - name: {{ .Chart.Name }}
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        image: "{{ .Values.image.repository }}:{{ required "missing image.tag" .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         args:
-        - -bblfsh-addr={{ .Values.settings.serverAddr }}
+        - -bblfsh-addr={{ default "localhost:9432" .Values.settings.serverAddr }}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
     {{- end }}
-{{- end }}
