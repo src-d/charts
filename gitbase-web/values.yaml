@@ -5,8 +5,8 @@
 replicaCount: 1
 
 service:
-  type: NodePort
-  port: 8080
+  type: ClusterIP
+  port: 80
   internalPort: 8080
 
 ingress:
