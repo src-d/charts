@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "gitbase.fullname" . }}-clone-git-repositories
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+data:
+  clone-git-repositories.sh: |
+    # Quick and dirty way to have the same state in case of multiple replicas
+    # if a certain commit is given per repository
+    set -x
+    apk update
+    apk add git
+    cd {{ .Values.repositoriesDir }}
+    {{- range $name, $config := .Values.repositories }}
+    {{- $url := required "Missing url in repo" $config.url }}
+    {{- $commit := default "HEAD" $config.commit }}
+    if [ ! -d "{{ $name }}" ]; then
+      git clone {{ $url }} {{ $name }}
+    fi
+    cd {{ $name }}
+    git pull
+    git reset --hard {{ $commit }}
+    cd ..
+    {{- end }}

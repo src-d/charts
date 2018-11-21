@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ template "gitbase.fullname" . }}
+  labels:
+    app: {{ template "gitbase.name" . }}
+    chart: {{ template "gitbase.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  serviceName: {{ template "gitbase.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "gitbase.name" . }}
+      release: {{ .Release.Name }}
+  volumeClaimTemplates:
+    - metadata:
+        name: gitbase-repos-volume
+      spec:
+      {{- if .Values.storage.class }}
+      {{- if (eq "-" .Values.storage.class) }}
+        storageClassName: ""
+      {{- else }}
+        storageClassName: "{{ .Values.storage.class }}"
+      {{- end }}
+      {{- end }}
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: "{{ .Values.storage.size }}"
+  template:
+    metadata:
+      labels:
+        app: {{ template "gitbase.name" . }}
+        release: {{ .Release.Name }}
+      # This is to upgrade the deployment if configmap changes
+      annotations:
+        checksum/clone-git-repositories: {{ include (print $.Template.BasePath "/clone-git-repositories-configmap.yaml") . | sha256sum }} 
+    spec:
+      volumes:
+        - configMap:
+            name: {{ template "gitbase.fullname" . }}-clone-git-repositories
+            items:
+            - key: clone-git-repositories.sh
+              path: clone-git-repositories.sh
+          name: clone-git-repositories-volume
+      initContainers:
+        - name: clone-git-repositories
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          command: [ 'sh', '/opt/clone-git-repositories.sh' ]
+          volumeMounts:
+            - name: clone-git-repositories-volume
+              mountPath: /opt/clone-git-repositories.sh
+              subPath: clone-git-repositories.sh
+            - name: gitbase-repos-volume
+              mountPath: {{ .Values.repositoriesDir }}
+      containers:
+        - name: gitbase
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: gitbase-repos-volume
+              mountPath: {{ .Values.repositoriesDir }}
+          env:
+            - name: BBLFSH_ENDPOINT
+              value: "127.0.0.1:9432"
+            - name: GITBASE_USER
+              value: "gitbase"
+            - name: GITBASE_PASSWORD
+              value: ""
+            - name: LOG_LEVEL
+              value: "{{ .Values.logLevel }}"
+            - name: GITBASE_REPOS
+              value: "{{ .Values.repositoriesDir }}"
+            {{- if .Values.squashEnable }}
+            - name: GITBASE_UNSTABLE_SQUASH_ENABLE
+              value: "{{ .Values.squashEnable }}"
+            {{- end }}
+            {{- if .Values.readonly }}
+            - name: GITBASE_READONLY
+              value: "{{ .Values.readonly }}"
+            {{- end }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
