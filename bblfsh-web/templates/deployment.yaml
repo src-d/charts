@@ -28,6 +28,10 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         args:
         - -bblfsh-addr={{ default "localhost:9432" .Values.settings.serverAddr }}
+        ports:
+        - name: http
+          containerPort: {{ .Values.service.internalPort }}
+          protocol: TCP
         resources:
 {{ toYaml .Values.resources | indent 10 }}
     {{- with .Values.nodeSelector }}
