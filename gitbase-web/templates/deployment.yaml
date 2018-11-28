@@ -1,3 +1,6 @@
+{{- if ne (empty .Values.settings.bblfshdServer) (empty .Values.settings.gitbaseServer) }}
+{{- fail "You have to set neither settings.bblfshdServer or settings.gitbaseServer or set both" }}
+{{- end }}
 {{- if and .Values.settings.bblfshdServer .Values.settings.gitbaseServer }}
 {{- $port := default "3306" .Values.settings.gitbaseServer.port -}}
 {{- $user := default "gitbase" .Values.settings.gitbaseServer.user -}}
