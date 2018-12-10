@@ -25,10 +25,12 @@ settings: {}
   # This specifies an external bblfshd server
   # Requires settings.gitbaseServer to be set
   #bblfshdServer:
-  
+  #  address: bblfshd:9432
+
   # This specifies an external gitbase server
   # Requires settings.bblfshdServer to be set
   #gitbaseServer:
+  #  host: gitbase
 
 gitbaseWeb:
   gitbaseMaxAllowedPacket: "4194304"
