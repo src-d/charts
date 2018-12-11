@@ -38,3 +38,19 @@ spec:
       nodeSelector:
 {{ toYaml . | indent 8 }}
     {{- end }}
+
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end}}
+{{- if .Values.antiAffinityEnabled }}
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+             matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - {{ template "fullname" . }}
+            topologyKey: kubernetes.io/hostname
+{{- end }}
