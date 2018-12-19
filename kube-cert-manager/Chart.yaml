@@ -1,4 +1,0 @@
-apiVersion: v1
-description: Manages Let's Encrypt TLS certificates for Kubernetes
-name: kube-cert-manager
-version: 0.3.0
