@@ -1,6 +1,6 @@
 # Default values for kubernetes-local-pv-provisioner
 image:
-  repository: src-d/kubernetes-local-pv-provisioner
+  repository: srcd/kubernetes-local-pv-provisioner
   # tag: latest
   pullPolicy: IfNotPresent
 
