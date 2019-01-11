@@ -1,0 +1,52 @@
+kind: DaemonSet
+apiVersion: apps/v1
+metadata:
+  name: {{ template "kubernetes-local-pv-provisioner.fullname" . }}
+  labels:
+    app: {{ template "kubernetes-local-pv-provisioner.name" . }}
+    chart: {{ template "kubernetes-local-pv-provisioner.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "kubernetes-local-pv-provisioner.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "kubernetes-local-pv-provisioner.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      serviceAccountName: {{ template "kubernetes-local-pv-provisioner.name" . }}
+      volumes:
+        - name: rootfs
+          hostPath:
+            path: /
+            type: Directory
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ required "missing image.tag" .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - mountPath: /rootfs
+              name: rootfs
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
