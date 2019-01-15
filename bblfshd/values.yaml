@@ -52,4 +52,3 @@ resources: {}
   #  memory: 128Mi
   #
 affinity: {}
-
