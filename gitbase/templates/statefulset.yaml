@@ -1,0 +1,82 @@
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  name: {{ template "gitbase.fullname" . }}
+  labels:
+    app: {{ template "gitbase.name" . }}
+    chart: {{ template "gitbase.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  serviceName: {{ template "gitbase.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "gitbase.name" . }}
+      release: {{ .Release.Name }}
+  volumeClaimTemplates:
+  - metadata:
+      name: gitbase-repos-volume
+    spec:
+    {{- if .Values.storage.class }}
+    {{- if (eq "-" .Values.storage.class) }}
+      storageClassName: ""
+    {{- else }}
+      storageClassName: "{{ .Values.storage.class }}"
+    {{- end }}
+    {{- end }}
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: "{{ .Values.storage.size }}"
+  template:
+    metadata:
+      labels:
+        app: {{ template "gitbase.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      volumes:
+{{- if not .Values.settings.bblfshServerAddr }}
+{{ include "bblfshd-sidecar.volumes" . | indent 6 }}
+{{- end }}
+      containers:
+{{- if not .Values.settings.bblfshServerAddr }}
+{{ include "bblfshd-sidecar.containers" . | indent 6 }}
+{{- end }}
+      - name: gitbase
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        volumeMounts:
+          - name: gitbase-repos-volume
+            mountPath: "/mnt/repositories"
+        env:
+          - name: BBLFSH_ENDPOINT
+            value: {{ default "localhost:9432" .Values.settings.bblfshServerAddr }}
+          - name: GITBASE_USER
+            value: "{{ .Values.settings.user }}"
+          - name: GITBASE_PASSWORD
+            value: "{{ .Values.settings.password }}"
+          - name: GITBASE_REPOS
+            value: "/mnt/repositories"
+          {{- if .Values.settings.squashEnable }}
+          - name: GITBASE_UNSTABLE_SQUASH_ENABLE
+            value: "{{ .Values.settings.squashEnable }}"
+          {{- end }}
+          {{- if .Values.settings.readonly }}
+          - name: GITBASE_READONLY
+            value: "{{ .Values.settings.readonly }}"
+          {{- end }}
+        resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
