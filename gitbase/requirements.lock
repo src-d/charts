@@ -1,0 +1,6 @@
+dependencies:
+- name: bblfshd-sidecar
+  repository: https://src-d.github.io/charts/
+  version: 0.2.0
+digest: sha256:6af95049f6a6de4af1284f1b7060a01684935b52198ae6f6fe5c357e53e6ebc3
+generated: 2019-01-22T11:30:57.739353659+01:00
