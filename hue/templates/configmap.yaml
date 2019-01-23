@@ -1,0 +1,204 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "hue.fullname" . }}
+  labels:
+    app: {{ template "hue.name" . }}
+    chart: {{ template "hue.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  hue.ini: |
+    # Hue configuration file
+    # ===================================
+    ###########################################################################
+    # General configuration for core Desktop features (authentication, etc)
+    ###########################################################################
+
+    [desktop]
+      secret_key=
+      http_host=0.0.0.0
+      http_port=8888
+      # Time zone name
+      time_zone=America/Los_Angeles
+      http_500_debug_mode=false
+
+      # ------------------------------------------------------------------------
+      [[database]]
+        # Database engine is typically one of:
+        # postgresql_psycopg2, mysql, sqlite3 or oracle.
+        #
+        # Note that for sqlite3, 'name', below is a path to the filename. For other backends, it is the database name
+        # Note for Oracle, options={"threaded":true} must be set in order to avoid crashes.
+        # Note for Oracle, you can use the Oracle Service Name by setting "host=" and "port=" and then "name=<host>:<port>/<service_name>".
+        # Note for MariaDB use the 'mysql' engine.
+        engine={{ .Values.config.database.engine }}
+        host={{ .Values.config.database.host }}
+        port={{ .Values.config.database.port }}
+        user={{ .Values.config.database.user }}
+        password={{ .Values.config.database.password }}
+        ## name=desktop/desktop.db
+        ## options={}
+        # Database schema, to be used only when public schema is revoked in postgres
+        ## schema=public
+
+
+    ###########################################################################
+    # Settings to configure the snippets available in the Notebook
+    ###########################################################################
+
+    [notebook]
+
+      ## Show the notebook menu or not
+      # show_notebooks=true
+
+      ## Flag to enable the selection of queries from files, saved queries into the editor or as snippet.
+      # enable_external_statements=false
+
+      ## Flag to enable the bulk submission of queries as a background task through Oozie.
+      # enable_batch_execute=true
+
+      ## Flag to turn on the SQL indexer.
+      # enable_sql_indexer=false
+
+      ## Flag to turn on the Presentation mode of the editor.
+      # enable_presentation=true
+
+      ## Flag to enable the SQL query builder of the table assist.
+      # enable_query_builder=true
+
+      ## Flag to enable the creation of a coordinator for the current SQL query.
+      # enable_query_scheduling=false
+
+      ## Main flag to override the automatic starting of the DBProxy server.
+      # enable_dbproxy_server=true
+
+      ## Classpath to be appended to the default DBProxy server classpath.
+      # dbproxy_extra_classpath=
+
+      ## Comma separated list of interpreters that should be shown on the wheel. This list takes precedence over the
+      ## order in which the interpreter entries appear. Only the first 5 interpreters will appear on the wheel.
+      # interpreters_shown_on_wheel=
+
+      # One entry for each type of snippet.
+      [[interpreters]]
+        # Define the name and how to connect and execute the language.
+
+        [[[hive]]]
+          # The name of the snippet.
+          name=Hive
+          # The backend connection to use to communicate with the server.
+          interface=hiveserver2
+
+        [[[impala]]]
+          name=Impala
+          interface=hiveserver2
+
+        # [[[sparksql]]]
+        #   name=SparkSql
+        #   interface=hiveserver2
+
+        [[[spark]]]
+          name=Scala
+          interface=livy
+
+        [[[pyspark]]]
+          name=PySpark
+          interface=livy
+
+        [[[r]]]
+          name=R
+          interface=livy
+
+        [[[jar]]]
+          name=Spark Submit Jar
+          interface=livy-batch
+
+        [[[py]]]
+          name=Spark Submit Python
+          interface=livy-batch
+
+        [[[text]]]
+          name=Text
+          interface=text
+
+        [[[markdown]]]
+          name=Markdown
+          interface=text
+
+        [[[mysql]]]
+          name = MySQL
+          interface=rdbms
+
+        [[[sqlite]]]
+          name = SQLite
+          interface=rdbms
+
+        [[[postgresql]]]
+          name = PostgreSQL
+          interface=rdbms
+
+        [[[oracle]]]
+          name = Oracle
+          interface=rdbms
+
+        [[[solr]]]
+          name = Solr SQL
+          interface=solr
+          ## Name of the collection handler
+          # options='{"collection": "default"}'
+
+        [[[pig]]]
+          name=Pig
+          interface=oozie
+
+        [[[java]]]
+          name=Java
+          interface=oozie
+
+        [[[spark2]]]
+          name=Spark
+          interface=oozie
+
+        [[[mapreduce]]]
+          name=MapReduce
+          interface=oozie
+
+        [[[sqoop1]]]
+          name=Sqoop1
+          interface=oozie
+
+        [[[distcp]]]
+          name=Distcp
+          interface=oozie
+
+        [[[shell]]]
+          name=Shell
+          interface=oozie
+
+
+    ###########################################################################
+    # Settings to configure the Spark application.
+    ###########################################################################
+
+    [spark]
+      {{- if .Values.config.spark.enabled }}
+      # The Livy Server URL.
+      livy_server_url={{ .Values.config.spark.livyServerURL }}
+
+      # Configure Livy to start in local 'process' mode, or 'yarn' workers.
+      livy_server_session_kind={{ .Values.config.spark.livyServerSessionKind }}
+
+      # Whether Livy requires client to perform Kerberos authentication.
+      security_enabled={{ .Values.config.spark.securityEnabled }}
+
+      # Host of the Sql Server
+      sql_server_host={{ .Values.config.spark.sqlServerHost }}
+
+      # Port of the Sql Server
+      sql_server_port={{ .Values.config.spark.sqlServerPort }}
+
+      # Choose whether Hue should validate certificates received from the server.
+      ssl_cert_ca_verify={{ .Values.config.spark.sslCaCertVerify }}
+      {{- end }}
+
