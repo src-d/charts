@@ -32,6 +32,7 @@ app: {}
 config:
   database:
     engine: sqlite3
+    name: sql.db
     host: ""
     user: ""
     password: ""

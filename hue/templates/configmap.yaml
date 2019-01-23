@@ -37,7 +37,7 @@ data:
         port={{ .Values.config.database.port }}
         user={{ .Values.config.database.user }}
         password={{ .Values.config.database.password }}
-        ## name=desktop/desktop.db
+        name={{ .Values.config.database.name }}
         ## options={}
         # Database schema, to be used only when public schema is revoked in postgres
         ## schema=public
