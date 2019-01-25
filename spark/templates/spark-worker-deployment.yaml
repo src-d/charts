@@ -33,6 +33,9 @@ spec:
              endpoints: {{ required "Missing Worker.Gluster.endpoint" .Values.Worker.Gluster.endpoint }}
              path: {{ required "Missing Worker.Gluster.volumeName" .Values.Worker.Gluster.volumeName }}
         {{- end }}
+        {{- with .Values.Worker.additionalVolumes  }}
+{{ toYaml . | indent 8 }}
+        {{- end }}
       containers:
         - name: {{ template "worker-fullname" . }}
           image: "{{ .Values.Worker.Image }}:{{ .Values.Worker.ImageTag }}"
@@ -49,6 +52,9 @@ spec:
             {{- if .Values.Worker.Gluster }}
             - mountPath: {{ default "/mnt/glusterfs" .Values.Worker.Gluster.mountPath }}
               name: glusterfsvol
+            {{- end }}
+           {{- with .Values.Worker.additionalVolumeMounts  }}
+{{ toYaml . | indent 12 }}
             {{- end }}
           env:
           - name: SPARK_DAEMON_MEMORY
