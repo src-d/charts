@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: {{ template "worker-fullname" . }}
   labels:
+    app: {{ template "name" . }}
     heritage: {{ .Release.Service | quote }}
     release: {{ .Release.Name | quote }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
@@ -17,29 +18,10 @@ spec:
   template:
     metadata:
       labels:
+        app: {{ template "name" . }}
         heritage: {{ .Release.Service | quote }}
         release: {{ .Release.Name | quote }}
         component: "{{ .Release.Name }}-{{ .Values.Worker.Component }}"
-      annotations:
-        scheduler.alpha.kubernetes.io/affinity: >
-          {
-            "podAntiAffinity": {
-              "requiredDuringSchedulingIgnoredDuringExecution": [
-                {
-                  "topologyKey": "kubernetes.io/hostname",
-                  "labelSelector": {
-                    "matchExpressions": [
-                      {
-                        "key": "component",
-                        "operator": "In",
-                        "values": [ "{{ .Release.Name }}-{{ .Values.Worker.Component }}" ]
-                      }
-                    ]
-                  }
-                }
-              ]
-            }
-          }
     spec:
       volumes:
         - name: spark-tmp
@@ -91,3 +73,7 @@ spec:
       nodeSelector:
 {{ toYaml .Values.Worker.NodeSelector | indent 8 }}
     {{- end }}
+      affinity:
+      {{- with .Values.Worker.Affinity  }}
+{{ toYaml . | indent 8 }}
+      {{- end }}
