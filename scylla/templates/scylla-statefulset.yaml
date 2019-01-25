@@ -14,12 +14,7 @@ spec:
     matchLabels:
       app: {{ template "scylla.name" . }}
       release: {{ .Release.Name }}
-  template:
-    metadata:
-      labels:
-        app: {{ template "scylla.name" . }} 
-        release: {{ .Release.Name }}
-    {{- if .Values.persistence.enabled }}
+   {{- if .Values.persistence.enabled }}
     volumeClaimTemplates:
       - metadata:
           name: datadir
@@ -42,7 +37,12 @@ spec:
           storageClassName: "{{ .Values.persistence.storageClass }}"
         {{- end }}
         {{- end }}
-        {{- end }}
+  {{- end }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "scylla.name" . }} 
+        release: {{ .Release.Name }}
     spec:
       {{- if .Values.nodeSelector }}
       nodeSelector:
