@@ -36,6 +36,7 @@ kind: Deployment
 metadata:
   name: {{ template "master-fullname" . }}
   labels:
+    app: {{ template "name" . }}
     heritage: {{ .Release.Service | quote }}
     release: {{ .Release.Name | quote }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
@@ -50,6 +51,7 @@ spec:
   template:
     metadata:
       labels:
+        app: {{ template "name" . }}
         heritage: {{ .Release.Service | quote }}
         release: {{ .Release.Name | quote }}
         component: "{{ .Release.Name }}-{{ .Values.Master.Component }}"

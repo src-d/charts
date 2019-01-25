@@ -65,3 +65,16 @@ Worker:
   #    image: bblfsh/server:latest
   #    securityContext:
   #      privileged: true
+  ## Affinity for pod assignment
+  ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+  ##
+  Affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app
+            operator: In
+            values:
+            - spark
+        topologyKey: "kubernetes.io/hostname"
