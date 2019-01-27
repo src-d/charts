@@ -85,6 +85,9 @@ spec:
           - name: scylla-ready-probe
             mountPath: /opt/ready-probe.sh
             subPath: ready-probe.sh
+          - name: scylla-config
+            mountPath: /etc/scylla/scylla.yaml
+            subPath: scylla.yaml
       volumes:
         {{- if not .Values.persistence.enabled }}
         - name: datadir
@@ -98,3 +101,6 @@ spec:
         - name: scylla-ready-probe
           configMap:
             name: {{ template "scylla.fullname" . }}
+        - name: scylla-config
+          configMap:
+            name: {{ template "scylla.fullname" . }}-config

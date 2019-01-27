@@ -39,4 +39,8 @@ persistence:
   size: 8Gi
 annotations: {}
 
+config:
+    # This breaks the Helm style guide to later add more smarter configuration handling as Scylla uses YAML.
+    commitlog_segment_size_in_mb:  256
+
 # nodeSelector: {}
