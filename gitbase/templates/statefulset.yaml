@@ -66,6 +66,9 @@ spec:
           - name: GITBASE_READONLY
             value: "{{ .Values.settings.readonly }}"
           {{- end }}
+{{- if .Values.extraEnv }}
+{{ toYaml .Values.extraEnv | indent 10 }}
+{{- end }}
         resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}

@@ -42,3 +42,5 @@ bblfshd-sidecar:
   image:
     # The minimum requirement is v2.10.0
     tag: v2.10.0
+
+extraEnv: []
