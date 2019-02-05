@@ -42,5 +42,6 @@ annotations: {}
 config:
     # This breaks the Helm style guide to later add more smarter configuration handling as Scylla uses YAML.
     commitlog_segment_size_in_mb:  256
+    write_request_timeout_in_ms: 2000
 
 # nodeSelector: {}
