@@ -120,7 +120,7 @@ data:
     read_request_timeout_in_ms: 5000
 
     # How long the coordinator should wait for writes to complete
-    write_request_timeout_in_ms: 2000
+    write_request_timeout_in_ms: {{ .Values.config.write_request_timeout_in_ms }}
 
     # phi value that must be reached for a host to be marked down.
     # most users should never need to adjust this.
