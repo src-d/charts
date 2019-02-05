@@ -56,6 +56,10 @@ spec:
         release: {{ .Release.Name | quote }}
         component: "{{ .Release.Name }}-{{ .Values.Master.Component }}"
     spec:
+      volumes:
+      {{- with .Values.Master.additionalVolumes  }}
+{{ toYaml . | indent 8 }}
+        {{- end }}
       containers:
         - name: {{ template "master-fullname" . }}
           image: "{{ .Values.Master.Image }}:{{ .Values.Master.ImageTag }}"
@@ -65,6 +69,10 @@ spec:
           ports:
             - containerPort: {{ .Values.Master.ContainerPort }}
             - containerPort: {{ .Values.WebUi.ContainerPort }}
+          volumeMounts:
+          {{- with .Values.Master.additionalVolumeMounts  }}
+{{ toYaml . | indent 12 }}
+          {{- end }}
           resources:
             requests:
               cpu: "{{ .Values.Master.Cpu }}"

@@ -13,6 +13,10 @@ Master:
   Memory: "512Mi"
   ServicePort: 7077
   ContainerPort: 7077
+  # Additional volumes for the Master pod
+  additionalVolumes: []
+  # Additional volume mounts for the Master container
+  additionalVolumeMounts: []
   # Custom Spark Config. See template to find which values are already set
   customSparkConfig: {}
   # Set Master JVM memory. Default 1g
@@ -54,6 +58,10 @@ Worker:
   customSparkConfig: {}
   # Set Spark's temporary files location
   TemporaryDirRoot: /tmp
+  # Additional volumes for the Worker pods
+  additionalVolumes: []
+  # Additional volume mounts for the Worker container
+  additionalVolumeMounts: []
   # Set Worker JVM memory. Default 1g
   #DaemonMemory: 1g
   # Set how much total memory workers have to give executors
