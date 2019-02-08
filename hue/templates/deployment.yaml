@@ -29,7 +29,8 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
             - name: config
-              mountPath: /hue/desktop/conf/
+              mountPath: /hue/desktop/conf/hue.ini
+              subPath: hue.ini
           ports:
             - name: http
               containerPort: 8888
