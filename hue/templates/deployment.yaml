@@ -23,6 +23,15 @@ spec:
         - name: config
           configMap:
             name: {{ if .Values.app.customConfigmap }}{{ .Values.app.customConfigmap }}{{ else }}{{ template "hue.fullname" . }}{{ end }}
+      initContainers:
+        - name: {{ .Chart.Name }}-migrate
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: [ "build/env/bin/hue", "migrate" ]
+          volumeMounts:
+            - name: config
+              mountPath: /hue/desktop/conf/hue.ini
+              subPath: hue.ini
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
