@@ -36,11 +36,11 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: /hue/accounts/login
               port: http
           readinessProbe:
             httpGet:
-              path: /
+              path: /hue/accounts/login
               port: http
           resources:
 {{ toYaml .Values.resources | indent 12 }}
