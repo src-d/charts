@@ -5,9 +5,9 @@
 replicaCount: 1
 
 image:
-  repository: gethue/hue
-  tag: latest
-  pullPolicy: Always
+  repository: srcd/hue
+  tag: 4.3.0
+  pullPolicy: IfNotPresent
 
 service:
   type: ClusterIP
