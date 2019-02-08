@@ -12,6 +12,7 @@ image:
 service:
   type: ClusterIP
   port: 80
+  # nodePort:
 
 ingress:
   enabled: false
