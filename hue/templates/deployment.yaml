@@ -20,7 +20,7 @@ spec:
         release: {{ .Release.Name }}
     spec:
       volumes:
-        - name: config1
+        - name: config
           configMap:
             name: {{ if .Values.app.customConfigmap }}{{ .Values.app.customConfigmap }}{{ else }}{{ template "hue.fullname" . }}{{ end }}
       containers:
