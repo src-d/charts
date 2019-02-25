@@ -19,7 +19,23 @@ spec:
         app: {{ template "gemini.name" . }}
         release: {{ .Release.Name }}
     spec:
+      volumes:
+        {{- if .Values.bblfshd.enabled }}
+{{ include "bblfshd-sidecar.volumes" . | indent 8 }}
+        {{- end }}
       containers:
+        {{- if .Values.bblfshd.enabled }}
+{{ include "bblfshd-sidecar.containers" . | indent 8 }}
+        {{- end }}
+        {{- if .Values.featureExtractor.enabled }}
+        - name: feature-extractor
+          image: srcd/feature-extractor:{{ .Values.featureExtractor.tag }}
+          env:
+            - name: PYTHONHASHSEED
+              value: "0"
+            - name: FEATURE_EXT_WORKERS
+              value: "100"
+        {{- end }}
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
