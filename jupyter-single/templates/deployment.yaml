@@ -31,6 +31,10 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ required "missing image.repository" .Values.image.repository }}:{{ required "missing image.tag"  .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.image.command }}
+          command:
+{{ toYaml .Values.image.command | indent 12 }}
+          {{- end }}
           volumeMounts:
             - name: home
               mountPath: /home/jovyan

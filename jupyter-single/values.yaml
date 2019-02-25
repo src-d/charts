@@ -5,6 +5,7 @@
 image:
   # repository: nginx
   # tag: stable
+  command: []
   pullPolicy: IfNotPresent
 
 persistence:
