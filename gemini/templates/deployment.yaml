@@ -29,7 +29,7 @@ spec:
         {{- end }}
         {{- if .Values.featureExtractor.enabled }}
         - name: feature-extractor
-          image: srcd/feature-extractor:{{ .Values.featureExtractor.tag }}
+          image: srcd/feature-extractor:{{ .Values.image.tag }}
           env:
             - name: PYTHONHASHSEED
               value: "0"
