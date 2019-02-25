@@ -8,6 +8,7 @@ service:
   type: ClusterIP
   port: 80
   internalPort: 8080
+  # nodePort: 
 
 ingress:
   enabled: false

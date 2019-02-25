@@ -14,6 +14,7 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+      nodePort: {{ .Values.service.nodePort }}
   selector:
     app: {{ template "gitbase-web.name" . }}
     release: {{ .Release.Name }}
