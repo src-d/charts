@@ -23,6 +23,13 @@ spec:
         {{- if .Values.bblfshd.enabled }}
 {{ include "bblfshd-sidecar.volumes" . | indent 8 }}
         {{- end }}
+        - name: data
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ template "gemini.fullname" . }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
       containers:
         {{- if .Values.bblfshd.enabled }}
 {{ include "bblfshd-sidecar.containers" . | indent 8 }}
@@ -30,6 +37,9 @@ spec:
         {{- if .Values.featureExtractor.enabled }}
         - name: feature-extractor
           image: srcd/feature-extractor:{{ .Values.image.tag }}
+          volumeMounts:
+            - name: data
+              mountPath: /home/jovyan
           env:
             - name: PYTHONHASHSEED
               value: "0"
