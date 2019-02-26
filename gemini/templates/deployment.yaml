@@ -37,9 +37,6 @@ spec:
         {{- if .Values.featureExtractor.enabled }}
         - name: feature-extractor
           image: srcd/feature-extractor:{{ .Values.image.tag }}
-          volumeMounts:
-            - name: data
-              mountPath: /home/jovyan
           env:
             - name: PYTHONHASHSEED
               value: "0"
@@ -49,6 +46,9 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: data
+              mountPath: /mnt/data
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
