@@ -31,6 +31,14 @@ spec:
           emptyDir: {}
           {{- end }}
       containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: data
+              mountPath: /mnt/data
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
         {{- if .Values.bblfshd.enabled }}
 {{ include "bblfshd-sidecar.containers" . | indent 8 }}
         {{- end }}
@@ -43,14 +51,6 @@ spec:
             - name: FEATURE_EXT_WORKERS
               value: "100"
         {{- end }}
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          volumeMounts:
-            - name: data
-              mountPath: /mnt/data
-          resources:
-{{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
