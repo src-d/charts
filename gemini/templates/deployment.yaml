@@ -19,12 +19,38 @@ spec:
         app: {{ template "gemini.name" . }}
         release: {{ .Release.Name }}
     spec:
+      volumes:
+        {{- if .Values.bblfshd.enabled }}
+{{ include "bblfshd-sidecar.volumes" . | indent 8 }}
+        {{- end }}
+        - name: data
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ template "gemini.fullname" . }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: data
+              mountPath: /mnt/data
           resources:
 {{ toYaml .Values.resources | indent 12 }}
+        {{- if .Values.bblfshd.enabled }}
+{{ include "bblfshd-sidecar.containers" . | indent 8 }}
+        {{- end }}
+        {{- if .Values.featureExtractor.enabled }}
+        - name: feature-extractor
+          image: srcd/feature-extractor:{{ .Values.image.tag }}
+          env:
+            - name: PYTHONHASHSEED
+              value: "0"
+            - name: FEATURE_EXT_WORKERS
+              value: "100"
+        {{- end }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}

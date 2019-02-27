@@ -6,8 +6,21 @@ replicaCount: 1
 
 image:
   repository: srcd/gemini
-  tag: v0.3.0
+  tag: v0.7.0
   pullPolicy: IfNotPresent
+
+persistence:
+  enabled: false
+  keep: false # keep PVC on helm delete
+  accessMode: ReadWriteOnce
+  size: 10Gi
+  # storageClass: 
+
+bblfshd: 
+  enabled: false
+
+featureExtractor: 
+  enabled: false
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
