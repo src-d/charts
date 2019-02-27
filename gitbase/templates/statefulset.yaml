@@ -40,6 +40,9 @@ spec:
       volumes:
       {{- if not .Values.storage.enablePVC }}
       - name: gitbase-repos-volume
+{{- if empty .Values.storage.customVolumesSpec }}
+{{- fail "Required storage.customVolumesSpec when storage.enablePVC is set to false" }}
+{{- end }}
 {{ toYaml .Values.storage.customVolumesSpec | indent 8 }}
       {{- end }}
 {{- if not .Values.settings.bblfshServerAddr }}
