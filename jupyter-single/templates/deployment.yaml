@@ -19,6 +19,10 @@ spec:
         app: {{ template "jupyter-single.name" . }}
         release: {{ .Release.Name }}
     spec:
+      {{- if .Values.rbac.serviceAccountName }}
+      serviceAccountName: {{ .Values.rbac.serviceAccountName }}
+      automountServiceAccountToken: true
+      {{- end }}
       volumes:
       - name: home
         {{- if .Values.persistence.enabled }}
