@@ -14,7 +14,10 @@ service:
   port: 3306
 
 storage:
+  enablePVC: true
   size: 10Gi
+  customVolumesSpec: {}
+  # subPath:
 
 settings:
   user: gitbase

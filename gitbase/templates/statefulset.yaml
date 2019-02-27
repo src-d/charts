@@ -14,6 +14,7 @@ spec:
     matchLabels:
       app: {{ template "gitbase.name" . }}
       release: {{ .Release.Name }}
+  {{- if .Values.storage.enablePVC }}
   volumeClaimTemplates:
   - metadata:
       name: gitbase-repos-volume
@@ -29,6 +30,7 @@ spec:
       resources:
         requests:
           storage: "{{ .Values.storage.size }}"
+  {{- end }}
   template:
     metadata:
       labels:
@@ -36,6 +38,13 @@ spec:
         release: {{ .Release.Name }}
     spec:
       volumes:
+      {{- if not .Values.storage.enablePVC }}
+      - name: gitbase-repos-volume
+{{- if empty .Values.storage.customVolumesSpec }}
+{{- fail "Required storage.customVolumesSpec when storage.enablePVC is set to false" }}
+{{- end }}
+{{ toYaml .Values.storage.customVolumesSpec | indent 8 }}
+      {{- end }}
 {{- if not .Values.settings.bblfshServerAddr }}
 {{ include "bblfshd-sidecar.volumes" . | indent 6 }}
 {{- end }}
@@ -49,6 +58,9 @@ spec:
         volumeMounts:
           - name: gitbase-repos-volume
             mountPath: "/mnt/repositories"
+            {{- if .Values.storage.subPath }}
+            subPath: {{ .Values.storage.subPath }}
+            {{- end }}
         env:
           - name: BBLFSH_ENDPOINT
             value: {{ default "localhost:9432" .Values.settings.bblfshServerAddr }}
