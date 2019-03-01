@@ -16,7 +16,7 @@ spec:
         release: {{ .Release.Name }}
       {{- if .Values.republish.fluentbitParser }}
       annotations:
-        logging.parser: {{ .Values.republish.fluentbitParser }}
+        fluentbit.io/parser: {{ .Values.republish.fluentbitParser }}
       {{- end }}
     spec:
       containers:
