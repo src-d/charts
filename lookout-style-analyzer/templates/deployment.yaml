@@ -52,6 +52,11 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
+            - --log-level
+            - {{ .Values.app.log.level | upper }}
+            {{- if .Values.app.log.structured }}
+            - --log-structured
+            {{- end }}
             - run
             - lookout.style.format
             - --server
@@ -62,11 +67,6 @@ spec:
             - $(LOOKOUT_DB)
             - --fs
             - /tmp/models
-            {{- if .Values.app.log.structured }}
-            - --log-structured
-            {{- end }}
-            - --log-level
-            - {{ .Values.app.log.level | upper }}
             {{- if .Values.app.workers }}
             - --workers
             - {{ .Values.app.workers }}
