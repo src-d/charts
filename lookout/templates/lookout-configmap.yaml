@@ -21,3 +21,7 @@ data:
     repositories:
 {{ toYaml . | indent 6 }}
     {{- end }}
+    {{- with .Values.timeout }}
+    timeout:
+{{ toYaml . | indent 6 }}
+    {{- end }}
