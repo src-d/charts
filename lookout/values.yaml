@@ -46,6 +46,20 @@ databases:
     # instanceConnectionName: 
     # serviceAccountSecret: 
     # connectionDetailsSecret: 
+    #
+
+timeout: {}
+  # These are the default timeout values. A value of 0 means no timeout
+  # Timeout for an analyzer to reply a NotifyReviewEvent
+  # analyzer_review: 10m
+  # Timeout for an analyzer to reply a NotifyPushEvent
+  # analyzer_push: 60m
+  # Timeout for HTTP requests to the GitHub API
+  # github_request: 1m
+  # Timeout for Git fetch actions
+  # git_fetch: 20m
+  # Timeout for Bblfsh to reply to a Parse request
+  # bblfsh_parse: 2m
 
 resources:
   lookout: {}
