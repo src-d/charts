@@ -6,9 +6,12 @@ spec:
   ports:
     - port: {{ .Values.WebUiProxy.ServicePort }}
       targetPort: {{ .Values.WebUiProxy.ContainerPort }}
+      {{- if .Values.WebUiProxy.ServiceNodePort }}
+      nodePort: {{ .Values.WebUiProxy.ServiceNodePort }}
+      {{- end }}
   selector:
     component: "{{ .Release.Name }}-{{ .Values.WebUiProxy.Component }}"
-  type: ClusterIP
+  type: {{ .Values.WebUiProxy.ServiceType }}
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment

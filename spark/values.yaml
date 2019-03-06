@@ -31,8 +31,10 @@ WebUi:
 
 WebUiProxy:
   Name: "webui-proxy"
+  ServiceType: ClusterIP
   ServicePort: 80
   ContainerPort: 80
+  # ServiceNodePort: 
   Component: "spark-webui-proxy"
   Replicas: 1
   Image: "srcd/spark-ui-proxy"
