@@ -43,8 +43,10 @@ spec:
           env:
             - name: REVERSE_PROXY
               value: "yes"
+            {{- if .Values.WebUiProxy.ReverseProxy.ApiPrefix }}
             - name: URL_PREFIX
               value: "/{{ .Values.WebUiProxy.ReverseProxy.ApiPrefix }}/api/v1/namespaces/{{ .Release.Namespace }}/services/{{ template "webui-proxy-fullname" . }}:{{ .Values.WebUiProxy.ServicePort }}/proxy"
+            {{- end }}
             {{- if .Values.WebUiProxy.ReverseProxy.Debug }}
             - name: DEBUG
               value: "yes"
