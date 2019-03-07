@@ -67,11 +67,11 @@ The following tables lists the configurable parameters of the Spark chart and th
 | `WebUiProxy.ServicePort`            | k8s service port                     | `80`                                                       |
 | `WebUiProxy.ContainerPort`          | Container listening port             | `80`                                                       |
 | `WebUiProxy.NodeSelector`           | WebUiProxy k8s node selector         | `{}`                                                       |
-| `WebUiProxy.ReverseProxy.Deploy`    | WebUiProxy is behind a reverse proxy | `yes` (we assume it will be kube-proxy)                    |
-| `WebUiProxy.ReverseProxy.ApiPrefix` | api-prefix to pass to kube proxy     | `spark-ui-proxy` (we assume it will be kube-proxy)         |
-| `WebUiProxy.ReverseProxy.Debug`     | Print debug messages                 | `false` (we assume it will be kube-proxy)                  |
+| `WebUiProxy.ReverseProxy.Deploy`    | WebUiProxy is behind a reverse proxy | `yes`                                                      |
+| `WebUiProxy.ReverseProxy.ApiPrefix` | api-prefix to pass to kube proxy     |                                                            |
+| `WebUiProxy.ReverseProxy.Debug`     | Print debug messages                 | `false`                                                    |
 
-We need the api prefix in order to avoid namespace clashing, as `spark-ui-proxy` rewrites paths under `/api/v1` which is what kube-proxy uses. Hence, in order for this integration to work properly, kube-proxy must be started with `--api-prefix` option
+If you're using `kubectl proxy` as your reverse proxy, it's important that you set the `ApiPrefix` property, since we need it in order to avoid namespace clashing, as `spark-ui-proxy` rewrites paths under `/api/v1` which is what `kubectl proxy` uses. Hence, in order for this integration to work properly, kube-proxy must be started with `--api-prefix` option
 
 ```
 $ kubectl proxy --api-prefix=/spark-ui-proxy
