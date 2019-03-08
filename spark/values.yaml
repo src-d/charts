@@ -42,8 +42,10 @@ WebUiProxy:
   Cpu: "100m"
   ReverseProxy:
     Deploy: true
-    ApiPrefix: spark-ui-proxy
     Debug: false
+    # This will make spark-web-ui-proxy work with kubectl proxy --api-prefix
+    # which is something that always should be set when working when kubectl proxy
+    # ApiPrefix: spark-ui-proxy
   #NodeSelector:
     #srcd.host/type: worker
 
