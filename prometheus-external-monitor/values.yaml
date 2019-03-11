@@ -1,0 +1,7 @@
+endpoints: []
+# - name: server-1
+#   hostname: server-1.full.domain.tld
+#   port: 9100
+#   path: /metrics
+serviceMonitor:
+  interval: 15s
