@@ -1,0 +1,21 @@
+{{ if and .Values.producer.metrics .Values.producer.prometheusOperatorConfig }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "fullname" . }}-producer
+  namespace: {{ .Values.prometheus.operator.serviceMonitor.namespace }}
+  labels:
+{{- if .Values.prometheus.operator.serviceMonitor.selector }}
+{{ toYaml .Values.prometheus.operator.serviceMonitor.selector | indent 4 }}
+{{- end }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "name" . }}-producer
+      release: {{ .Release.Name }}
+  endpoints:
+  - port: metrics
+    interval: {{ .Values.prometheus.operator.serviceMonitor.interval }}
+  namespaceSelector:
+    any: true
+{{ end }}

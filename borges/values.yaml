@@ -15,6 +15,7 @@ consumer:
   metrics: true
   metricsPort: 6062
   sysdigConfig: true
+  prometheusOperatorConfig: false
   bucketSize: 2
   replicaCount: 1
   cleanTmp: true
@@ -28,6 +29,7 @@ producer:
   metrics: true
   metricsPort: 6062
   sysdigConfig: true
+  prometheusOperatorConfig: false
   replicaCount: 1
   logformat: json
   # fluenbitParser: docker_json
@@ -43,6 +45,7 @@ republish:
   profilerPort: 6061
   metrics: true
   metricsPort: 6062
+  prometheusOperatorConfig: false
   replicaCount: 1
   logformat: json
   # fluenbitParser: docker_json
@@ -74,6 +77,13 @@ locking:
   timeout: 2m
 
 #nodeSelector:
+
+prometheus:
+  operator:
+    serviceMonitor:
+      namespace: monitoring
+      selector: {}
+      interval: 10s
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

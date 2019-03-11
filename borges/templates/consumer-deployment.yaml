@@ -46,6 +46,7 @@ spec:
             {{- end }}
             {{- if .Values.consumer.metrics }}
             - containerPort: {{ .Values.consumer.metricsPort }}
+              name: metrics
             {{- end }}
           env:
             - name: BORGES_BROKER

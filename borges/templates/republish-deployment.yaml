@@ -48,6 +48,7 @@ spec:
             {{- end }}
             {{- if .Values.republish.metrics }}
             - containerPort: {{ .Values.republish.metricsPort }}
+              name: metrics
             {{- end }}
           env:
             - name: AMQP_BURIED_TIMEOUT

@@ -1,0 +1,18 @@
+{{ if and .Values.producer.metrics }}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{ template "name" . }}-producer
+    release: {{ .Release.Name }}
+  name: {{ template "fullname" . }}-producer
+spec:
+  ports:
+  - name: metrics
+    port: {{ .Values.producer.metricsPort }}
+    targetPort: metrics
+    protocol: TCP
+  selector:
+    app: {{ template "name" . }}-producer
+    release: {{ .Release.Name }}
+{{ end }}
