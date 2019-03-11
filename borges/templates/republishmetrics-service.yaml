@@ -15,4 +15,5 @@ spec:
   selector:
     app: {{ template "name" . }}-producer
     release: {{ .Release.Name }}
+    path: /debug/vars
 {{ end }}

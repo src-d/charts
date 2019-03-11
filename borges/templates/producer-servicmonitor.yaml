@@ -16,6 +16,7 @@ spec:
   endpoints:
   - port: metrics
     interval: {{ .Values.prometheus.operator.serviceMonitor.interval }}
+    path: /debug/vars
   namespaceSelector:
     any: true
 {{ end }}
