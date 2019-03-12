@@ -2,7 +2,7 @@
 {{- range .Values.endpoints }}
 ---
 apiVersion: v1
-kind: Service
+kind: Endpoints
 metadata:
   name: {{ template "prometheus-external-monitor.fullname" $root }}-{{ .name }}
   labels:
@@ -10,13 +10,11 @@ metadata:
     chart: {{ template "prometheus-external-monitor.chart" $root }}
     release: {{ $root.Release.Name }}
     heritage: {{ $root.Release.Service }}
-spec:
-  type: ExternalName
-  externalName: {{ .ip }}
-  clusterIP: ""
-  ports:
-    - name: metrics
-      port: {{ .port | default "9100" }}
-      protocol: TCP
-      targetPort:  {{ .port | default "9100" }}
+subsets:
+- addresses: 
+  - ip: {{ .ip }}
+  ports: 
+  - name: metrics
+    port: {{ .port | default "9100" }}
+    protocol: TCP
 {{- end }}
