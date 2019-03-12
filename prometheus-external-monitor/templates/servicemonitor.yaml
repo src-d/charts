@@ -1,0 +1,26 @@
+{{- $root := .}}
+{{- range .Values.endpoints }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "prometheus-external-monitor.fullname" $root }}-{{ .name }}
+  labels:
+    app: {{ template "prometheus-external-monitor.name" $root }}-{{ .name }}
+    chart: {{ template "prometheus-external-monitor.chart" $root }}
+    release: {{ $root.Release.Name }}
+    heritage: {{ $root.Release.Service }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "prometheus-external-monitor.name" $root }}-{{ .name }}
+      chart: {{ template "prometheus-external-monitor.chart" $root }}
+      release: {{ $root.Release.Name }}
+      heritage: {{ $root.Release.Service }}
+  endpoints:
+    - port: metrics
+      interval: {{ $root.Values.serviceMonitor.interval }}
+      path: {{ .path | default "/metrics" }}
+  namespaceSelector:
+    any: true
+{{- end }}
