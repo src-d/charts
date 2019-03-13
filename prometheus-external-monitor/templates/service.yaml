@@ -12,7 +12,7 @@ metadata:
     heritage: {{ $root.Release.Service }}
 spec:
   type: ExternalName
-  externalName: {{ .ip }}
+  externalName: {{ .hostname }}
   clusterIP: ""
   ports:
     - name: metrics

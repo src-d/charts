@@ -18,3 +18,4 @@ subsets:
     port: {{ .port | default "9100" }}
     protocol: TCP
 {{- end }}
+
