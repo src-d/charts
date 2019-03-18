@@ -79,12 +79,12 @@ spec:
             - containerPort: {{ .Values.app.port }}
               protocol: TCP
           # TODO: We should have proper app probes
-          # livenessProbe:
-          #   tcpSocket:
-          #     port: {{ .Values.app.port }}
-          # readinessProbe:
-          #   tcpSocket:
-          #     port: {{ .Values.app.port }}
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.app.port }}
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.app.port }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
