@@ -31,6 +31,25 @@ spec:
     component: "{{ .Release.Name }}-{{ .Values.Master.Component }}"
   type: "ClusterIP"
 ---
+{{- if .Values.Livy.Enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "livy-fullname" . }}
+  labels:
+    heritage: {{ .Release.Service | quote }}
+    release: {{ .Release.Name | quote }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    component: "{{ .Release.Name }}-{{ .Values.Master.Component }}"
+spec:
+  ports:
+    - port: {{ default 8998 .Values.Livy.ServicePort }}
+      targetPort: {{ default 8998 .Values.Livy.ContainerPort }}
+  selector:
+    component: "{{ .Release.Name }}-{{ .Values.Master.Component }}"
+  type: "ClusterIP"
+---
+{{- end }}
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -60,6 +79,11 @@ spec:
       {{- with .Values.Master.additionalVolumes  }}
 {{ toYaml . | indent 8 }}
         {{- end }}
+      {{- if .Values.Livy.Enabled }}
+        - name: config
+          configMap:
+            name: {{ template "master-fullname" . }}-livy-conf
+      {{- end}}
       containers:
         - name: {{ template "master-fullname" . }}
           image: "{{ .Values.Master.Image }}:{{ .Values.Master.ImageTag }}"
@@ -86,6 +110,16 @@ spec:
           - name: {{ $key | quote }}
             value: {{ $value | quote }}
           {{- end }}
+      {{- if .Values.Livy.Enabled }}
+        - name : {{ template "livy-fullname" . }}
+          image: "{{ default "srcd/spark-livy" .Values.Livy.Image }}:{{ default "2.2.3" .Values.Livy.ImageTag }}"
+          ports:
+            - containerPort: {{ default 8998 .Values.Livy.ContainerPort }}
+          volumeMounts:
+            - mountPath: /opt/livy/conf/livy.conf
+              name: config
+              subPath: livy.conf
+      {{- end }}
     {{- if .Values.Master.NodeSelector }}
       nodeSelector:
 {{ toYaml .Values.Master.NodeSelector | indent 8 }}
