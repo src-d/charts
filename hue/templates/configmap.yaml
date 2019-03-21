@@ -202,3 +202,4 @@ data:
       # Choose whether Hue should validate certificates received from the server.
       ssl_cert_ca_verify={{ .Values.config.spark.sslCaCertVerify }}
       {{- end }}
+
