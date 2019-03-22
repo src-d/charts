@@ -22,6 +22,7 @@ data:
       # Time zone name
       time_zone=America/Los_Angeles
       http_500_debug_mode=false
+      app_blacklist={{ .Values.config.desktop.app_blacklist }}
 
       # ------------------------------------------------------------------------
       [[database]]

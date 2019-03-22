@@ -31,6 +31,8 @@ app: {}
   # customConfigmap: # Allows to point to an existing configmap for hue.ini
 
 config:
+  desktop:
+    app_blacklist: filebrowser,hbase,impala,jobbrowser,jobsub,logs,metastore,oozie,pig,proxy,rdbms,search,security,sqoop,zookeeper
   database:
     engine: sqlite3
     name: sql.db
