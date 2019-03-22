@@ -1,0 +1,19 @@
+{{- if .Values.Livy.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "master-fullname" . }}-livy-conf
+  labels:
+    app: {{ template "name" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  livy.conf: |
+    livy.server.port = {{ .Values.Livy.ServicePort }}
+    livy.spark.master = spark://{{ template "master-fullname" . }}:{{ .Values.Master.ServicePort }}
+    livy.spark.deployMode = client
+    livy.impersonation.enabled = true
+    livy.ui.enabled = true
+    livy.server.access-control.enabled = false
+{{- end}}

@@ -16,7 +16,7 @@
 # https://github.com/kubernetes/charts/tree/master/stable/spark
 
 name: spark
-version: 0.7.0
+version: 0.8.0
 description: Fast and general-purpose cluster computing system.
 home: http://spark.apache.org
 icon: http://spark.apache.org/images/spark-logo-trademark.png

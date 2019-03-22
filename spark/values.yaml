@@ -24,6 +24,16 @@ Master:
   #NodeSelector:
     #srcd.host/type: service
 
+
+# Enable Livy http rest service connected to spark-master
+Livy: 
+  Enabled: false
+  Name: livy
+  Image: "srcd/spark-livy"
+  ImageTag: "2.2.3"
+  ServicePort: 8998
+  ContainerPort: 8998
+
 WebUi:
   Name: webui
   ServicePort: 8080

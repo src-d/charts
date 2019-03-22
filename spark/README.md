@@ -102,6 +102,24 @@ $ kubectl proxy --api-prefix=/spark-ui-proxy
 
 See [values.yaml](values.yaml) file to get an example of how to pass the `AdditionalPodContainers` configuration
 
+### Livy
+
+Livy enables programmatic, fault-tolerant, multi-tenant submission of Spark jobs from web/mobile apps.
+
+If Livy is enabled, it will be deployed as an additional container inside the spark-master pod
+
+It needs to be enabled if you want to use hue to connect with Spark
+
+| Parameter                        | Description                          | Default                                                    |
+| -------------------------------- | ------------------------------------ | ---------------------------------------------------------- |
+| `Livy.Enabled`                   | Whether Livy is enabled  or not      | `false`                                                    |
+| `Livy.Name`                      | Livy Container name                  | `livy`                                                     |
+| `Livy.Image`                     | Container image name                 | `srcd/spark-livy`                                          |
+| `Livy.ImageTag`                  | Container image tag                  | `2.2.3`                                                    |
+| `Livy.ServicePort`               | k8s Service Port                     | `8998`                                                     |
+| `Livy.ContainerPort`             | Container listening port             | `8998`                                                     |
+
+
 ### Loading the chart
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
