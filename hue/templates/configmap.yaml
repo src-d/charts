@@ -85,16 +85,16 @@ data:
       [[interpreters]]
         # Define the name and how to connect and execute the language.
 
-        [[[hive]]]
-          # The name of the snippet.
-          name=Hive
-          # The backend connection to use to communicate with the server.
-          interface=hiveserver2
-
-        [[[impala]]]
-          name=Impala
-          interface=hiveserver2
-
+        # [[[hive]]]
+        #   # The name of the snippet.
+        #   name=Hive
+        #   # The backend connection to use to communicate with the server.
+        #   interface=hiveserver2
+        #
+        # [[[impala]]]
+        #   name=Impala
+        #   interface=hiveserver2
+        ##
         # [[[sparksql]]]
         #   name=SparkSql
         #   interface=hiveserver2
@@ -111,13 +111,13 @@ data:
           name=R
           interface=livy
 
-        [[[jar]]]
-          name=Spark Submit Jar
-          interface=livy-batch
-
-        [[[py]]]
-          name=Spark Submit Python
-          interface=livy-batch
+        # [[[jar]]]
+        #   name=Spark Submit Jar
+        #   interface=livy-batch
+        #
+        # [[[py]]]
+        #   name=Spark Submit Python
+        #   interface=livy-batch
 
         [[[text]]]
           name=Text
@@ -127,55 +127,55 @@ data:
           name=Markdown
           interface=text
 
-        [[[mysql]]]
-          name = MySQL
-          interface=rdbms
-
-        [[[sqlite]]]
-          name = SQLite
-          interface=rdbms
-
-        [[[postgresql]]]
-          name = PostgreSQL
-          interface=rdbms
-
-        [[[oracle]]]
-          name = Oracle
-          interface=rdbms
-
-        [[[solr]]]
-          name = Solr SQL
-          interface=solr
-          ## Name of the collection handler
-          # options='{"collection": "default"}'
-
-        [[[pig]]]
-          name=Pig
-          interface=oozie
-
-        [[[java]]]
-          name=Java
-          interface=oozie
-
-        [[[spark2]]]
-          name=Spark
-          interface=oozie
-
-        [[[mapreduce]]]
-          name=MapReduce
-          interface=oozie
-
-        [[[sqoop1]]]
-          name=Sqoop1
-          interface=oozie
-
-        [[[distcp]]]
-          name=Distcp
-          interface=oozie
-
-        [[[shell]]]
-          name=Shell
-          interface=oozie
+        # [[[mysql]]]
+        #   name = MySQL
+        #   interface=rdbms
+        #
+        # [[[sqlite]]]
+        #   name = SQLite
+        #   interface=rdbms
+        #
+        # [[[postgresql]]]
+        #   name = PostgreSQL
+        #   interface=rdbms
+        #
+        # [[[oracle]]]
+        #   name = Oracle
+        #   interface=rdbms
+        #
+        # [[[solr]]]
+        #   name = Solr SQL
+        #   interface=solr
+        #   ## Name of the collection handler
+        #   # options='{"collection": "default"}'
+        #
+        # [[[pig]]]
+        #   name=Pig
+        #   interface=oozie
+        #
+        # [[[java]]]
+        #   name=Java
+        #   interface=oozie
+        #
+        # [[[spark2]]]
+        #   name=Spark
+        #   interface=oozie
+        #
+        # [[[mapreduce]]]
+        #   name=MapReduce
+        #   interface=oozie
+        #
+        # [[[sqoop1]]]
+        #   name=Sqoop1
+        #   interface=oozie
+        #
+        # [[[distcp]]]
+        #   name=Distcp
+        #   interface=oozie
+        #
+        # [[[shell]]]
+        #   name=Shell
+        #   interface=oozie
 
 
     ###########################################################################
@@ -188,18 +188,18 @@ data:
       livy_server_url={{ .Values.config.spark.livyServerURL }}
 
       # Configure Livy to start in local 'process' mode, or 'yarn' workers.
-      livy_server_session_kind={{ .Values.config.spark.livyServerSessionKind }}
+      #livy_server_session_kind={{ .Values.config.spark.livyServerSessionKind }}
 
       # Whether Livy requires client to perform Kerberos authentication.
-      security_enabled={{ .Values.config.spark.securityEnabled }}
+      #security_enabled={{ .Values.config.spark.securityEnabled }}
 
       # Host of the Sql Server
-      sql_server_host={{ .Values.config.spark.sqlServerHost }}
+      #sql_server_host={{ .Values.config.spark.sqlServerHost }}
 
       # Port of the Sql Server
-      sql_server_port={{ .Values.config.spark.sqlServerPort }}
+      #sql_server_port={{ .Values.config.spark.sqlServerPort }}
 
       # Choose whether Hue should validate certificates received from the server.
-      ssl_cert_ca_verify={{ .Values.config.spark.sslCaCertVerify }}
+      #ssl_cert_ca_verify={{ .Values.config.spark.sslCaCertVerify }}
       {{- end }}
 
