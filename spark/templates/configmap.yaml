@@ -1,4 +1,4 @@
-{{- if .Values.Livy.enabled -}}
+{{- if .Values.Livy.Enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
