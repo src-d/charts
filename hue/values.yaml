@@ -32,7 +32,7 @@ app: {}
 
 config:
   desktop:
-    app_blacklist: filebrowser,hbase,impala,jobbrowser,jobsub,logs,metastore,oozie,pig,proxy,rdbms,search,security,sqoop,zookeeper
+    app_blacklist: impala,security,filebrowser,jobbrowser,jobsub,pig,hbase,sqoop,zookeeper,metastore,oozie,indexer,search
   database:
     engine: sqlite3
     name: sql.db
@@ -40,15 +40,21 @@ config:
     user: ""
     password: ""
     port: ""
+  # rdbms defines the servers where hue connect as client.
+  rdbms:
+    postgresql:
+      enabled: false
+      nice_name: "PostgreSQL"
+      name: ""
+      host: ""
+      port: ""
+      user: ""
+      password: ""
   spark:
     enabled: false
     livyServerURL: ""
     livyServerSessionKind: yarn
-    securityEnabled: false
-    sqlServerHost: localhost
-    sqlServerPort: 10000
-    sslCaCertVerify: true
-
+  
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
