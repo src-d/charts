@@ -54,7 +54,7 @@ config:
     enabled: false
     livyServerURL: ""
     livyServerSessionKind: yarn
-    security_enabled: False
+    securityEnabled: false
     ssl_cert_ca_verify: False
   
 resources: {}
