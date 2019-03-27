@@ -138,15 +138,9 @@ data:
       livy_server_session_kind={{ .Values.config.spark.livyServerSessionKind }}
 
       # Whether Livy requires client to perform Kerberos authentication.
-      #security_enabled={{ .Values.config.spark.securityEnabled }}
-
-      # Host of the Sql Server
-      #sql_server_host={{ .Values.config.spark.sqlServerHost }}
-
-      # Port of the Sql Server
-      #sql_server_port={{ .Values.config.spark.sqlServerPort }}
+      security_enabled={{ .Values.config.spark.securityEnabled }}
 
       # Choose whether Hue should validate certificates received from the server.
-      #ssl_cert_ca_verify={{ .Values.config.spark.sslCaCertVerify }}
+      ssl_cert_ca_verify={{ .Values.config.spark.sslCaCertVerify }}
       {{- end }}
 

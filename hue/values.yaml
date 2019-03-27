@@ -54,6 +54,8 @@ config:
     enabled: false
     livyServerURL: ""
     livyServerSessionKind: yarn
+    security_enabled: False
+    ssl_cert_ca_verify: False
   
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
