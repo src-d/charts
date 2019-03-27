@@ -121,7 +121,7 @@ data:
 
       {{- if .Values.config.rdbms.postgresql.enabled }}
         [[[postgresql]]]
-          name={{ .Values.config.rdbms.postgresql.nice_name }}
+          name={{ .Values.config.rdbms.postgresql.niceName }}
           interface=rdbms
       {{- end }}
 
