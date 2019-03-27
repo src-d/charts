@@ -18,6 +18,8 @@ spec:
       labels:
         app: {{ template "hue.name" . }}
         release: {{ .Release.Name }}
+      annotations:
+        checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
     spec:
       volumes:
         - name: config
