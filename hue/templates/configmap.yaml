@@ -58,7 +58,7 @@ data:
           user={{ .Values.config.rdbms.postgresql.user }}
           password={{ .Values.config.rdbms.postgresql.password }}
           options={}
-      {{- end }}}}
+      {{- end }}
 
     ###########################################################################
     # Settings to configure the snippets available in the Notebook
