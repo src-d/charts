@@ -43,6 +43,22 @@ data:
         # Database schema, to be used only when public schema is revoked in postgres
         ## schema=public
 
+    
+    # Database Connections inside the Editor
+
+    [librdbms]
+      [[databases]]
+      {{- if .Values.config.rdbms.postgresql.enabled }}
+        [[[postgresql]]]
+          nice_name={{ .Values.config.rdbms.postgresql.nice_name }}
+          name={{ .Values.config.rdbms.postgresql.name }}
+          engine=postgresql_psycopg2
+          host={{ .Values.config.rdbms.postgresql.host }}
+          port={{ .Values.config.rdbms.postgresql.port }}
+          user={{ .Values.config.rdbms.postgresql.user }}
+          password={{ .Values.config.rdbms.postgresql.password }}
+          options={}
+      {{- end }}}}
 
     ###########################################################################
     # Settings to configure the snippets available in the Notebook
@@ -85,40 +101,6 @@ data:
       [[interpreters]]
         # Define the name and how to connect and execute the language.
 
-        [[[hive]]]
-          # The name of the snippet.
-          name=Hive
-          # The backend connection to use to communicate with the server.
-          interface=hiveserver2
-
-        [[[impala]]]
-          name=Impala
-          interface=hiveserver2
-
-        # [[[sparksql]]]
-        #   name=SparkSql
-        #   interface=hiveserver2
-
-        [[[spark]]]
-          name=Scala
-          interface=livy
-
-        [[[pyspark]]]
-          name=PySpark
-          interface=livy
-
-        [[[r]]]
-          name=R
-          interface=livy
-
-        [[[jar]]]
-          name=Spark Submit Jar
-          interface=livy-batch
-
-        [[[py]]]
-          name=Spark Submit Python
-          interface=livy-batch
-
         [[[text]]]
           name=Text
           interface=text
@@ -127,56 +109,21 @@ data:
           name=Markdown
           interface=text
 
-        [[[mysql]]]
-          name = MySQL
-          interface=rdbms
+      {{- if .Values.config.spark.enabled }}
+        [[[spark]]]
+          name=Scala
+          interface=livy
 
-        [[[sqlite]]]
-          name = SQLite
-          interface=rdbms
+        [[[pyspark]]]
+          name=PySpark
+          interface=livy
+      {{- end }}
 
+      {{- if .Values.config.rdbms.postgresql.enabled }}
         [[[postgresql]]]
-          name = PostgreSQL
+          name={{ .Values.config.rdbms.postgresql.niceName }}
           interface=rdbms
-
-        [[[oracle]]]
-          name = Oracle
-          interface=rdbms
-
-        [[[solr]]]
-          name = Solr SQL
-          interface=solr
-          ## Name of the collection handler
-          # options='{"collection": "default"}'
-
-        [[[pig]]]
-          name=Pig
-          interface=oozie
-
-        [[[java]]]
-          name=Java
-          interface=oozie
-
-        [[[spark2]]]
-          name=Spark
-          interface=oozie
-
-        [[[mapreduce]]]
-          name=MapReduce
-          interface=oozie
-
-        [[[sqoop1]]]
-          name=Sqoop1
-          interface=oozie
-
-        [[[distcp]]]
-          name=Distcp
-          interface=oozie
-
-        [[[shell]]]
-          name=Shell
-          interface=oozie
-
+      {{- end }}
 
     ###########################################################################
     # Settings to configure the Spark application.
@@ -191,15 +138,9 @@ data:
       livy_server_session_kind={{ .Values.config.spark.livyServerSessionKind }}
 
       # Whether Livy requires client to perform Kerberos authentication.
-      security_enabled={{ .Values.config.spark.securityEnabled }}
-
-      # Host of the Sql Server
-      sql_server_host={{ .Values.config.spark.sqlServerHost }}
-
-      # Port of the Sql Server
-      sql_server_port={{ .Values.config.spark.sqlServerPort }}
+      security_enabled={{ .Values.config.spark.securityEnabled | title }}
 
       # Choose whether Hue should validate certificates received from the server.
-      ssl_cert_ca_verify={{ .Values.config.spark.sslCaCertVerify }}
+      ssl_cert_ca_verify={{ .Values.config.spark.sslCaCertVerify | title }}
       {{- end }}
 
