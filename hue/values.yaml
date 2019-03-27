@@ -44,7 +44,7 @@ config:
   rdbms:
     postgresql:
       enabled: false
-      nice_name: "PostgreSQL"
+      niceName: "PostgreSQL"
       name: ""
       host: ""
       port: ""
