@@ -50,7 +50,7 @@ data:
       [[databases]]
       {{- if .Values.config.rdbms.postgresql.enabled }}
         [[[postgresql]]]
-          nice_name={{ .Values.config.rdbms.postgresql.nice_name }}
+          nice_name={{ .Values.config.rdbms.postgresql.niceName }}
           name={{ .Values.config.rdbms.postgresql.name }}
           engine=postgresql_psycopg2
           host={{ .Values.config.rdbms.postgresql.host }}
