@@ -1,0 +1,78 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "google-cloud-dns-healthcheck.fullname" . }}
+  labels:
+    app: {{ template "google-cloud-dns-healthcheck.name" . }}
+    chart: {{ template "google-cloud-dns-healthcheck.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: {{ default 60 .Values.job.activeDeadlineSeconds }}
+      backoffLimit: {{ default 5 .Values.job.backoffLimit }}
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: {{ .Chart.Name }}
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            env:
+            - name: RECORD_NAME
+              value: "{{ required "Missing app.recordName" .Values.app.recordName }}" 
+            - name: PROJECT
+              value: "{{ required "Missing app.project" .Values.app.project }}"
+            - name: MANAGED_ZONE
+              value: "{{ required "Missing app.managedZone" .Values.app.managedZone }}" 
+            - name: HEALTHCHECK_PATH
+              value: "{{ default "/" .Values.app.healthcheckPath }}"
+            - name: RRDATAS
+              value: "{{ required "Missing app.rrdatas" .Values.app.rrdatas  }}" 
+            {{- if .Values.app.httpScheme }}  
+            - name: HTTP_SCHEME
+              value: "{{ .Values.app.httpScheme }}" 
+            {{- end }}
+            {{- if .Values.app.httpTimeout }}  
+            - name: HTTP_TIMEOUT
+              value: "{{ .Values.app.httpTimeout }}" 
+            {{- end }}
+            {{- if .Values.app.httpPort }}  
+            - name: HTTP_PORT
+              value: "{{ .Values.app.httpPort }}" 
+            {{- end }}
+            {{- if .Values.dryRun }}  
+            - name: HTTP_PORT
+              value: "{{ .Values.app.dryRun }}" 
+            {{- end }}
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/{{ required "googleApplicationCredentialsSecret.key" .Values.googleApplicationCredentialsSecret.key }}
+            volumeMounts:
+            - mountPath: /var/secrets/google
+              name:  google-cloud-key
+            resources:
+{{ toYaml .Values.resources | indent 14 }}
+          volumes:
+          - name: google-cloud-key
+            secret:
+              defaultMode: 420
+              secretName: {{ required "googleApplicationCredentialsSecret.name" .Values.googleApplicationCredentialsSecret.name }}
+        {{- with .Values.nodeSelector }}
+          nodeSelector:
+{{ toYaml . | indent 12 }}
+        {{- end }}
+        {{- with .Values.affinity }}
+          affinity:
+{{ toYaml . | indent 12 }}
+        {{- end }}
+        {{- with .Values.tolerations }}
+          tolerations:
+{{ toYaml . | indent 12 }}
+        {{- end }}
+
+  schedule: "{{ default "* * * * *" .Values.job.schedule }}"
+  successfulJobsHistoryLimit: {{ default 2 .Values.job.successfulJobsHistoryLimit }}
+status: {}
