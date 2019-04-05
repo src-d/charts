@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "lookout-typo-analyzer.fullname" . }}
+  labels:
+    app: {{ template "lookout-typo-analyzer.name" . }}
+    chart: {{ template "lookout-typo-analyzer.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.app.port }}
+      protocol: TCP
+  selector:
+    app: {{ template "lookout-typo-analyzer.name" . }}
+    release: {{ .Release.Name }}
