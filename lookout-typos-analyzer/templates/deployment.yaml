@@ -1,22 +1,22 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "lookout-typo-analyzer.fullname" . }}
+  name: {{ template "lookout-typos-analyzer.fullname" . }}
   labels:
-    app: {{ template "lookout-typo-analyzer.name" . }}
-    chart: {{ template "lookout-typo-analyzer.chart" . }}
+    app: {{ template "lookout-typos-analyzer.name" . }}
+    chart: {{ template "lookout-typos-analyzer.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "lookout-typo-analyzer.name" . }}
+      app: {{ template "lookout-typos-analyzer.name" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "lookout-typo-analyzer.name" . }}
+        app: {{ template "lookout-typos-analyzer.name" . }}
         release: {{ .Release.Name }}
     spec:
       volumes:
