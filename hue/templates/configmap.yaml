@@ -59,6 +59,17 @@ data:
           password={{ .Values.config.rdbms.postgresql.password }}
           options={}
       {{- end }}
+      {{- if .Values.config.rdbms.mysql.enabled }}
+        [[[mysql]]]
+          nice_name={{ .Values.config.rdbms.mysql.niceName }}
+          name={{ .Values.config.rdbms.mysql.name }}
+          engine=mysql
+          host={{ .Values.config.rdbms.mysql.host }}
+          port={{ .Values.config.rdbms.mysql.port }}
+          user={{ .Values.config.rdbms.mysql.user }}
+          password={{ .Values.config.rdbms.mysql.password }}
+          options={}
+      {{- end }}
 
     ###########################################################################
     # Settings to configure the snippets available in the Notebook
@@ -122,6 +133,12 @@ data:
       {{- if .Values.config.rdbms.postgresql.enabled }}
         [[[postgresql]]]
           name={{ .Values.config.rdbms.postgresql.niceName }}
+          interface=rdbms
+      {{- end }}
+
+      {{- if .Values.config.rdbms.mysql.enabled }}
+        [[[postgresql]]]
+          name={{ .Values.config.rdbms.mysql.niceName }}
           interface=rdbms
       {{- end }}
 

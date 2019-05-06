@@ -50,6 +50,14 @@ config:
       port: ""
       user: ""
       password: ""
+    mysql:
+      enabled: false
+      niceName: "MySQL"
+      name: ""
+      host: ""
+      port: ""
+      user: ""
+      password: ""
   spark:
     enabled: false
     livyServerURL: ""
