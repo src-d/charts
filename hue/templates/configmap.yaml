@@ -137,7 +137,7 @@ data:
       {{- end }}
 
       {{- if .Values.config.rdbms.mysql.enabled }}
-        [[[postgresql]]]
+        [[[mysql]]]
           name={{ .Values.config.rdbms.mysql.niceName }}
           interface=rdbms
       {{- end }}
