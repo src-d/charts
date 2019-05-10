@@ -1,0 +1,62 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "nfs-gluster-bridge.fullname" . }}
+  labels:
+    app: {{ template "nfs-gluster-bridge.name" . }}
+    chart: {{ template "nfs-gluster-bridge.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "nfs-gluster-bridge.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "nfs-gluster-bridge.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      volumes:
+      - glusterfs:
+          endpoints: "{{ required "Missing gluster.endpoint" .Values.gluster.endpoint }}"
+          path: "{{ required "Missing gluster.volume" .Values.gluster.volume }}"
+        name: glusterfsvol
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            privileged: true
+          env:
+            - name: SHARED_DIRECTORY
+              value: /user
+          volumeMounts:
+            - mountPath: /user
+              name: glusterfsvol
+          ports:
+            - name: nfs
+              containerPort: 2049
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: nfs
+          readinessProbe:
+            tcpSocket:
+              port: nfs
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}

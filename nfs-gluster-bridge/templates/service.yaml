@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "nfs-gluster-bridge.fullname" . }}
+  labels:
+    app: {{ template "nfs-gluster-bridge.name" . }}
+    chart: {{ template "nfs-gluster-bridge.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: nfs
+      protocol: TCP
+      name: nfs
+      {{- if .Values.service.nodePort }}
+      nodePort: {{ .Values.service.nodePort }}
+      {{- end }}
+  sessionAffinity: ClientIP
+  selector:
+    app: {{ template "nfs-gluster-bridge.name" . }}
+    release: {{ .Release.Name }}
