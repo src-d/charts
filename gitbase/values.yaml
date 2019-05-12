@@ -22,6 +22,7 @@ storage:
 settings:
   user: gitbase
   password: gitbase
+  # podManagementPolicy: OrderedReady
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

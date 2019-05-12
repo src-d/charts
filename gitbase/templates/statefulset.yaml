@@ -8,6 +8,7 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+  podManagementPolicy: {{ default "OrderedReady" .Values.settings.podManagementPolicy }}
   serviceName: {{ template "gitbase.fullname" . }}
   replicas: {{ .Values.replicaCount }}
   selector:
