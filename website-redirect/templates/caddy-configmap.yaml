@@ -1,3 +1,6 @@
+{{- if empty .Values.redirects }}
+{{- fail "You have to either set at least one redirect in redirects" }}
+{{- end }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -10,7 +13,9 @@ data:
       status 200 /health
     }
 
-    :80 {
-      redir / {{ required "missing redirect.to" .Values.redirect.to }}{{ if .Values.redirect.withPath }}{uri}{{ end }} 301
+    {{- range $redirect := .Values.redirects }}
+    {{ required "Hostname is missing" $redirect.hostname }}:80 {
+      redir / {{ required "To is missing" $redirect.to }}{{ if $redirect.withPath }}{uri}{{ end }} 301
     }
+    {{- end }}
 
