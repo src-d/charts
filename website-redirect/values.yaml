@@ -9,9 +9,10 @@ image:
   tag: 0.11.0
   pullPolicy: IfNotPresent
 
-redirect:
-  # to: 
-  withPath: false
+redirects: []
+  # - to: 
+  #   preservePath: false
+  #   hostname: 
 
 service:
   # NodePort is needed to work properly with default ingress
@@ -21,7 +22,6 @@ service:
 ingress:
   enabled: true
   # globalStaticIpName must be received as a parameter
-  # hostname must be received as a parameter
   # hosts defined in templates/ingress.yml. Do not override here.
   annotations:
     kubernetes.io/ingress.class: gce
