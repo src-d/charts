@@ -11,7 +11,7 @@ image:
 
 redirects: []
   # - to: 
-  #   withPath: false
+  #   preservePath: false
   #   hostname: 
 
 service:
