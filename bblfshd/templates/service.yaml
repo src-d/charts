@@ -17,6 +17,11 @@ spec:
       targetPort: {{ .Values.service.internalPort }}
       protocol: TCP
       name: {{ .Values.service.name }}
+  {{- if .Values.metrics.enabled }}
+    - name: metrics
+      port: 2112
+      targetPort: metrics
+  {{- end }}
   selector:
     app: {{ template "name" . }}
     release: {{ .Release.Name }}

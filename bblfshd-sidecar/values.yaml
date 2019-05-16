@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 image:
   repository: bblfsh/bblfshd
-  tag: v2.11.0
+  tag: v2.13.0
   pullPolicy: IfNotPresent
 
 drivers:
@@ -48,3 +48,6 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
   #
+metrics: 
+  enabled: false
+  interval: 10s
