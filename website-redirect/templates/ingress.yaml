@@ -18,15 +18,19 @@ metadata:
 
 spec:
   rules:
-    - host: {{ required "Hostname is missing" .Values.ingress.hostname }}
+    {{- range $redirect := .Values.redirects }}
+    - host: {{ required "Hostname is missing" $redirect.hostname }}
       http:
         paths:
           - path: /*
             backend:
               serviceName: {{ $serviceName }}
               servicePort: {{ $servicePort }}
+    {{- end }}
   tls:
-    - secretName: {{ .Values.ingress.hostname | replace "." "-" }}-tls
+  {{- range $redirect := .Values.redirects }}
+    - secretName: {{ $redirect.hostname | replace "." "-" }}-tls
       hosts:
-        - {{ .Values.ingress.hostname }}
+        - {{ $redirect.hostname }}
+  {{- end }}
 {{- end }}
