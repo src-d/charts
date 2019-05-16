@@ -20,6 +20,7 @@ spec:
   {{- if .Values.metrics.enabled }}
     - name: metrics
       port: 2112
+      protocol: TCP
       targetPort: metrics
   {{- end }}
   selector:

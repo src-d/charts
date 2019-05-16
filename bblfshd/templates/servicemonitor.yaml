@@ -1,8 +1,9 @@
-{{- if $root.Values.metrics.enabled}}
+{{- if .Values.metrics.enabled}}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ template "fullname" . }}
+  namespace: {{ .Values.metrics.namespace }}
   labels:
     app: {{ template "name" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
@@ -17,7 +18,7 @@ spec:
         heritage: {{ .Release.Service }}
   endpoints:
     - port: metrics
-      interval: {{ $root.Values.metrics.interval | default "10s" }}
+      interval: {{ .Values.metrics.interval | default "10s" }}
   namespaceSelector:
     any: true
 {{- end }}

@@ -39,6 +39,10 @@ spec:
                 command: [ "sh", "/opt/install-bblfshd-drivers.sh" ]
           ports:
             - containerPort: {{ .Values.service.internalPort }}
+          {{- if .Values.metrics.enabled }}
+            - name: metrics
+              containerPort: 2112
+          {{- end }}
           livenessProbe:
             tcpSocket:
               port: {{ .Values.service.internalPort }}

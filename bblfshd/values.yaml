@@ -55,3 +55,7 @@ resources: {}
   #  memory: 128Mi
   #
 affinity: {}
+metrics: 
+  enabled: false
+  interval: 10s
+  namespace: monitoring
