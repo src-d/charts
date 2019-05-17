@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: bblfsh/bblfshd
-  tag: v2.11.0
+  tag: v2.13.0
   pullPolicy: IfNotPresent
 service:
   name: bblfshd
@@ -55,3 +55,7 @@ resources: {}
   #  memory: 128Mi
   #
 affinity: {}
+metrics: 
+  enabled: false
+  interval: 10s
+  namespace: monitoring
