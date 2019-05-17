@@ -20,13 +20,11 @@ Master:
   # Custom Spark Config. See template to find which values are already set
   customSparkConfig: {}
   # Set Master JVM memory. Default 1g
-  #DaemonMemory: 1g
-  #NodeSelector:
-    #srcd.host/type: service
-
+  # DaemonMemory: 1g
+  # NodeSelector: srcd.host/type: service
 
 # Enable Livy http rest service connected to spark-master
-Livy: 
+Livy:
   Enabled: false
   Name: livy
   Image: "srcd/spark-livy"
@@ -44,7 +42,7 @@ WebUiProxy:
   ServiceType: ClusterIP
   ServicePort: 80
   ContainerPort: 80
-  # ServiceNodePort: 
+  # ServiceNodePort:
   Component: "spark-webui-proxy"
   Replicas: 1
   Image: "srcd/spark-ui-proxy"
@@ -56,8 +54,7 @@ WebUiProxy:
     # This will make spark-web-ui-proxy work with kubectl proxy --api-prefix
     # which is something that always should be set when working when kubectl proxy
     # ApiPrefix: spark-ui-proxy
-  #NodeSelector:
-    #srcd.host/type: worker
+  # NodeSelector: srcd.host/type: worker
 
 Worker:
   Name: worker
@@ -77,12 +74,12 @@ Worker:
   # Additional volume mounts for the Worker container
   additionalVolumeMounts: []
   # Set Worker JVM memory. Default 1g
-  #DaemonMemory: 1g
+  # DaemonMemory: 1g
   # Set how much total memory workers have to give executors
-  #ExecutorMemory: 1g
-  #NodeSelector:
+  # ExecutorMemory: 1g
+  # NodeSelector:
   #  srcd.host/type: worker
-  #AdditionalPodContainers:
+  # AdditionalPodContainers:
   #  bblfsh-server:
   #    image: bblfsh/server:latest
   #    securityContext:
@@ -93,12 +90,12 @@ Worker:
   Affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        podAffinityTerm:
-          labelSelector:
-            matchExpressions:
-            - key: app
-              operator: In
-              values:
-              - spark
-          topologyKey: kubernetes.io/hostname
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                    - spark
+            topologyKey: kubernetes.io/hostname

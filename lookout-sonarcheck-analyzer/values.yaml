@@ -16,7 +16,7 @@ service:
 app:
   port: 10304
   logLevel: info
-  #dataServiceUrl: lookout:10301
+  # dataServiceUrl: lookout:10301
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

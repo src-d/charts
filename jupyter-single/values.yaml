@@ -10,10 +10,10 @@ image:
 
 persistence:
   enabled: false
-  keep: false # keep PVC on helm delete
+  keep: false              # keep PVC on helm delete
   accessMode: ReadWriteOnce
   size: 10Gi
-  # storageClass: 
+  # storageClass:
 
 service:
   type: ClusterIP

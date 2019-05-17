@@ -20,4 +20,5 @@ sources:
 - http://readme.drone.io/
 maintainers:
 - email: infra@sourced.tech
+  name: Infrastructure Team
 home: https://drone.io/

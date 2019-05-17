@@ -8,7 +8,7 @@ service:
   type: ClusterIP
   port: 80
   internalPort: 8080
-  # nodePort: 
+  # nodePort:
 
 ingress:
   enabled: false
@@ -26,12 +26,12 @@ ingress:
 settings: {}
   # This specifies an external bblfshd server
   # Requires settings.gitbaseServer to be set
-  #bblfshdServer:
+  # bblfshdServer:
   #  address: bblfshd:9432
 
   # This specifies an external gitbase server
   # Requires settings.bblfshdServer to be set
-  #gitbaseServer:
+  # gitbaseServer:
   #  host: gitbase
 
 gitbaseWeb:
@@ -42,7 +42,7 @@ gitbaseWeb:
     repository: srcd/gitbase-web
     # tag must be received as a parameter
     pullPolicy: IfNotPresent
-  #footerHTML: base64 encoded
+  # footerHTML: base64 encoded
 
 bblfshdServer:
   storage:
@@ -90,7 +90,7 @@ gitbaseServer:
   repositories:
     go-git:
       url: https://github.com/src-d/go-git.git
-      #commit: v4.4.0
+      # commit: v4.4.0
     gitbase:
       url: https://github.com/src-d/gitbase.git
     gitbase-web:

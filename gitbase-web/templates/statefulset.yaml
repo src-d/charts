@@ -52,8 +52,8 @@ spec:
         release: {{ .Release.Name }}
       # This is to upgrade the deployment if configmap changes
       annotations:
-        checksum/install-bblfshd-drivers: {{ include (print $.Template.BasePath "/install-bblfshd-drivers-configmap.yaml") . | sha256sum }} 
-        checksum/clone-git-repositories: {{ include (print $.Template.BasePath "/clone-git-repositories-configmap.yaml") . | sha256sum }} 
+        checksum/install-bblfshd-drivers: {{ include (print $.Template.BasePath "/install-bblfshd-drivers-configmap.yaml") . | sha256sum }}
+        checksum/clone-git-repositories: {{ include (print $.Template.BasePath "/clone-git-repositories-configmap.yaml") . | sha256sum }}
     spec:
       volumes:
         - configMap:
@@ -120,7 +120,7 @@ spec:
           lifecycle:
             postStart:
               exec:
-                command: [ "sh", "/opt/install-bblfshd-drivers.sh" ] 
+                command: [ "sh", "/opt/install-bblfshd-drivers.sh" ]
           resources:
 {{ toYaml .Values.resources | indent 12 }}
         - name: gitbase

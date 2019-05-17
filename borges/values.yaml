@@ -61,11 +61,11 @@ dir:
   # rootRepositories: hdfs://hdfs-namenode:8020
   rootRepositories: /borges/root-repositories
 
-#hadoop:
+# hadoop:
 #  userName: root
 #  connectionString: hdfs-namenode:8020
 
-#glusterfs:
+# glusterfs:
 #  endpoints: glusterfs-cluster
 #  volume: siva-volume
 
@@ -73,7 +73,7 @@ locking:
   connectionString: etcd:http://etcd:2379
   timeout: 2m
 
-#nodeSelector:
+# nodeSelector:
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -83,6 +83,6 @@ resources: {}
   # limits:
   #  cpu: 100m
   #  memory: 128Mi
-  #requests:
+  # requests:
   #  cpu: 100m
   #  memory: 128Mi

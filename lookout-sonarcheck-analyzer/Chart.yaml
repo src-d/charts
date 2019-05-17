@@ -4,4 +4,3 @@ appVersion: "1.0"
 description: Kubernetes lookout sonarcheck analyzer chart
 name: lookout-sonarcheck-analyzer
 version: 0.1.0
-home: https://github.com/src-d/lookout-sonarcheck-analyzer

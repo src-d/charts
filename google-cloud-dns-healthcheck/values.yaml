@@ -18,7 +18,7 @@ app: {}
 #  httpPort: 8080
 #  dryRun: false
 
-#googleApplicationCredentialsSecret:
+# googleApplicationCredentialsSecret:
 #  name: my-secret
 #  key: secret-key
 

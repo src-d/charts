@@ -43,7 +43,7 @@ data:
         # Database schema, to be used only when public schema is revoked in postgres
         ## schema=public
 
-    
+   
     # Database Connections inside the Editor
 
     [librdbms]

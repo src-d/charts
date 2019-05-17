@@ -9,7 +9,7 @@ replicaCount:
 image:
   lookout:
     repository: srcd/lookout
-    #tag: latest
+    # tag: latest
     pullPolicy: IfNotPresent
 
 service:
@@ -18,7 +18,7 @@ service:
     port: 10301
 
 app:
-  lookout: # Shared between watchers and workers
+  lookout:          # Shared between watchers and workers
     logFormat: json
     logLevel: info
     probesPort: 8090
@@ -33,7 +33,7 @@ providers:
 
 queues:
   rabbitmq: {}
-    #connectionString: amqp://lookout-rabbitmq-ha:5672"
+    # connectionString: amqp://lookout-rabbitmq-ha:5672"
 
 databases:
   postgres:
@@ -41,11 +41,10 @@ databases:
 
     # For use without Cloud SQL:
     # dbConnectionString: postgresql://lookout:lookout@postgres-postgresql:5432/lookout-style-analyzer
-    
     # For use with Cloud SQL:
-    # instanceConnectionName: 
-    # serviceAccountSecret: 
-    # connectionDetailsSecret: 
+    # instanceConnectionName:
+    # serviceAccountSecret:
+    # connectionDetailsSecret:
     #
 
 timeout: {}

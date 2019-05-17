@@ -1,7 +1,7 @@
 endpoints: []
 # - name: server-1
 #   hostname: server-1.full.domain.tld
-#   ip: 192.168.0.1 
+#   ip: 192.168.0.1
 #   port: 9100
 #   path: /metrics
 serviceMonitor:
