@@ -1,0 +1,19 @@
+app:
+ recordName: test.hola.com
+ project: my-google-project
+ managedZone: my-google-dns-managed-zone
+ rrdatas: 147.135.39.104,147.135.39.105
+ healthcheckPath: /health
+ httpScheme: http
+ httpTimeout: 5
+ httpPort: 8080
+ dryRun: false
+
+googleApplicationCredentialsSecret:
+ name: my-secret
+ key: secret-key
+
+job:
+ schedule: * * * * *
+ successfulJobsHistoryLimit: 2
+ activeDeadlineSeconds: 60
