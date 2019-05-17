@@ -3,4 +3,5 @@ appVersion: "1.0"
 description: A Helm chart for Gitbase
 name: gitbase
 version: 0.6.0
+appVersion: 0.18.0
 home: https://github.com/src-d/gitbase
