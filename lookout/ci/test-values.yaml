@@ -8,3 +8,6 @@ databases:
   postgres:
     cloudSQL: false
     dbConnectionString: postgresql://lookout:lookout@postgres-postgresql:5432/lookout-style-analyzer
+providers:
+  github:
+    private_key: xxx
