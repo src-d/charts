@@ -1,4 +1,11 @@
 sudo: required
+# We need the systemd for the kubeadm and it's default from 16.04+
+dist: xenial
+services:
+- docker
+language: go
+go:
+- "1.12.x"
 
 stages:
   - name: repo-sync
