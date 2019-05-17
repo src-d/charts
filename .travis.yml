@@ -24,7 +24,7 @@ jobs:
         - sudo mv etc /etc/ct
         - rm -f chart-testing_${CT_VERSION}_linux_amd64.tar.gz
       script:
-        - ct lint
+        - ct lint --all
     - name: tests
       stage: tests
       env:
