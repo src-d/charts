@@ -14,6 +14,6 @@ googleApplicationCredentialsSecret:
  key: secret-key
 
 job:
- schedule: * * * * *
+ schedule: "* * * * *"
  successfulJobsHistoryLimit: 2
  activeDeadlineSeconds: 60
