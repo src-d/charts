@@ -19,6 +19,7 @@ jobs:
         - CT_VERSION=2.3.3
         - HELM_VERSION=v2.14.0
       before_script:
+        - sudo apt-get install -y yamale
         - curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
         - chmod 700 get_helm.sh
         - DESIRED_VERSION=$HELM_VERSION ./get_helm.sh
