@@ -12,6 +12,7 @@ image:
 service:
   type: ClusterIP
   port: 3306
+  headless: false
 
 storage:
   enablePVC: true

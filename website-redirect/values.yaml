@@ -10,9 +10,9 @@ image:
   pullPolicy: IfNotPresent
 
 redirects: []
-  # - to: 
+  # - to:
   #   preservePath: false
-  #   hostname: 
+  #   hostname:
 
 service:
   # NodePort is needed to work properly with default ingress

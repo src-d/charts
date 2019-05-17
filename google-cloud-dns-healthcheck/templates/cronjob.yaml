@@ -23,30 +23,30 @@ spec:
             imagePullPolicy: {{ .Values.image.pullPolicy }}
             env:
             - name: RECORD_NAME
-              value: "{{ required "Missing app.recordName" .Values.app.recordName }}" 
+              value: "{{ required "Missing app.recordName" .Values.app.recordName }}"
             - name: PROJECT
               value: "{{ required "Missing app.project" .Values.app.project }}"
             - name: MANAGED_ZONE
-              value: "{{ required "Missing app.managedZone" .Values.app.managedZone }}" 
+              value: "{{ required "Missing app.managedZone" .Values.app.managedZone }}"
             - name: HEALTHCHECK_PATH
               value: "{{ default "/" .Values.app.healthcheckPath }}"
             - name: RRDATAS
-              value: "{{ required "Missing app.rrdatas" .Values.app.rrdatas  }}" 
-            {{- if .Values.app.httpScheme }}  
+              value: "{{ required "Missing app.rrdatas" .Values.app.rrdatas  }}"
+            {{- if .Values.app.httpScheme }} 
             - name: HTTP_SCHEME
-              value: "{{ .Values.app.httpScheme }}" 
+              value: "{{ .Values.app.httpScheme }}"
             {{- end }}
-            {{- if .Values.app.httpTimeout }}  
+            {{- if .Values.app.httpTimeout }} 
             - name: HTTP_TIMEOUT
-              value: "{{ .Values.app.httpTimeout }}" 
+              value: "{{ .Values.app.httpTimeout }}"
             {{- end }}
-            {{- if .Values.app.httpPort }}  
+            {{- if .Values.app.httpPort }} 
             - name: HTTP_PORT
-              value: "{{ .Values.app.httpPort }}" 
+              value: "{{ .Values.app.httpPort }}"
             {{- end }}
-            {{- if .Values.dryRun }}  
+            {{- if .Values.dryRun }} 
             - name: HTTP_PORT
-              value: "{{ .Values.app.dryRun }}" 
+              value: "{{ .Values.app.dryRun }}"
             {{- end }}
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /var/secrets/google/{{ required "googleApplicationCredentialsSecret.key" .Values.googleApplicationCredentialsSecret.key }}

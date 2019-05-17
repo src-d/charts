@@ -4,8 +4,10 @@
 # https://github.com/kubernetes/charts/pull/821/files
 # kubernetes/charts is licensed under the Apache License 2.0
 
+apiVersion: v1
 name: drone
-version: 0.2.0
+version: 0.2.1
+appVersion: 0.7.3
 description: Drone CI
 keywords:
 - continuous-deployment
@@ -18,3 +20,5 @@ sources:
 - http://readme.drone.io/
 maintainers:
 - email: infra@sourced.tech
+  name: Infrastructure Team
+home: https://drone.io/
