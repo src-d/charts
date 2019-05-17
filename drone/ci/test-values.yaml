@@ -1,0 +1,4 @@
+secrets:
+  drone_secret: xxx
+  github_client: xxx
+  github_secret: xxx
