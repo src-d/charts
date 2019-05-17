@@ -39,9 +39,11 @@ jobs:
         - curl -Lo chart-testing_${CT_VERSION}_linux_amd64.tar.gz https://github.com/helm/chart-testing/releases/download/v${CT_VERSION}/chart-testing_${CT_VERSION}_linux_amd64.tar.gz
         - tar xzf chart-testing_${CT_VERSION}_linux_amd64.tar.gz
         - sudo chmod +x ct && sudo mv ct /usr/local/bin/
+        - sudo mv etc /etc/ct
         - rm -f chart-testing_${CT_VERSION}_linux_amd64.tar.gz
       script:
         - helm init
+        - ct lint
     - name: Repo sync
       stage: repo-sync
       install:
