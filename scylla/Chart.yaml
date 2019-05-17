@@ -8,3 +8,6 @@ icon: https://www.scylladb.com/wp-content/uploads/logo-scylla.svg
 sources:
   - https://github.com/scylladb/scylla
   - https://github.com/src-d/gemini/tree/master/k8s
+maintainers:
+- email: infra@sourced.tech
+  name: Infrastructure Team

@@ -4,3 +4,6 @@ appVersion: "1.0"
 description: Kubernetes lookout sonarcheck analyzer chart
 name: lookout-sonarcheck-analyzer
 version: 0.1.0
+maintainers:
+- email: infra@sourced.tech
+  name: Infrastructure Team

@@ -4,3 +4,6 @@ name: ewbf-miner
 version: 0.1.0
 appVersion: 0.3.4
 home: https://github.com/nanopool/ewbf-miner
+maintainers:
+- email: infra@sourced.tech
+  name: Infrastructure Team

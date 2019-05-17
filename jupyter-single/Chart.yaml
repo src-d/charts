@@ -4,3 +4,6 @@ description: A Helm chart for a single Jupyter instance
 name: jupyter-single
 version: 0.3.0
 home: https://jupyter.org/
+maintainers:
+- email: infra@sourced.tech
+  name: Infrastructure Team

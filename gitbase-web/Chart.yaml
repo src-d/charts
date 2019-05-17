@@ -4,3 +4,6 @@ name: gitbase-web
 version: 0.6.0
 appVersion: 0.6.5
 home: https://github.com/src-d/gitbase-web
+maintainers:
+- email: infra@sourced.tech
+  name: Infrastructure Team

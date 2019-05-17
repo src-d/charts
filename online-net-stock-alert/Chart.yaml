@@ -4,3 +4,6 @@ description: This chart deploys a cron that will check for online.net stock and 
 name: online-net-stock-alert
 version: 0.1.1
 home: https://github.com/meyskens/online-net-stock-alert
+maintainers:
+- email: infra@sourced.tech
+  name: Infrastructure Team

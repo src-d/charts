@@ -26,5 +26,5 @@ sources:
   - https://github.com/kubernetes/kubernetes/tree/master/examples/spark
   - https://github.com/apache/spark
 maintainers:
-  - name: Rafael Porres
-    email: rafa@sourced.tech
+- email: infra@sourced.tech
+  name: Infrastructure Team

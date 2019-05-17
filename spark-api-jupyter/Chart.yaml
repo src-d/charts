@@ -4,3 +4,6 @@ name: spark-api-jupyter
 version: 0.1.1
 appVersion: 0.0.6
 home: https://github.com/src-d
+maintainers:
+- email: infra@sourced.tech
+  name: Infrastructure Team

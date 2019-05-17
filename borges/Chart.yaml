@@ -4,3 +4,6 @@ name: borges
 version: 0.6.3
 appVersion: 0.19.0
 home: https://github.com/src-d/borges/
+maintainers:
+- email: infra@sourced.tech
+  name: Infrastructure Team
