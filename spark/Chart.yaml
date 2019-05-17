@@ -15,8 +15,9 @@
 # Inspired from official spark chart
 # https://github.com/kubernetes/charts/tree/master/stable/spark
 
+apiVersion: v1
 name: spark
-version: 0.8.1
+version: 0.8.2
 description: Fast and general-purpose cluster computing system.
 home: http://spark.apache.org
 icon: http://spark.apache.org/images/spark-logo-trademark.png
