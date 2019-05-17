@@ -2,3 +2,9 @@ secrets:
   drone_secret: xxx
   github_client: xxx
   github_secret: xxx
+
+ingress:
+  enabled: true
+  tls: true
+  hostname: drone.test.com
+  globalStaticIpName: test
