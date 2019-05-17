@@ -1,0 +1,10 @@
+image:
+  lookout:
+    tag: v0.8.0
+queues:
+  rabbitmq:
+    connectionString: amqp://lookout-rabbitmq-ha:5672"
+databases:
+  postgres:
+    cloudSQL: false
+    dbConnectionString: postgresql://lookout:lookout@postgres-postgresql:5432/lookout-style-analyzer
