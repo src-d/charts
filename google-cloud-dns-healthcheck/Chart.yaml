@@ -3,3 +3,4 @@ appVersion: "1.0"
 description: A Helm chart for Kubernetes
 name: google-cloud-dns-healthcheck
 version: 0.1.1
+home: https://github.com/src-d/google-cloud-dns-healthcheck

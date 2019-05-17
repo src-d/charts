@@ -3,3 +3,4 @@ appVersion: "0.2.0"
 description: A Helm chart for gemini
 name: gemini
 version: 0.2.0
+home: https://github.com/src-d/gemini

@@ -3,3 +3,4 @@ name: bblfsh-web
 version: 0.8.0
 description: |
     A web interface for Babelfish (https://doc.bblf.sh/).
+home: https://doc.bblf.sh/

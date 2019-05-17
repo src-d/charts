@@ -3,3 +3,4 @@ appVersion: "1.0"
 description: A Helm chart for Kubernetes
 name: lookout-gometalint-analyzer
 version: 0.1.0
+home: https://github.com/src-d/kubernetes-local-pv-provisioner

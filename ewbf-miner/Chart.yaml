@@ -2,3 +2,4 @@ apiVersion: v1
 description: A Helm chart for Kubernetes
 name: ewbf-miner
 version: 0.1.0
+home: https://github.com/nanopool/ewbf-miner

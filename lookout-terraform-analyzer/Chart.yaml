@@ -3,3 +3,4 @@ appVersion: "1.0"
 description: A Helm chart for lookout-terraform-analyzer
 name: lookout-terraform-analyzer
 version: 0.1.0
+home: https://github.com/src-d/lookout-terraform-analyzer

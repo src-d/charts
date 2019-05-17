@@ -3,3 +3,4 @@ appVersion: "1.0"
 description: A Helm chart for Hue
 name: hue
 version: 0.4.1
+home: http://gethue.com/
