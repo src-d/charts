@@ -61,6 +61,8 @@ jobs:
         - rm -f chart-testing_${CT_VERSION}_linux_amd64.tar.gz
       script:
         - helm init
+        - cd .. # ct is having issues when processing charts on the root
+        - ct install --all --config charts/ct.yaml
     - name: Repo sync
       stage: repo-sync
       install:
