@@ -6,7 +6,7 @@
 
 apiVersion: v1
 name: drone
-version: 0.2.1
+version: 0.2.2
 appVersion: 0.7.3
 description: Drone CI
 keywords:

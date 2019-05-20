@@ -2,7 +2,7 @@ apiVersion: v1
 appVersion: "1.0"
 description: A Helm chart for kubernetes-local-pv-provisioner
 name: kubernetes-local-pv-provisioner
-version: 0.1.1
+version: 0.1.2
 home: https://github.com/src-d/kubernetes-local-pv-provisioner
 maintainers:
 - email: infra@sourced.tech
