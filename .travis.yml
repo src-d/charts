@@ -62,7 +62,7 @@ jobs:
       script:
         - helm init
         - cd .. # ct is having issues when processing charts on the root
-        - ct install --all --config charts/ct.yaml
+        - ct install --all --config charts/ct-install.yaml
     - name: Repo sync
       stage: repo-sync
       install:
