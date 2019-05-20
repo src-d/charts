@@ -3,7 +3,7 @@ home: https://github.com/src-d/lookout-sonarcheck-analyzer
 appVersion: "1.0"
 description: Kubernetes lookout sonarcheck analyzer chart
 name: lookout-sonarcheck-analyzer
-version: 0.1.0
+version: 0.1.1
 maintainers:
 - email: infra@sourced.tech
   name: Infrastructure Team
