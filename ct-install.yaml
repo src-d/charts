@@ -5,6 +5,8 @@ chart-repos:
   - incubator=https://kubernetes-charts-incubator.storage.googleapis.com/
   - src-d=https://src-d.github.io/charts/
 helm-extra-args: --timeout 600
+# These charts are excluded from being installed to test since they contain no useful tests
+# Some are included as they do not have the required dependancies to test
 excluded-charts:
   - bblfsh-web
   - bblfshd
