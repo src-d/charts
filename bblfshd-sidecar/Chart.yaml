@@ -1,4 +1,9 @@
 apiVersion: v1
 description: A Helm chart to template in a bblfshd container into a deployment
 name: bblfshd-sidecar
-version: 0.3.0
+version: 0.3.1
+appVersion: 2.11.0
+home: https://doc.bblf.sh/
+maintainers:
+- email: infra@sourced.tech
+  name: Infrastructure Team

@@ -41,7 +41,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ template "scylla.name" . }} 
+        app: {{ template "scylla.name" . }}
         release: {{ .Release.Name }}
     spec:
       {{- if .Values.nodeSelector }}

@@ -11,9 +11,9 @@ metadata:
     release: {{ $root.Release.Name }}
     heritage: {{ $root.Release.Service }}
 subsets:
-- addresses: 
+- addresses:
   - ip: {{ .ip }}
-  ports: 
+  ports:
   - name: metrics
     port: {{ .port | default "9100" }}
     protocol: TCP

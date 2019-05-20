@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: srcd/style-analyzer
-  #tag: latest
+  # tag: latest
   pullPolicy: IfNotPresent
 
 service:
@@ -28,11 +28,11 @@ databases:
 
     # For use without Cloud SQL:
     # dbConnectionString: postgresql://lookout:lookout@postgres-postgresql:5432/lookout-style-analyzer
-    
+
     # For use with Cloud SQL:
-    # instanceConnectionName: 
-    # serviceAccountSecret: 
-    # connectionDetailsSecret: 
+    # instanceConnectionName:
+    # serviceAccountSecret:
+    # connectionDetailsSecret:
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

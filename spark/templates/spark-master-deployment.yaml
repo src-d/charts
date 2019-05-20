@@ -87,7 +87,7 @@ spec:
       containers:
         - name: {{ template "master-fullname" . }}
           image: "{{ .Values.Master.Image }}:{{ .Values.Master.ImageTag }}"
-          #imagePullPolicy: Always
+          # imagePullPolicy: Always
           command: ["/bin/sh","-c"]
           args: ["echo $(hostname -i) {{ template "master-fullname" . }} >> /etc/hosts; /opt/spark/sbin/start-master.sh --host {{ template "master-fullname" . }} --port {{ .Values.Master.ServicePort }} --webui-port {{ .Values.WebUi.ContainerPort }}"]
           ports:

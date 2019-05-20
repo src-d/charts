@@ -7,7 +7,7 @@ service:
   type: LoadBalancer
   externalPort: 80
   internalPort: 8888
-  #loadBalancerIP:
+  # loadBalancerIP:
 ingress:
   enabled: false
   # Used to create Ingress record (should used with service.type: ClusterIP).
@@ -27,18 +27,18 @@ jupyter:
     tag: v0.0.6
     pullPolicy: IfNotPresent
   repositoriesPath: /repositories
-  #repositoriesDisk: repository-data
+  # repositoriesDisk: repository-data
   userPath: /home/jovyan/work
-  #userDataDisk: repository-data
+  # userDataDisk: repository-data
 
-  # We usually recommend not to specify default resources and to leave this as a conscious 
-  # choice for the user. This also increases chances charts run on environments with little 
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following 
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   # limits:
   #  cpu: 100m
   #  memory: 128Mi
-  #requests:
+  # requests:
   #  cpu: 100m
   #  memory: 128Mi
   resources: {}
@@ -49,5 +49,5 @@ server:
     tag: v2.0.0
     pullPolicy: IfNotPresent
   driversPath: /var/lib/bblfshd
-  #driversDisk: bblfsh-drivers
+  # driversDisk: bblfsh-drivers
   resources: {}
