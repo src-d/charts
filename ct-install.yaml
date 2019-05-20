@@ -1,5 +1,6 @@
 remote: origin
 target-branch: master
+validate-maintainers: false
 chart-repos:
   - stable=https://kubernetes-charts.storage.googleapis.com/
   - incubator=https://kubernetes-charts-incubator.storage.googleapis.com/

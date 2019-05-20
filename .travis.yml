@@ -30,7 +30,7 @@ jobs:
         - rm -f chart-testing_${CT_VERSION}_linux_amd64.tar.gz
       script:
         - cd .. # ct is having issues when processing charts on the root
-        - ct lint --all --config charts/ct.yaml --validate-maintainers=false
+        - ct lint --all --config charts/ct.yaml
     - name: tests
       stage: tests
       env:
