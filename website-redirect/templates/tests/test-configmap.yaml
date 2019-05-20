@@ -5,11 +5,6 @@ metadata:
   name: {{ .Release.Name }}-tests
 data:
   tests.sh: |
-    @test "echo ok" {
-      result="$(echo ok)"
-      [ "$result" == "ok" ]
-    }
-
     @test "health check" {
       statusCode=$(curl -I http://{{ template "website-redirect.fullname" . }}/health | head -n 1 | cut -d$' ' -f2)
       [ "$statusCode" == "200" ]
