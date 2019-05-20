@@ -1,0 +1,11 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-tests
+data:
+  tests.sh: |
+    @test "echo ok" {
+      result="$(echo ok)"
+      [ "$result" == "ok" ]
+    }

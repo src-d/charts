@@ -36,4 +36,3 @@ excluded-charts:
   - scylla
   - spark
   - spark-api-jupyter
-  - website-redirect
