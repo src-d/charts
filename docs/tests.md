@@ -18,5 +18,5 @@ Tests can be run on Kubernetes cluster manually by using `helm test <release nam
 Important to keep in mind is that any changes to the tests need to be deployed using Helm before they can be run in `helm test`.
 
 ## The setup
-To test changed charts we use Travis CI which runs in 2 stages. The first is Linting, this step runs `ct lint` with the [chart-testing tool](https://github.com/helm/chart-testing) on all charts that have been changed. Linting will test the validity towards the Helm spec as well as the YAML style.
+To test changed charts we use Travis CI which runs in 2 stages. The first is Linting, this step runs `ct lint` with the [chart-testing tool](https://github.com/helm/chart-testing) on all charts (change detection is currently not active due to the structure of our repository). Linting will test the validity towards the Helm spec as well as the YAML style.
 In stage `Tests` we boot a Kubernetes cluster inside Travis CI using Minikube, kubeadm and Docker. After the cluster and the Helm tiller are intitialized the chart-testing tool will install all changed charts are installed and then run the tests inside a newly generated namespace in this cluster.
