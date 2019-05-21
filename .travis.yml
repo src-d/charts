@@ -30,7 +30,7 @@ jobs:
         - rm -f chart-testing_${CT_VERSION}_linux_amd64.tar.gz
       script:
         - cd .. # ct is having issues when processing charts on the root
-        - ct lint --all --config charts/ct.yaml
+        - ct lint --config charts/ct.yaml
     - name: Tests
       stage: Tests
       env:
@@ -63,7 +63,7 @@ jobs:
         - helm init
         - JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; until kubectl get pods -n kube-system -l name=tiller -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"; do sleep 1; done
         - cd .. # ct is having issues when processing charts on the root
-        - ct install --all --config charts/ct-install.yaml
+        - ct install --config charts/ct-install.yaml
     - name: Repo sync
       stage: repo-sync
       install:
