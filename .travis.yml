@@ -31,8 +31,8 @@ jobs:
       script:
         - cd .. # ct is having issues when processing charts on the root
         - ct lint --all --config charts/ct.yaml
-    - name: tests
-      stage: tests
+    - name: Tests
+      stage: Tests
       env:
         - CHANGE_MINIKUBE_NONE_USER=true
         - KUBERNETES_VERSION=v1.14.0
