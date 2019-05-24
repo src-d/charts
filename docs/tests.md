@@ -1,6 +1,6 @@
 # Testing
 To test our charts we have a 2 part testing setup. The first part is linting, charts get linted using the [chart-testing tool](https://github.com/helm/chart-testing) which lints all YAML files as well as checks if they are compliant to Helm's standards.
-The second part are acceptance tests which are run by installing the chart on a Minikube Kubernetes cluster using set values, these are then tested by a pod deployment running tests.
+The second part are acceptance tests which are run by installing the chart on a Minikube Kubernetes cluster using the set of test values, these are then tested by a pod deployment running tests.
 
 ## Acceptance tests
 Tests are stored in `<chart name>/templates/tests`, which are Helm templates deployed to the cluster to test. These consist of a Pod object which will be run on test that contains the setup for the test. To mark the test as success or fail, Helm will check the Pod's exit status. The test can also contain extra resources like configmaps (to store the tests in).
