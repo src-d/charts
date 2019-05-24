@@ -26,6 +26,8 @@ spec:
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: "/var/secrets/google/{{ required "googleApplicationCredentialsSecret.key" .Values.googleApplicationCredentialsSecret.key }}"
             {{- end }}
+            - name: GHOST_POST_LIMIT
+              value: "{{ required "Missing app.ghostPostLimit" .Values.app.ghostPostLimit }}"
             - name: GHOST_ENDPOINT
               value: "{{ required "Missing app.ghostEndpoint" .Values.app.ghostEndpoint }}"
             - name: GHOST_API_KEY
