@@ -11,6 +11,8 @@ app:
   ghostPostLimit: 1000
 # ghostEndpoint: https://sourced.ghost.io
 # ghostAPIKey:
+# ghostAPIKeySecretName:
+
 googleApplicationCredentialsSecret:
   enabled: false
 #  name: my-secret
