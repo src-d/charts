@@ -42,7 +42,6 @@ jobs:
         - sudo apt-get update
         - sudo apt-get install -y socat
       before_script:
-        #- sudo mount --make-rshared /
         - curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/${KUBERNETES_VERSION}/bin/linux/amd64/kubectl
         - sudo chmod +x kubectl && sudo mv kubectl /usr/local/bin/
         - curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 
