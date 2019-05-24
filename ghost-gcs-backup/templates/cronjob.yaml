@@ -12,7 +12,7 @@ spec:
   failedJobsHistoryLimit: 2
   jobTemplate:
     spec:
-      activeDeadlineSeconds: {{ default 60 .Values.job.activeDeadlineSeconds }}
+      activeDeadlineSeconds: {{ default 1800 .Values.job.activeDeadlineSeconds }}
       backoffLimit: {{ default 5 .Values.job.backoffLimit }}
       template:
         spec:
