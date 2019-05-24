@@ -3,83 +3,73 @@
 # Declare name/value pairs to be passed into your templates.
 # name: value
 
-Master:
-  Name: master
-  Image: "srcd/spark"
-  ImageTag: "2.2.0_v2"
-  Replicas: 1
-  Component: "spark-master"
-  Cpu: "100m"
-  Memory: "512Mi"
-  ServicePort: 7077
-  ContainerPort: 7077
+master:
+  image: "srcd/spark"
+  imageTag: "2.2.0_v2"
+  imagePullPolicy: IfNotPresent
+  replicas: 1
+  service:
+    type: ClusterIP
+    port: 7077
   # Additional volumes for the Master pod
   additionalVolumes: []
   # Additional volume mounts for the Master container
   additionalVolumeMounts: []
-  # Custom Spark Config. See template to find which values are already set
-  customSparkConfig: {}
+  extraEnv: []
   # Set Master JVM memory. Default 1g
-  # DaemonMemory: 1g
-  # NodeSelector: srcd.host/type: service
+  # daemonMemory: 1g
+  # dodeSelector: srcd.host/type: service
+  resources: {}
+  affinity: {}
 
 # Enable Livy http rest service connected to spark-master
-Livy:
-  Enabled: false
-  Name: livy
-  Image: "srcd/spark-livy"
-  ImageTag: "2.2.3"
-  ServicePort: 8998
-  ContainerPort: 8998
+livy:
+  enabled: false
+  image: "srcd/spark-livy"
+  imageTag: "2.2.3"
+  service:
+    type: ClusterIP
+    port: 8998
 
-WebUi:
-  Name: webui
-  ServicePort: 8080
-  ContainerPort: 8080
+webUI:
+  service:
+    type: ClusterIP
+    port: 8080
 
-WebUiProxy:
-  Name: "webui-proxy"
-  ServiceType: ClusterIP
-  ServicePort: 80
-  ContainerPort: 80
-  # ServiceNodePort:
-  Component: "spark-webui-proxy"
-  Replicas: 1
-  Image: "srcd/spark-ui-proxy"
-  ImageTag: "1.2.0"
-  Cpu: "100m"
-  ReverseProxy:
-    Deploy: true
-    Debug: false
+webUIProxy:
+  replicas: 1
+  image: "srcd/spark-ui-proxy"
+  imageTag: "1.2.0"
+  service:
+    type: ClusterIP
+    port: 8080
+    # nodePort:
+  reverseProxy:
+    deploy: true
+    debug: false
     # This will make spark-web-ui-proxy work with kubectl proxy --api-prefix
     # which is something that always should be set when working when kubectl proxy
     # ApiPrefix: spark-ui-proxy
-  # NodeSelector: srcd.host/type: worker
+  # nodeSelector: srcd.host/type: worker
+  resources: {}
+  affinity: {}
 
-Worker:
-  Name: worker
-  Image: "srcd/spark"
-  ImageTag: "2.2.0_v2"
-  Replicas: 1
-  Component: "spark-worker"
-  Cpu: "100m"
-  Memory: "512Mi"
-  ContainerPort: 8081
-  # Custom Spark Config. See template to find which values are already set
-  customSparkConfig: {}
-  # Set Spark's temporary files location
-  TemporaryDirRoot: /tmp
+worker:
+  image: "srcd/spark"
+  imageTag: "2.2.0_v2"
+  replicas: 1
   # Additional volumes for the Worker pods
   additionalVolumes: []
   # Additional volume mounts for the Worker container
   additionalVolumeMounts: []
+  extraEnv: []
+  resources: {}
   # Set Worker JVM memory. Default 1g
-  # DaemonMemory: 1g
+  # daemonMemory: 1g
   # Set how much total memory workers have to give executors
-  # ExecutorMemory: 1g
-  # NodeSelector:
-  #  srcd.host/type: worker
-  # AdditionalPodContainers:
+  # executorMemory: 1g
+  # nodeSelector: srcd.host/type: worker
+  # additionalPodContainers:
   #  bblfsh-server:
   #    image: bblfsh/server:latest
   #    securityContext:
@@ -87,7 +77,7 @@ Worker:
   ## Affinity for pod assignment
   ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
   ##
-  Affinity:
+  affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
         - weight: 100

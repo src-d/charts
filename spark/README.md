@@ -54,22 +54,22 @@ The following tables lists the configurable parameters of the Spark chart and th
 | `WebUi.ServicePort`   | k8s service port                 | `8080`                                                   |
 | `WebUi.ContainerPort` | Container listening port         | `8080`                                                   |
 
-### Spark WebUiProxy
+### Spark webUIProxy
 
 | Parameter                           | Description                          | Default                                                    |
 | ----------------------------------- | ------------------------------------ | ---------------------------------------------------------- |
-| `WebUiProxy.Name`                   | Spark ui proxy name                  | `webui-proxy`                                              |
-| `WebUiProxy.Image`                  | Container image name                 | `quay.io/srcd/spark-ui-proxy`                              |
-| `WebUiProxy.ImageTag`               | Container image tag                  | `1.0`                                                      |
-| `WebUiProxy.Replicas`               | k8s deployment replicas              | `1`                                                        |
-| `WebUiProxy.Component`              | k8s selector key                     | `spark-ui-proxy`                                           |
-| `WebUiProxy.Cpu`                    | container requested cpu              | `100m`                                                     |
-| `WebUiProxy.ServicePort`            | k8s service port                     | `80`                                                       |
-| `WebUiProxy.ContainerPort`          | Container listening port             | `80`                                                       |
-| `WebUiProxy.NodeSelector`           | WebUiProxy k8s node selector         | `{}`                                                       |
-| `WebUiProxy.ReverseProxy.Deploy`    | WebUiProxy is behind a reverse proxy | `yes`                                                      |
-| `WebUiProxy.ReverseProxy.ApiPrefix` | api-prefix to pass to kube proxy     |                                                            |
-| `WebUiProxy.ReverseProxy.Debug`     | Print debug messages                 | `false`                                                    |
+| `webUIProxy.Name`                   | Spark ui proxy name                  | `webui-proxy`                                              |
+| `webUIProxy.Image`                  | Container image name                 | `quay.io/srcd/spark-ui-proxy`                              |
+| `webUIProxy.ImageTag`               | Container image tag                  | `1.0`                                                      |
+| `webUIProxy.Replicas`               | k8s deployment replicas              | `1`                                                        |
+| `webUIProxy.Component`              | k8s selector key                     | `spark-ui-proxy`                                           |
+| `webUIProxy.Cpu`                    | container requested cpu              | `100m`                                                     |
+| `webUIProxy.ServicePort`            | k8s service port                     | `80`                                                       |
+| `webUIProxy.ContainerPort`          | Container listening port             | `80`                                                       |
+| `webUIProxy.NodeSelector`           | webUIProxy k8s node selector         | `{}`                                                       |
+| `webUIProxy.ReverseProxy.Deploy`    | webUIProxy is behind a reverse proxy | `yes`                                                      |
+| `webUIProxy.ReverseProxy.ApiPrefix` | api-prefix to pass to kube proxy     |                                                            |
+| `webUIProxy.ReverseProxy.Debug`     | Print debug messages                 | `false`                                                    |
 
 If you're using `kubectl proxy` as your reverse proxy, it's important that you set the `ApiPrefix` property, since we need it in order to avoid namespace clashing, as `spark-ui-proxy` rewrites paths under `/api/v1` which is what `kubectl proxy` uses. Hence, in order for this integration to work properly, kube-proxy must be started with `--api-prefix` option
 
