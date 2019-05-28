@@ -11,7 +11,7 @@ service:
   type: ClusterIP
   externalPort: 9418
   internalPort: 9418
-# repositoriers:
+# repositories:
 #   hostPath:
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

@@ -1,0 +1,6 @@
+redirects:
+  - to: https://google.com
+    preservePath: false
+    hostname: bing.com
+ingress:
+  globalStaticIpName: test

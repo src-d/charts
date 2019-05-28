@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ .Release.Name }}-test-redirect"
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  volumes:
+    - name: tools
+      emptyDir: {}
+    - name: tests
+      configMap:
+        name: {{ .Release.Name }}-tests
+  initContainers:
+  - name: test-framework
+    image: dduportal/bats:0.4.0
+    command:
+      - bash
+      - -c
+      - |
+        set -ex
+        # copy bats to tools dir
+        cp -R /usr/local/libexec/ /tools/bats/
+    volumeMounts:
+    volumeMounts:
+      - name: tools
+        mountPath: /tools
+  containers:
+  - name: {{ .Release.Name }}-test-redirect
+    image: alpine
+    volumeMounts:
+      - name: tools
+        mountPath: /tools
+      - name: tests
+        mountPath: /tests
+    env:
+      - name: REDIRECTS
+        value: test
+    command: 
+      - sh
+      - -c
+      - |
+        apk add --no-cache bash curl
+        /tools/bats/bats -t /tests/tests.sh
+  restartPolicy: Never

@@ -1,0 +1,6 @@
+image:
+  tag: v0.8.0
+
+ingress:
+  hostname: drone.test.com
+  globalStaticIpName: test

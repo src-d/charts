@@ -1,0 +1,22 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-tests
+data:
+  tests.sh: |
+    @test "health check" {
+      statusCode=$(curl -I http://{{ template "website-redirect.fullname" . }}/health | head -n 1 | cut -d$' ' -f2)
+      [ "$statusCode" == "200" ]
+    }
+
+    @test "first redirect status code" {
+      statusCode=$(curl -I http://{{ template "website-redirect.fullname" . }} -H Host:{{ (index .Values.redirects 0).hostname }} | head -n 1 | cut -d$' ' -f2)
+      [ "$statusCode" == "301" ]
+    }
+
+    @test "first redirect location header" {
+      location=$(curl -I http://{{ template "website-redirect.fullname" . }} -H Host:{{ (index .Values.redirects 0).hostname }} | grep Location | tr -d '\r' | cut -d$' ' -f2)
+      echo "$location"
+      [ "$location" == "{{ (index .Values.redirects 0).to }}" ]
+    }
