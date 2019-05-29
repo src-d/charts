@@ -27,7 +27,7 @@ git config user.name "Infra sourced{d}"
 mv index.yaml "$index_dir/index.yaml"
 popd
 
-for dir in $(ls | grep -v scripts | grep -v docs); do
+for dir in $(ls | grep -vE '^scripts$|^docs$'); do
     [ -d "$dir" ] || continue
     if helm dependency build "$dir"; then
         helm package --destination "$packages_dir" "$dir"
