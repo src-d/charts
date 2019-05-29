@@ -8,6 +8,8 @@ go:
 - "1.12.x"
 
 stages:
+  - name: lint
+  - name: tests
   - name: repo-sync
     if: branch = master AND type = push
 
@@ -32,7 +34,7 @@ jobs:
         - cd .. # ct is having issues when processing charts on the root
         - ct lint --all --config charts/ct.yaml # --all is being used as our project structure doesn't allow propper git change detection
     - name: Tests
-      stage: Tests
+      stage: tests
       env:
         - CHANGE_MINIKUBE_NONE_USER=true # makes sure config files are owned by the travis user
         - KUBERNETES_VERSION=v1.14.0
