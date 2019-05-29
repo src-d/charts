@@ -11,7 +11,7 @@ metadata:
 data:
   livy.conf: |
     livy.server.port = 8998
-    livy.spark.master = spark://{{ template "master-fullname" . }}:{{ .Values.Master.ServicePort }}
+    livy.spark.master = spark://{{ template "master-fullname" . }}:{{ .Values.master.service.port }}
     livy.spark.deployMode = client
     livy.impersonation.enabled = true
     livy.ui.enabled = true
