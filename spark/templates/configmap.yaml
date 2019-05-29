@@ -10,7 +10,7 @@ metadata:
     heritage: {{ .Release.Service }}
 data:
   livy.conf: |
-    livy.server.port = {{ .Values.Livy.ServicePort }}
+    livy.server.port = 8998
     livy.spark.master = spark://{{ template "master-fullname" . }}:{{ .Values.Master.ServicePort }}
     livy.spark.deployMode = client
     livy.impersonation.enabled = true
