@@ -18,7 +18,7 @@ master:
   extraEnv: []
   # Set Master JVM memory. Default 1g
   # daemonMemory: 1g
-  # dodeSelector: srcd.host/type: service
+  # nodeSelector: srcd.host/type: service
   resources: {}
   affinity: {}
 
