@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: bblfsh/bblfshd
-  tag: v2.13.0
+  tag: v2.14.0
   pullPolicy: IfNotPresent
 service:
   name: bblfshd
