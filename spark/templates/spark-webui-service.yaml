@@ -14,5 +14,8 @@ spec:
       targetPort: webui
       protocol: TCP
       name: webui
+      {{- if .Values.webUI.service.nodePort }}
+      nodePort: {{ .Values.webUI.service.nodePort }}
+      {{- end }}
   selector:
     component: "{{ .Release.Name }}-spark-master"

@@ -14,5 +14,8 @@ spec:
       targetPort: master
       protocol: TCP
       name: master
+      {{- if .Values.master.service.nodePort }}
+      nodePort: {{ .Values.master.service.nodePort }}
+      {{- end }}
   selector:
     component: "{{ .Release.Name }}-spark-master"
