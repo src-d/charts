@@ -49,7 +49,7 @@ spec:
               initialDelaySeconds: 120
               timeoutSeconds: 5
           resources:
-{{ toYaml .Values.webUIproxy.resources | indent 12 }}
+{{ toYaml .Values.webUIProxy.resources | indent 12 }}
       affinity:
 {{ toYaml .Values.webUIProxy.affinity | indent 8 }}
     {{- with .Values.webUIProxy.nodeSelector }}
