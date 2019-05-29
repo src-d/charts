@@ -1,0 +1,3 @@
+app:
+  ghostAPIKey: xxx
+  ghostEndpoint: https://sourced.ghost.io
