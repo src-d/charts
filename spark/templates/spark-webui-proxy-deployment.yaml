@@ -1,18 +1,3 @@
-kind: Service
-apiVersion: v1
-metadata:
-  name: {{ template "webui-proxy-fullname" . }}
-spec:
-  ports:
-    - port: {{ .Values.WebUiProxy.ServicePort }}
-      targetPort: {{ .Values.WebUiProxy.ContainerPort }}
-      {{- if .Values.WebUiProxy.ServiceNodePort }}
-      nodePort: {{ .Values.WebUiProxy.ServiceNodePort }}
-      {{- end }}
-  selector:
-    component: "{{ .Release.Name }}-{{ .Values.WebUiProxy.Component }}"
-  type: {{ .Values.WebUiProxy.ServiceType }}
----
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -21,51 +6,53 @@ metadata:
     heritage: {{ .Release.Service | quote }}
     release: {{ .Release.Name | quote }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-    component: "{{ .Release.Name }}-{{ .Values.WebUiProxy.Component }}"
+    component: "{{ .Release.Name }}-webui-proxy"
 spec:
-  replicas: {{ default 1 .Values.WebUiProxy.Replicas }}
+  replicas: {{ default 1 .Values.webUIProxy.replicas }}
   strategy:
     type: RollingUpdate
   selector:
     matchLabels:
-      component: "{{ .Release.Name }}-{{ .Values.WebUiProxy.Component }}"
+      component: "{{ .Release.Name }}-webui-proxy"
   template:
     metadata:
       labels:
         heritage: {{ .Release.Service | quote }}
         release: {{ .Release.Name | quote }}
-        component: "{{ .Release.Name }}-{{ .Values.WebUiProxy.Component }}"
+        component: "{{ .Release.Name }}-webui-proxy"
     spec:
       containers:
         - name: {{ template "webui-proxy-fullname" . }}
-          image: "{{ .Values.WebUiProxy.Image }}:{{ .Values.WebUiProxy.ImageTag }}"
-          {{- if .Values.WebUiProxy.ReverseProxy.Deploy }}
+          image: "{{ .Values.webUIProxy.image }}:{{ .Values.webUIProxy.imageTag }}"
+          {{- if .Values.webUIProxy.reverseProxy.deploy }}
           env:
             - name: REVERSE_PROXY
               value: "yes"
-            {{- if .Values.WebUiProxy.ReverseProxy.ApiPrefix }}
+            {{- if .Values.webUIProxy.reverseProxy.apiPrefix }}
             - name: URL_PREFIX
-              value: "/{{ .Values.WebUiProxy.ReverseProxy.ApiPrefix }}/api/v1/namespaces/{{ .Release.Namespace }}/services/{{ template "webui-proxy-fullname" . }}:{{ .Values.WebUiProxy.ServicePort }}/proxy"
+              value: "/{{ .Values.webUIProxy.reverseProxy.apiPrefix }}/api/v1/namespaces/{{ .Release.Namespace }}/services/{{ template "webui-proxy-fullname" . }}:{{ .Values.webUIProxy.service.port }}/proxy"
             {{- end }}
-            {{- if .Values.WebUiProxy.ReverseProxy.Debug }}
+            {{- if .Values.webUIProxy.reverseProxy.debug }}
             - name: DEBUG
               value: "yes"
             {{- end }}
           {{- end }}
           ports:
-            - containerPort: {{ .Values.WebUiProxy.ContainerPort }}
-          resources:
-            requests:
-              cpu: "{{ .Values.WebUiProxy.Cpu }}"
+            - name: http
+              containerPort: 80
           args:
-            - {{ template "webui-fullname" . }}:{{ .Values.WebUi.ServicePort }}
+            - {{ template "webui-fullname" . }}:{{ .Values.webUI.service.port }}
           livenessProbe:
               httpGet:
                 path: /
-                port: 80
+                port: http
               initialDelaySeconds: 120
               timeoutSeconds: 5
-    {{- if .Values.WebUiProxy.NodeSelector }}
+          resources:
+{{ toYaml .Values.webUIProxy.resources | indent 12 }}
+      affinity:
+{{ toYaml .Values.webUIProxy.affinity | indent 8 }}
+    {{- with .Values.webUIProxy.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.WebUiProxy.NodeSelector | indent 8 }}
+{{ toYaml . | indent 8 }}
     {{- end }}

@@ -7,79 +7,65 @@ metadata:
     heritage: {{ .Release.Service | quote }}
     release: {{ .Release.Name | quote }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-    component: "{{ .Release.Name }}-{{ .Values.Worker.Component }}"
+    component: "{{ .Release.Name }}-spark-worker"
 spec:
-  replicas: {{ default 1 .Values.Worker.Replicas }}
+  replicas: {{ default 1 .Values.worker.replicas }}
   strategy:
     type: RollingUpdate
   selector:
     matchLabels:
-      component: "{{ .Release.Name }}-{{ .Values.Worker.Component }}"
+      component: "{{ .Release.Name }}-spark-worker"
   template:
     metadata:
       labels:
         app: {{ template "name" . }}
         heritage: {{ .Release.Service | quote }}
         release: {{ .Release.Name | quote }}
-        component: "{{ .Release.Name }}-{{ .Values.Worker.Component }}"
+        component: "{{ .Release.Name }}-spark-worker"
     spec:
       volumes:
-        - name: spark-tmp
-          hostPath:
-            path: {{ template "worker-temporary-dir" . }}
-        {{- if .Values.Worker.Gluster }}
-        - name: glusterfsvol
-          glusterfs:
-             endpoints: {{ required "Missing Worker.Gluster.endpoint" .Values.Worker.Gluster.endpoint }}
-             path: {{ required "Missing Worker.Gluster.volumeName" .Values.Worker.Gluster.volumeName }}
-        {{- end }}
-        {{- with .Values.Worker.additionalVolumes  }}
+        {{- with .Values.worker.additionalVolumes  }}
 {{ toYaml . | indent 8 }}
         {{- end }}
       containers:
         - name: {{ template "worker-fullname" . }}
-          image: "{{ .Values.Worker.Image }}:{{ .Values.Worker.ImageTag }}"
-          command: ["/opt/spark/sbin/start-slave.sh", "spark://{{ template "master-fullname" . }}:{{ .Values.Master.ServicePort }}", "--webui-port", "{{ .Values.Worker.ContainerPort }}"]
+          image: "{{ .Values.worker.image }}:{{ .Values.worker.imageTag }}"
+          command: 
+            - /opt/spark/sbin/start-slave.sh
+            - spark://{{ template "master-fullname" . }}:{{ .Values.master.service.port }}
+            - --webui-port
+            - "8081"
           ports:
-            - containerPort: {{ .Values.Worker.ContainerPort }}
+            - name: http
+              containerPort: 8081
           resources:
-            requests:
-              cpu: "{{ .Values.Worker.Cpu }}"
-              memory: "{{ .Values.Worker.Memory }}"
+{{ toYaml .Values.worker.resources | indent 12 }}
           volumeMounts:
-            - mountPath: /spark-temp-data
-              name: spark-tmp
-            {{- if .Values.Worker.Gluster }}
-            - mountPath: {{ default "/mnt/glusterfs" .Values.Worker.Gluster.mountPath }}
-              name: glusterfsvol
-            {{- end }}
-           {{- with .Values.Worker.additionalVolumeMounts  }}
+          {{- with .Values.worker.additionalVolumeMounts  }}
 {{ toYaml . | indent 12 }}
-            {{- end }}
+          {{- end }}
           env:
           - name: SPARK_DAEMON_MEMORY
-            value: {{ default "1g" .Values.Worker.DaemonMemory | quote }}
+            value: {{ default "1g" .Values.worker.daemonMemory | quote }}
           - name: SPARK_WORKER_MEMORY
-            value: {{ default "1g" .Values.Worker.ExecutorMemory | quote }}
+            value: {{ default "1g" .Values.worker.executorMemory | quote }}
           - name: SPARK_NO_DAEMONIZE
             value: "yes"
           - name: SPARK_LOCAL_DIRS
             value: "/spark-temp-data"
-          {{- range $key, $value := .Values.Worker.customSparkConfig }}
-          - name: {{ $key | quote }}
-            value: {{ $value | quote }}
+          {{- with .Values.master.extraEnv  }}
+{{ toYaml . | indent 10 }}
           {{- end }}
-      {{- range $key, $value := .Values.Worker.AdditionalPodContainers }}
+      {{- range $key, $value := .Values.worker.AdditionalPodContainers }}
       {{- if $value }}
         - name: {{ $key }}
 {{ toYaml $value | indent 10 }}
       {{- end }}
       {{- end }}
-    {{- if .Values.Worker.NodeSelector }}
-      nodeSelector:
-{{ toYaml .Values.Worker.NodeSelector | indent 8 }}
-    {{- end }}
       affinity:
-      {{- with .Values.Worker.Affinity  }}
+{{ toYaml .Values.worker.affinity | indent 8 }}
+    {{- with .Values.worker.nodeSelector }}
+      nodeSelector:
 {{ toYaml . | indent 8 }}
-      {{- end }}
+    {{- end }}
+

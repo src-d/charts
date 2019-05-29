@@ -4,4 +4,4 @@
   You can watch its status by running 'kubectl get svc --namespace {{ .Release.Namespace }} -w {{ template "webui-fullname" . }}'
 
   export SPARK_SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ template "webui-fullname" . }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-  echo http://$SPARK_SERVICE_IP:{{ .Values.WebUi.ServicePort }}
+  echo http://$SPARK_SERVICE_IP:{{ .Values.webUI.service.port }}

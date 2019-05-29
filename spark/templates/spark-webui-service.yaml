@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "webui-fullname" . }}
+  labels:
+    heritage: {{ .Release.Service | quote }}
+    release: {{ .Release.Name | quote }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    component: "{{ .Release.Name }}-spark-master"
+spec:
+  type: {{ .Values.master.service.type }}
+  ports:
+    - port: {{ .Values.webUI.service.port }}
+      targetPort: webui
+      protocol: TCP
+      name: webui
+      {{- if .Values.webUI.service.nodePort }}
+      nodePort: {{ .Values.webUI.service.nodePort }}
+      {{- end }}
+  selector:
+    component: "{{ .Release.Name }}-spark-master"

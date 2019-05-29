@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ template "webui-proxy-fullname" . }}
+spec:
+  ports:
+    - port: {{ .Values.webUIProxy.service.port }}
+      targetPort: http
+      {{- if .Values.webUIProxy.service.nodePort }}
+      nodePort: {{ .Values.webUIProxy.service.nodePort }}
+      {{- end }}
+  selector:
+    component: "{{ .Release.Name }}-webui-proxy"
+  type: {{ .Values.webUIProxy.ServiceType }}

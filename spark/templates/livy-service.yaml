@@ -1,0 +1,20 @@
+{{- if .Values.livy.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "livy-fullname" . }}
+  labels:
+    heritage: {{ .Release.Service | quote }}
+    release: {{ .Release.Name | quote }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    component: "{{ .Release.Name }}-{{ .Values.Master.Component }}"
+spec:
+  type: {{ .Values.livy.service.type }}
+  ports:
+    - port: {{ .Values.livy.service.port }}
+      targetPort: livy
+      protocol: TCP
+      name: livy
+  selector:
+    component: "{{ .Release.Name }}-spark-master"
+{{- end }}
