@@ -32,10 +32,9 @@ spec:
               value: "{{ required "Missing app.ghostEndpoint" .Values.app.ghostEndpoint }}"
             - name: GHOST_API_KEY
               valueFrom:
-                  secretKeyRef:
-                    name: {{ default (include "ghost-gcs-backup.fullname" .) .Values.app.ghostAPIKeySecretName }}
-                    key: api_key
-              value: "{{ required "Missing app.ghostAPIKey" .Values.app.ghostAPIKey }}"
+                secretKeyRef:
+                  name: {{ default (include "ghost-gcs-backup.fullname" .) .Values.app.ghostAPIKeySecretName }}
+                  key: api_key
             {{- if .Values.googleApplicationCredentialsSecret.enabled }}
             volumeMounts:
             - mountPath: /var/secrets/google
