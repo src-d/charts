@@ -1,0 +1,69 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "thrift.fullname" . }}
+  labels:
+    app: {{ template "thrift.name" . }}
+    chart: {{ template "thrift.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "thrift.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "thrift.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      {{- if .Values.image.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /opt/spark-2.3.2-bin-hadoop2.7/bin/spark-submit
+            - --master
+            - {{ required "Missing app.sparkMasterURI" .Values.app.sparkMasterURI | quote }}
+            - --class
+            - tech.sourced.gitbase.spark.StartThriftServer
+            - --packages
+            - org.postgresql:postgresql:42.2.5
+            - /opt/jars/gitbase-spark-connector-enterprise/target/gitbase-spark-connector-enterprise-uber.jar
+          env:
+            - name: BBLFSH_HOST
+              value: {{ required "Missing app.bblfshHost" .Values.app.bblfshHost }}
+            - name: BBLFSH_PORT
+              value: {{ .Values.app.bblfshPort }}
+            - name: GITBASE_SERVERS
+              value: {{ required "Missing app.gitbaseServers" .Values.app.gitbaseServers }}
+          ports:
+            - name: thrift
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: thrift
+          readinessProbe:
+            tcpSocket:
+              port: thrift
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
