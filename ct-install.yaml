@@ -36,3 +36,4 @@ excluded-charts:
   - scylla
   - spark
   - spark-api-jupyter
+  - thrift
