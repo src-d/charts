@@ -11,10 +11,10 @@ image:
   imagePullSecrets: {}
 
 app:
-  # bblfshHost: 
+  # bblfshHost:
   bblfshPort: 9432
-  # gitbaseServers: 
-  # sparkMasterURI: 
+  # gitbaseServers:
+  # sparkMasterURI:
 
 service:
   type: ClusterIP
