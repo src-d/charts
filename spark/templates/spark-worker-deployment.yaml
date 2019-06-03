@@ -56,7 +56,7 @@ spec:
           {{- with .Values.master.extraEnv  }}
 {{ toYaml . | indent 10 }}
           {{- end }}
-      {{- range $key, $value := .Values.worker.AdditionalPodContainers }}
+      {{- range $value := .Values.worker.additionalPodContainers }}
       {{- if $value }}
         - name: {{ $key }}
 {{ toYaml $value | indent 10 }}
