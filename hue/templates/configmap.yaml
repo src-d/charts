@@ -161,3 +161,8 @@ data:
       ssl_cert_ca_verify={{ .Values.config.spark.sslCaCertVerify | toString | title }}
       {{- end }}
 
+    # Solr Config
+    {{- if .Values.config.search.enabled }}
+    [search]
+      solr_url={{ .Values.config.search.url }}
+    {{- end }}
