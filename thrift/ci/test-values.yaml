@@ -1,0 +1,5 @@
+app:
+  bblfshHost: test
+  bblfshPort: 9432
+  gitbaseServers: test:3306
+  sparkMasterURI: "local['*']"
