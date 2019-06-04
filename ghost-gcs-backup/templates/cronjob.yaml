@@ -35,6 +35,8 @@ spec:
                 secretKeyRef:
                   name: {{ default (include "ghost-gcs-backup.fullname" .) .Values.app.ghostAPIKeySecretName }}
                   key: api_key
+            - name: GCS_BUCKET
+              value: "{{ required "Missing app.gcsBucket" .Values.app.gcsBucket }}"
             {{- if .Values.googleApplicationCredentialsSecret.enabled }}
             volumeMounts:
             - mountPath: /var/secrets/google
