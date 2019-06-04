@@ -70,7 +70,7 @@ worker:
   # executorMemory: 1g
   # nodeSelector: srcd.host/type: worker
   # additionalPodContainers:
-  #  bblfsh-server:
+  #  - name: bblfsh-server:
   #    image: bblfsh/server:latest
   #    securityContext:
   #      privileged: true
