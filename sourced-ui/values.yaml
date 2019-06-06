@@ -56,7 +56,7 @@ gitbase: {}
   # db: <required>
   # user: <required>
   # password: ""
-  # secretName: 
+  # secretName:
 
 redis: {}
   # host: <required>
