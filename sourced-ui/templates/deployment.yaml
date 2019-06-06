@@ -50,7 +50,7 @@ spec:
             - name: POSTGRES_HOST
             {{- if .Values.postgres.cloudSQL.enabled }}
               value: localhost
-              {{- else }}
+            {{- else }}
               value: "{{ required "missing postgres.host value" .Values.postgres.host }}"
             {{- end }}
             - name: POSTGRES_PORT
