@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "sourced-ui.fullname" . }}
+  labels:
+    app: {{ template "sourced-ui.name" . }}
+    chart: {{ template "sourced-ui.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: superset
+      protocol: TCP
+      name: superset
+  selector:
+    app: {{ template "sourced-ui.name" . }}
+    release: {{ .Release.Name }}
