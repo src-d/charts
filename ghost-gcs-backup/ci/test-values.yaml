@@ -1,3 +1,4 @@
 app:
   ghostAPIKey: xxx
   ghostEndpoint: https://sourced.ghost.io
+  gcsBucket: my-bucket

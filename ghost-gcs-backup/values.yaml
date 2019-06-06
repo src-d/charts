@@ -12,6 +12,7 @@ app:
 # ghostEndpoint: https://sourced.ghost.io
 # ghostAPIKey:
 # ghostAPIKeySecretName:
+# gcsBucket: my-bucket
 
 googleApplicationCredentialsSecret:
   enabled: false
