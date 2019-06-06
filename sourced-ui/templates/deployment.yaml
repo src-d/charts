@@ -1,0 +1,133 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "sourced-ui.fullname" . }}
+  labels:
+    app: {{ template "sourced-ui.name" . }}
+    chart: {{ template "sourced-ui.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "sourced-ui.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "sourced-ui.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      {{- if .Values.postgres.cloudSQL.enabled }}
+      volumes:
+        - name: cloudsql-instance-credentials
+          secret:
+            secretName: {{ required "missing postgres.cloudSQL.serviceAccountSecret" .Values.postgres.cloudSQL.serviceAccountSecret }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: MODE
+              value: "{{ default "Community" .Values.app.mode }}"
+            - name: SUPERSET_ENV
+              value: production
+            - name: ADMIN_LOGIN
+              value: "{{ default "admin" .Values.admin.login }}"
+            - name: ADMIN_FIRST_NAME
+              value: "{{ default "admin" .Values.admin.firstName }}"
+            - name: ADMIN_LAST_NAME
+              value: "{{ default "admin" .Values.admin.lastName }}"
+            - name: ADMIN_EMAIL
+              value: "{{ default "admin@example.com" .Values.admin.email }}"
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: "{{ default (include "sourced-ui.admin.secretName" .) .Values.admin.secretName }}"
+            - name: POSTGRES_HOST
+            {{- if .Values.postgres.cloudSQL.enabled }}
+              value: localhost
+              {{- else }}
+              value: "{{ required "missing postgres.host value" .Values.postgres.host }}"
+            {{- end }}
+            - name: POSTGRES_PORT
+              value: "{{ default "5432" .Values.postgres.port }}"
+            - name: POSTGRES_DB
+              value: "{{ required "missing postgres.db value" .Values.postgres.db }}"
+            - name: POSTGRES_USER
+              value: "{{ required "missing postgres.user value" .Values.postgres.user }}"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: "{{ default (include "sourced-ui.postgres.secretName" .) .Values.postgres.secretName }}"
+            - name: REDIS_HOST
+              value: "{{ required "missing redis.host value" .Values.redis.host }}"
+            - name: REDIS_PORT
+              value: "{{ default "6379" .Values.redis.port }}"
+            - name: GITBASE_HOST
+              value: "{{ required "missing gitbase.host value" .Values.gitbase.host }}"
+            - name: GITBASE_PORT
+              value: "{{ default "3306" .Values.gitbase.port }}"
+            - name: GITBASE_DB
+              value: "{{ required "missing gitbase.db value" .Values.gitbase.db }}"
+            - name: GITBASE_USER
+              value: "{{ required "missing gitbase.user value" .Values.gitbase.user }}"
+            - name: GITBASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: "{{ default (include "sourced-ui.gitbase.secretName" .) .Values.gitbase.secretName }}"
+            - name: BBLFSH_WEB_HOST
+              value: "{{ required "missing bblfshWeb.host value" .Values.bblfshWeb.host }}"
+            - name: BBLFSH_WEB_PORT
+              value: "{{ default "8080" .Values.bblfshWeb.port }}"
+          ports:
+            - name: superset
+              containerPort: 8088
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: superset
+            initialDelaySeconds: {{ default 60 .Values.livenessProbe.initialDelaySeconds }}
+            timeoutSeconds: {{ default 1 .Values.livenessProbe.timeoutSeconds }}
+            periodSeconds: {{ default 15 .Values.livenessProbe.timeoutSeconds }}
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: superset
+            initialDelaySeconds: {{ default 60 .Values.readinessProbe.initialDelaySeconds }}
+            timeoutSeconds: {{ default 1 .Values.readinessProbe.timeoutSeconds }}
+            periodSeconds: {{ default 15 .Values.readinessProbe.timeoutSeconds }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+      {{- if .Values.postgres.cloudSQL.enabled }}
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.11
+          command: ["/cloud_sql_proxy",
+                    "-instances={{ required "missing postgres.cloudSQL.instanceConnectionName" .Values.postgres.cloudSQL.instanceConnectionName }}=tcp:5432",
+                    "-credential_file=/secrets/cloudsql/credentials.json"]
+          securityContext:
+            runAsUser: 2  # non-root user
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+      {{- end }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
