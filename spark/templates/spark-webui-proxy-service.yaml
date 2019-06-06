@@ -11,4 +11,4 @@ spec:
       {{- end }}
   selector:
     component: "{{ .Release.Name }}-webui-proxy"
-  type: {{ .Values.webUIProxy.ServiceType }}
+  type: {{ .Values.webUIProxy.service.type }}
