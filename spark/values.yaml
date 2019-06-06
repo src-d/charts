@@ -8,6 +8,9 @@ master:
   imageTag: "2.2.0_v2"
   imagePullPolicy: IfNotPresent
   replicas: 1
+  service:
+    type: ClusterIP
+    port: 7077
   # Additional volumes for the Master pod
   additionalVolumes: []
   # Additional volume mounts for the Master container
