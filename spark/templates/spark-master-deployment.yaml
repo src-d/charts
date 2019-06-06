@@ -65,7 +65,7 @@ spec:
           {{- end }}
       {{- if .Values.livy.enabled }}
         - name : {{ template "livy-fullname" . }}
-          image: "{{ default "srcd/spark-livy" .Values.livy.image }}:{{ default "2.2.3" .Values.livy.ImageTag }}"
+          image: "{{ default "srcd/spark-livy" .Values.livy.image }}:{{ default "2.2.3" .Values.livy.imageTag }}"
           ports:
             - name: livy
               containerPort: 8998
