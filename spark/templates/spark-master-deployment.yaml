@@ -43,12 +43,12 @@ spec:
             - -c
             - |
               echo $(hostname -i) {{ template "master-fullname" . }} >> /etc/hosts
-              /opt/spark/sbin/start-master.sh --host {{ template "master-fullname" . }} --port 7077 --webui-port 8998
+              /opt/spark/sbin/start-master.sh --host {{ template "master-fullname" . }} --port 7077 --webui-port 8080
           ports:
             - name: master
               containerPort: 7077
             - name: webui
-              containerPort: 8998
+              containerPort: 8080
           volumeMounts:
           {{- with .Values.master.additionalVolumeMounts  }}
 {{ toYaml . | indent 12 }}
