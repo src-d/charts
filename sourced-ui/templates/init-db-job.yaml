@@ -1,5 +1,5 @@
-apiVersion: apps/v1beta2
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
   name: {{ template "sourced-ui.fullname" . }}
   labels:
@@ -7,35 +7,66 @@ metadata:
     chart: {{ template "sourced-ui.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation
 spec:
-  replicas: {{ .Values.replicaCount }}
-  selector:
-    matchLabels:
-      app: {{ template "sourced-ui.name" . }}
-      release: {{ .Release.Name }}
   template:
     metadata:
+      name: {{ template "sourced-ui.fullname" . }}-initdb
       labels:
         app: {{ template "sourced-ui.name" . }}
+        chart: {{ template "sourced-ui.chart" . }}
         release: {{ .Release.Name }}
+        heritage: {{ .Release.Service }}
     spec:
-      {{- if .Values.postgres.cloudSQL.enabled }}
+      restartPolicy: Never
       volumes:
+        - name: tmp-pod
+          emptyDir: {}
+      {{- if .Values.postgres.cloudSQL.enabled }}
         - name: cloudsql-instance-credentials
           secret:
             secretName: {{ required "missing postgres.cloudSQL.serviceAccountSecret" .Values.postgres.cloudSQL.serviceAccountSecret }}
       {{- end }}
       containers:
-        - name: {{ .Chart.Name }}
+      {{- if .Values.postgres.cloudSQL.enabled }}
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.11
+          command: ["/bin/sh", "-c"]
+          # The following is a hack needed as Kubernetes wants the 2 containers to exit to complete the job
+          # See https://github.com/kubernetes/kubernetes/issues/25908
+          args:
+          - |
+            /cloud_sql_proxy --dir=/cloudsql -instances={{ required "missing postgres.cloudSQL.instanceConnectionName" .Values.postgres.cloudSQL.instanceConnectionName }}=tcp:5432 -credential_file=/secrets/cloudsql/credentials.json &
+            CHILD_PID=$!
+            (while true; do if [[ -f "/tmp/pod/main-terminated" ]]; then kill $CHILD_PID; echo "Killed $CHILD_PID as the main container terminated."; fi; sleep 1; done) &
+            wait $CHILD_PID
+            if [[ -f "/tmp/pod/main-terminated" ]]; then exit 0; echo "Job completed. Exiting..."; fi
+          securityContext:
+            runAsUser: 2  # non-root user
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+            - mountPath: /tmp/pod
+              name: tmp-pod
+              readOnly: true
+        {{- end }}
+        - name: sourced-ui-initdb
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              trap "touch /tmp/pod/main-terminated" EXIT
+              /home/superset/docker-init.sh
           env:
             - name: MODE
               value: "{{ default "Community" .Values.app.mode }}"
             - name: SUPERSET_ENV
               value: production
-            - name: SUPERSET_NO_INIT_DB
-              value: "true"
             - name: ADMIN_LOGIN
               value: "{{ default "admin" .Values.admin.login }}"
             - name: ADMIN_FIRST_NAME
@@ -48,7 +79,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: password
-                  name: "{{ default (include "sourced-ui.admin.secretName" .) .Values.admin.secretName }}"
+                  name: "{{ default (include "sourced-ui.admin.hookSecretName" .) .Values.admin.secretName }}"
             - name: POSTGRES_HOST
             {{- if .Values.postgres.cloudSQL.enabled }}
               value: localhost
@@ -65,7 +96,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: password
-                  name: "{{ default (include "sourced-ui.postgres.secretName" .) .Values.postgres.secretName }}"
+                  name: "{{ default (include "sourced-ui.postgres.hookSecretName" .) .Values.postgres.secretName }}"
             - name: REDIS_HOST
               value: "{{ required "missing redis.host value" .Values.redis.host }}"
             - name: REDIS_PORT
@@ -82,54 +113,11 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: password
-                  name: "{{ default (include "sourced-ui.gitbase.secretName" .) .Values.gitbase.secretName }}"
+                  name: "{{ default (include "sourced-ui.gitbase.hookSecretName" .) .Values.gitbase.secretName }}"
             - name: BBLFSH_WEB_HOST
               value: "{{ required "missing bblfshWeb.host value" .Values.bblfshWeb.host }}"
             - name: BBLFSH_WEB_PORT
               value: "{{ default "8080" .Values.bblfshWeb.port }}"
-          ports:
-            - name: superset
-              containerPort: 8088
-              protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: superset
-            initialDelaySeconds: {{ default 60 .Values.livenessProbe.initialDelaySeconds }}
-            timeoutSeconds: {{ default 1 .Values.livenessProbe.timeoutSeconds }}
-            periodSeconds: {{ default 15 .Values.livenessProbe.timeoutSeconds }}
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: superset
-            initialDelaySeconds: {{ default 60 .Values.readinessProbe.initialDelaySeconds }}
-            timeoutSeconds: {{ default 1 .Values.readinessProbe.timeoutSeconds }}
-            periodSeconds: {{ default 15 .Values.readinessProbe.timeoutSeconds }}
-          resources:
-{{ toYaml .Values.resources | indent 12 }}
-      {{- if .Values.postgres.cloudSQL.enabled }}
-        - name: cloudsql-proxy
-          image: gcr.io/cloudsql-docker/gce-proxy:1.11
-          command: ["/cloud_sql_proxy",
-                    "-instances={{ required "missing postgres.cloudSQL.instanceConnectionName" .Values.postgres.cloudSQL.instanceConnectionName }}=tcp:5432",
-                    "-credential_file=/secrets/cloudsql/credentials.json"]
-          securityContext:
-            runAsUser: 2  # non-root user
-            allowPrivilegeEscalation: false
           volumeMounts:
-            - name: cloudsql-instance-credentials
-              mountPath: /secrets/cloudsql
-              readOnly: true
-      {{- end }}
-    {{- with .Values.nodeSelector }}
-      nodeSelector:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    {{- with .Values.affinity }}
-      affinity:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    {{- with .Values.tolerations }}
-      tolerations:
-{{ toYaml . | indent 8 }}
-    {{- end }}
+            - mountPath: /tmp/pod
+              name: tmp-pod

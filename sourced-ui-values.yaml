@@ -1,0 +1,21 @@
+postgres:
+  host: postgresql-postgresql
+  db: superset
+  user: superset
+  password: superset
+
+gitbase:
+  host: gitbase
+  db: gitbase
+  user: gitbase
+  password: gitbase
+
+redis:
+  host: redis-master
+
+bblfshWeb:
+  host: bblfsh-web-bblfsh-web
+
+image:
+  repository: maartje/sourced-ui
+  tag: my-test-build-do-not-use-ok-thx-bye
