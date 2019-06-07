@@ -8,14 +8,12 @@ metadata:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     component: "{{ .Release.Name }}-spark-master"
 spec:
-  type: {{ .Values.master.service.type }}
+  type: ClusterIP
+  clusterIP: None
   ports:
     - port: {{ .Values.master.service.port }}
       targetPort: master
       protocol: TCP
       name: master
-      {{- if .Values.master.service.nodePort }}
-      nodePort: {{ .Values.master.service.nodePort }}
-      {{- end }}
   selector:
     component: "{{ .Release.Name }}-spark-master"
