@@ -28,12 +28,24 @@ If release name contains chart name it will be used as a full name.
 {{- printf "admin-%s" (include "sourced-ui.fullname" .) -}}
 {{- end -}}
 
+{{- define "sourced-ui.admin.hookSecretName" -}}
+{{- printf "hook-admin-%s" (include "sourced-ui.fullname" .) -}}
+{{- end -}}
+
 {{- define "sourced-ui.postgres.secretName" -}}
 {{- printf "postgres-%s" (include "sourced-ui.fullname" .) -}}
 {{- end -}}
 
+{{- define "sourced-ui.postgres.hookSecretName" -}}
+{{- printf "hook-postgres-%s" (include "sourced-ui.fullname" .) -}}
+{{- end -}}
+
 {{- define "sourced-ui.gitbase.secretName" -}}
 {{- printf "gitbase-%s" (include "sourced-ui.fullname" .) -}}
+{{- end -}}
+
+{{- define "sourced-ui.gitbase.hookSecretName" -}}
+{{- printf "hook-gitbase-%s" (include "sourced-ui.fullname" .) -}}
 {{- end -}}
 
 {{/*
