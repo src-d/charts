@@ -1,22 +1,22 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ template "thrift.fullname" . }}
+  name: {{ template "spark-thrift-server.fullname" . }}
   labels:
-    app: {{ template "thrift.name" . }}
-    chart: {{ template "thrift.chart" . }}
+    app: {{ template "spark-thrift-server.name" . }}
+    chart: {{ template "spark-thrift-server.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "thrift.name" . }}
+      app: {{ template "spark-thrift-server.name" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "thrift.name" . }}
+        app: {{ template "spark-thrift-server.name" . }}
         release: {{ .Release.Name }}
     spec:
       {{- if .Values.image.imagePullSecrets }}
