@@ -8,7 +8,7 @@ image:
   repository: srcd/gitbase-spark-connector-enterprise-jupyter
   tag: latest
   pullPolicy: Always
-  imagePullSecrets: {}
+  imagePullSecrets: []
 
 app:
   # bblfshHost:
