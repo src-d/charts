@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: srcd/gitbase-spark-connector-enterprise-jupyter
+  repository: srcd/gitbase-spark-connector-enterprise
   tag: latest
   pullPolicy: Always
   imagePullSecrets: []
