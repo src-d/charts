@@ -40,7 +40,7 @@ spec:
             - name: BBLFSH_HOST
               value: {{ required "Missing app.bblfshHost" .Values.app.bblfshHost }}
             - name: BBLFSH_PORT
-              value: {{ .Values.app.bblfshPort }}
+              value: {{ .Values.app.bblfshPort | quote }}
             - name: GITBASE_SERVERS
               value: {{ required "Missing app.gitbaseServers" .Values.app.gitbaseServers }}
           ports:
