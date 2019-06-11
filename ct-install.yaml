@@ -37,4 +37,4 @@ excluded-charts:
   - sourced-ui
   - spark
   - spark-api-jupyter
-  - thrift
+  - spark-thrift-server
