@@ -14,6 +14,9 @@ spec:
       targetPort: superset
       protocol: TCP
       name: superset
+      {{- if .Values.service.nodePort }}
+      nodePort: {{ .Values.service.nodePort }}
+      {{- end }}
   selector:
     app: {{ template "sourced-ui.name" . }}
     release: {{ .Release.Name }}

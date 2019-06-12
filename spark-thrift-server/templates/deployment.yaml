@@ -35,7 +35,7 @@ spec:
             - tech.sourced.gitbase.spark.StartThriftServer
             - --packages
             - org.postgresql:postgresql:42.2.5
-            - /opt/jars/gitbase-spark-connector-enterprise/target/gitbase-spark-connector-enterprise-uber.jar
+            - /opt/jars/gitbase-spark-connector-enterprise-uber.jar
           env:
             - name: BBLFSH_HOST
               value: {{ required "Missing app.bblfshHost" .Values.app.bblfshHost }}
