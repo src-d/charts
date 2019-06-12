@@ -54,7 +54,7 @@ spec:
                   name: "{{ default (include "spark-thrift-server.gitbase.secretName" .) .Values.app.gitbasePasswordSecretName }}"
           ports:
             - name: thrift
-              containerPort: 8080
+              containerPort: 10000
               protocol: TCP
 
           {{- if .Values.livenessProbe.enabled }}

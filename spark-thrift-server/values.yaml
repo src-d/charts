@@ -22,7 +22,7 @@ app:
 
 service:
   type: ClusterIP
-  port: 8080
+  port: 10000
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
