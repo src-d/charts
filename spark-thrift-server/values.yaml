@@ -15,6 +15,10 @@ app:
   bblfshPort: 9432
   # gitbaseServers:
   # sparkMasterURI:
+  gitbaseUser: gitbase
+  gitbasePassword: gitbase
+  # gitbasePasswordSecretName:
+
 
 service:
   type: ClusterIP

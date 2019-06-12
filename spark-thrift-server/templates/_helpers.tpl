@@ -30,3 +30,7 @@ Create chart name and version as used by the chart label.
 {{- define "spark-thrift-server.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{- define "spark-thrift-server.gitbase.secretName" -}}
+{{- printf "gitbase-%s" (include "spark-thrift-server.fullname" .) -}}
+{{- end -}}
