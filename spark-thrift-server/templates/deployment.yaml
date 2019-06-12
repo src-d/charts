@@ -34,7 +34,7 @@ spec:
             - --conf 
             - "spark.datasource.gitbase.user={{ .Values.app.gitbaseUser }}" 
             - --conf 
-            - "spark.datasource.gitbase.password={{ .Values.app.gitbasePassword }}"
+            - "spark.datasource.gitbase.password=$(GITBASE_PASSWORD)"
             - --class
             - tech.sourced.gitbase.spark.StartThriftServer
             - --packages
@@ -47,6 +47,11 @@ spec:
               value: {{ .Values.app.bblfshPort | quote }}
             - name: GITBASE_SERVERS
               value: {{ required "Missing app.gitbaseServers" .Values.app.gitbaseServers }}
+            - name: GITBASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: "{{ default (include "spark-thrift-server.gitbase.secretName" .) .Values.app.gitbasePasswordSecretName }}"
           ports:
             - name: thrift
               containerPort: 8080

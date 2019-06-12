@@ -17,6 +17,8 @@ app:
   # sparkMasterURI:
   gitbaseUser: gitbase
   gitbasePassword: gitbase
+  # gitbasePasswordSecretName:
+
 
 service:
   type: ClusterIP
