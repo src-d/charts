@@ -55,7 +55,7 @@ gitbase: {}
   # host: <required>
   # port: 3306
   # db: <required>
-  # user: <required>
+  # user: ""
   # password: ""
   # secretName:
 
