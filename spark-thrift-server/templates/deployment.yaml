@@ -36,14 +36,14 @@ spec:
             - --conf 
             - "spark.datasource.gitbase.password=$(GITBASE_PASSWORD)"
             - --conf
-            - spark.driver.host=$(POD_IP)
+            - "spark.driver.host=$(POD_IP)"
             - --class
             - tech.sourced.gitbase.spark.StartThriftServer
             - --packages
             - org.postgresql:postgresql:42.2.5
             - /opt/jars/gitbase-spark-connector-enterprise-uber.jar
           env:
-            - name: MY_POD_IP
+            - name: POD_IP
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
