@@ -37,6 +37,12 @@ spec:
             - "spark.datasource.gitbase.password=$(GITBASE_PASSWORD)"
             - --conf
             - "spark.driver.host=$(POD_IP)"
+            - --conf
+            - "spark.datasource.gitbase.urls={{ required "Missing app.gitbaseServers" .Values.app.gitbaseServers }}"
+            - --conf
+            - "spark.datasource.gitbase.bblfsh.host={{ required "Missing app.bblfshHost" .Values.app.bblfshHost }}"
+            - --conf
+            - "spark.datasource.gitbase.bblfsh.port={{ .Values.app.bblfshPort }}"
             - --class
             - tech.sourced.gitbase.spark.StartThriftServer
             - --packages
@@ -47,12 +53,6 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
-            - name: BBLFSH_HOST
-              value: {{ required "Missing app.bblfshHost" .Values.app.bblfshHost }}
-            - name: BBLFSH_PORT
-              value: {{ .Values.app.bblfshPort | quote }}
-            - name: GITBASE_SERVERS
-              value: {{ required "Missing app.gitbaseServers" .Values.app.gitbaseServers }}
             - name: GITBASE_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -62,7 +62,6 @@ spec:
             - name: thrift
               containerPort: 10000
               protocol: TCP
-
           {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             tcpSocket:
