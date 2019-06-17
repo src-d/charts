@@ -6,3 +6,7 @@ chart-repos:
   - incubator=https://kubernetes-charts-incubator.storage.googleapis.com/
   - src-d=https://src-d.github.io/charts/
 helm-extra-args: --timeout 600
+chart-dirs:
+  - stable
+  - incubator
+  - infra
