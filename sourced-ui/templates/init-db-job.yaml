@@ -107,13 +107,17 @@ spec:
               value: "{{ default "3306" .Values.gitbase.port }}"
             - name: GITBASE_DB
               value: "{{ required "missing gitbase.db value" .Values.gitbase.db }}"
+            {{- if .Values.gitbase.user }}
             - name: GITBASE_USER
-              value: "{{ required "missing gitbase.user value" .Values.gitbase.user }}"
+              value: "{{ .Values.gitbase.user }}"
+            {{- end }}
+            {{- if (or .Values.gitbase.secretName .Values.gitbase.password) }}
             - name: GITBASE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   key: password
                   name: "{{ default (include "sourced-ui.gitbase.hookSecretName" .) .Values.gitbase.secretName }}"
+            {{- end }}
             - name: BBLFSH_WEB_HOST
               value: "{{ required "missing bblfshWeb.host value" .Values.bblfshWeb.host }}"
             - name: BBLFSH_WEB_PORT
