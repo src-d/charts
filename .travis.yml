@@ -30,6 +30,8 @@ jobs:
         - sudo chmod +x ct && sudo mv ct /usr/local/bin/
         - sudo mv etc /etc/ct
         - rm -f chart-testing_${CT_VERSION}_linux_amd64.tar.gz
+        - git config remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # Configure Travis CI to pull all branches, needed for CT to compare changes
+        - git pull
       script:
         - ct lint --config ct.yaml
     - name: Tests
@@ -60,6 +62,8 @@ jobs:
         - sudo chmod +x ct && sudo mv ct /usr/local/bin/
         - sudo mv etc /etc/ct
         - rm -f chart-testing_${CT_VERSION}_linux_amd64.tar.gz
+        - git config remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # Configure Travis CI to pull all branches, needed for CT to compare changes
+        - git pull
       script:
         - helm init
         # wait till the tiller is ready
