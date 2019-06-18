@@ -1,0 +1,240 @@
+apiVersion: v1
+entries:
+  bblfsh-web:
+  - apiVersion: v1
+    appVersion: 0.11.0
+    created: 2019-06-18T09:23:49.799211001Z
+    description: |
+      A web interface for Babelfish (https://doc.bblf.sh/).
+    digest: c14cdd1056e618ece69a42c78885ed2c9e4c843a4897d1488681e21ab8479ea2
+    home: https://doc.bblf.sh/
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: bblfsh-web
+    urls:
+    - https://src-d.github.io/charts/stable/bblfsh-web-0.8.1.tgz
+    version: 0.8.1
+  bblfshd:
+  - apiVersion: v1
+    appVersion: 2.14.0
+    created: 2019-06-18T09:23:49.799873001Z
+    description: A Helm chart for Kubernetes
+    digest: e4dd2edcf4d5f94f1fddbc53a1370baf8c9ae60deca329435e4dd79787f7f422
+    home: https://doc.bblf.sh/
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: bblfshd
+    urls:
+    - https://src-d.github.io/charts/stable/bblfshd-0.6.2.tgz
+    version: 0.6.2
+  bblfshd-sidecar:
+  - apiVersion: v1
+    appVersion: 2.11.0
+    created: 2019-06-18T09:23:49.800085214Z
+    description: A Helm chart to template in a bblfshd container into a deployment
+    digest: 45f8aeb334685015e7531d690530ac924aab84dda4ce02743599b509e570cbd4
+    home: https://doc.bblf.sh/
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: bblfshd-sidecar
+    urls:
+    - https://src-d.github.io/charts/stable/bblfshd-sidecar-0.3.1.tgz
+    version: 0.3.1
+  borges:
+  - apiVersion: v1
+    appVersion: 0.19.0
+    created: 2019-06-18T09:23:49.800330741Z
+    description: A Helm chart for Kubernetes
+    digest: 72ba242eb878e57101f82882e98fef951cd632a4520a4cf125cf25e994c71aab
+    home: https://github.com/src-d/borges/
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: borges
+    urls:
+    - https://src-d.github.io/charts/stable/borges-0.6.3.tgz
+    version: 0.6.3
+  gemini:
+  - apiVersion: v1
+    appVersion: 0.2.0
+    created: 2019-06-18T09:23:49.800613285Z
+    description: A Helm chart for gemini
+    digest: 102b6ba19ee9e235b177e39af8b8be2b62da8e7414176964a5f1ac80aa9feb28
+    home: https://github.com/src-d/gemini
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: gemini
+    urls:
+    - https://src-d.github.io/charts/stable/gemini-0.2.1.tgz
+    version: 0.2.1
+  gitbase:
+  - apiVersion: v1
+    appVersion: 0.18.0
+    created: 2019-06-18T09:23:49.800946284Z
+    description: A Helm chart for Gitbase
+    digest: 89269242322d19ef55fbc519979da3b5220ddb7b05f6b3f8504b626823710c91
+    home: https://github.com/src-d/gitbase
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: gitbase
+    urls:
+    - https://src-d.github.io/charts/stable/gitbase-0.6.1.tgz
+    version: 0.6.1
+  gitbase-web:
+  - apiVersion: v1
+    appVersion: 0.6.5
+    created: 2019-06-18T09:23:49.801259134Z
+    description: A Helm chart for Kubernetes
+    digest: c6b222a1e0eee70714f6b5b96c989c84fbe70bd309b64e2c4ad79f4ba56d20aa
+    home: https://github.com/src-d/gitbase-web
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: gitbase-web
+    urls:
+    - https://src-d.github.io/charts/stable/gitbase-web-0.6.1.tgz
+    version: 0.6.1
+  lookout:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2019-06-18T09:23:49.801660027Z
+    description: A Helm chart for Lookout in distrubuted mode
+    digest: b3f7abb3bb4ca3c17500e8418b9fb35d1861ee8cc12116f07b2ffcb662f1e918
+    home: https://github.com/src-d/lookout
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: lookout
+    urls:
+    - https://src-d.github.io/charts/stable/lookout-0.8.1.tgz
+    version: 0.8.1
+  lookout-gometalint-analyzer:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2019-06-18T09:23:49.801846331Z
+    description: A Helm chart for Kubernetes
+    digest: 78eaabc19631b16ac174075b6a59da375a0ed90599e0dd42b918f6a9db639e65
+    home: https://github.com/src-d/kubernetes-local-pv-provisioner
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: lookout-gometalint-analyzer
+    urls:
+    - https://src-d.github.io/charts/stable/lookout-gometalint-analyzer-0.1.1.tgz
+    version: 0.1.1
+  lookout-sonarcheck-analyzer:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2019-06-18T09:23:49.802047885Z
+    description: Kubernetes lookout sonarcheck analyzer chart
+    digest: fa4ff46f5ca57953afbe212c3e5d08172c9c1c47337be6c93c874a5dd6e7fbca
+    home: https://github.com/src-d/lookout-sonarcheck-analyzer
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: lookout-sonarcheck-analyzer
+    urls:
+    - https://src-d.github.io/charts/stable/lookout-sonarcheck-analyzer-0.1.1.tgz
+    version: 0.1.1
+  lookout-style-analyzer:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2019-06-18T09:23:49.802277728Z
+    description: A Helm chart for Kubernetes
+    digest: 06a6be501367ae58810ec4f75b85557db3d0fb2dea6693f3516cce3c1fa496d4
+    home: https://github.com/src-d/style-analyzer
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: lookout-style-analyzer
+    urls:
+    - https://src-d.github.io/charts/stable/lookout-style-analyzer-0.2.2.tgz
+    version: 0.2.2
+  lookout-terraform-analyzer:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2019-06-18T09:23:49.802459099Z
+    description: A Helm chart for lookout-terraform-analyzer
+    digest: 4df5d8f446d6177ca44e90fb3b3b145bacabeda38ef2b590ada1a8d9e785d0ea
+    home: https://github.com/src-d/lookout-terraform-analyzer
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: lookout-terraform-analyzer
+    urls:
+    - https://src-d.github.io/charts/stable/lookout-terraform-analyzer-0.1.1.tgz
+    version: 0.1.1
+  lookout-typos-analyzer:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2019-06-18T09:23:49.802682645Z
+    description: A Helm chart for Kubernetes
+    digest: f5f0e4cbae63357e7403d18e87773c7121936d2d9837680684f8220f96d3184d
+    home: https://github.com/src-d/style-analyzer
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: lookout-typos-analyzer
+    urls:
+    - https://src-d.github.io/charts/stable/lookout-typos-analyzer-0.1.1.tgz
+    version: 0.1.1
+  rovers:
+  - apiVersion: v1
+    appVersion: 2.6.4
+    created: 2019-06-18T09:23:49.802909747Z
+    description: A Helm chart for Kubernetes
+    digest: 21e7e56d949357df4ccc505c84b08bbf354ac14bc38bce62ac6813be100299bf
+    home: https://github.com/src-d/rovers
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: rovers
+    urls:
+    - https://src-d.github.io/charts/stable/rovers-0.2.1.tgz
+    version: 0.2.1
+  sourced-ui:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2019-06-18T09:23:49.803204096Z
+    description: A Helm chart for Kubernetes
+    digest: 4ccb9ac99d82b8c7acd149209f09d1c22402cadd89a5952d790fe0443ef82310
+    home: https://github.com/src-d/sourced-ui
+    name: sourced-ui
+    urls:
+    - https://src-d.github.io/charts/stable/sourced-ui-0.4.1.tgz
+    version: 0.4.1
+  spark:
+  - apiVersion: v1
+    appVersion: 2.2.0
+    created: 2019-06-18T09:23:49.803522313Z
+    description: Fast and general-purpose cluster computing system.
+    digest: 5f56c0446e544d6500895f37614e97e23484ef78569100033e79811f9444df1b
+    home: http://spark.apache.org
+    icon: http://spark.apache.org/images/spark-logo-trademark.png
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: spark
+    sources:
+    - https://github.com/kubernetes/kubernetes/tree/master/examples/spark
+    - https://github.com/apache/spark
+    urls:
+    - https://src-d.github.io/charts/stable/spark-1.1.1.tgz
+    version: 1.1.1
+  spark-thrift-server:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2019-06-18T09:23:49.803724287Z
+    description: A Helm chart for Kubernetes
+    digest: 1b51741234251e778fc0751f35894a8f52d27b58742084119ee42256aca880d7
+    home: https://spark.apache.org/docs/latest/sql-distributed-sql-engine.html
+    name: spark-thrift-server
+    urls:
+    - https://src-d.github.io/charts/stable/spark-thrift-server-0.5.0.tgz
+    version: 0.5.0
+generated: 2019-06-18T09:23:49.798768846Z
