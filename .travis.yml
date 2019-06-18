@@ -76,4 +76,6 @@ jobs:
         - chmod 700 get_helm.sh
         - DESIRED_VERSION=v2.9.1 ./get_helm.sh
       script:
-        - ./scripts/repo-sync.sh
+        - REPO_NAME=infra ./scripts/repo-sync.sh 
+        - REPO_NAME=incubator ./scripts/repo-sync.sh 
+        - REPO_NAME=stable ./scripts/repo-sync.sh 
