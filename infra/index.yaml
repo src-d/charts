@@ -1,0 +1,182 @@
+apiVersion: v1
+entries:
+  drone:
+  - apiVersion: v1
+    appVersion: 0.7.3
+    created: 2019-06-18T11:18:17.880141359+02:00
+    description: Drone CI
+    digest: 23c946c4e8e26b920d40ce590122d393bb8da11d40ddde8972bcde2bca71fb8d
+    home: https://drone.io/
+    keywords:
+    - continuous-deployment
+    - continuous-integration
+    - docker
+    - drone
+    - drone.io
+    - go
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: drone
+    sources:
+    - http://readme.drone.io/
+    urls:
+    - https://src-d.github.io/charts/infra/drone-0.2.2.tgz
+    version: 0.2.2
+  ewbf-miner:
+  - apiVersion: v1
+    appVersion: 0.3.4
+    created: 2019-06-18T11:18:17.880372372+02:00
+    description: A Helm chart for Kubernetes
+    digest: 722b9bbb463a80bc0c3f16013778b9575536b61ba114a475dc81e5c1fce54d75
+    home: https://github.com/nanopool/ewbf-miner
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: ewbf-miner
+    urls:
+    - https://src-d.github.io/charts/infra/ewbf-miner-0.1.1.tgz
+    version: 0.1.1
+  ghost-gcs-backup:
+  - apiVersion: v1
+    appVersion: 0.0.1
+    created: 2019-06-18T11:18:17.880598716+02:00
+    description: A Helm chart for Kubernetes
+    digest: 2d393833fc6673b846f8e02dca92cb8fc9b23781674c680f807a4e17821f7b85
+    home: https://github.com/src-d/infrastructure-dockerfiles
+    name: ghost-gcs-backup
+    urls:
+    - https://src-d.github.io/charts/infra/ghost-gcs-backup-0.1.1.tgz
+    version: 0.1.1
+  git-server:
+  - apiVersion: v1
+    appVersion: 0.0.1
+    created: 2019-06-18T11:18:17.8808371+02:00
+    description: A Helm chart for Kubernetes
+    digest: cb176edb1922eecb8ea3547acc1d38099ec8e019c953ba7c1de382c4d945076d
+    home: https://github.com/src-d
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: git-server
+    urls:
+    - https://src-d.github.io/charts/infra/git-server-0.1.1.tgz
+    version: 0.1.1
+  google-cloud-dns-healthcheck:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2019-06-18T11:18:17.881063064+02:00
+    description: A Helm chart for Kubernetes
+    digest: 401604f0033141ed4732d1f44deafdb0fea94a063bbab2249ecfe79767900597
+    home: https://github.com/src-d/google-cloud-dns-healthcheck
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: google-cloud-dns-healthcheck
+    urls:
+    - https://src-d.github.io/charts/infra/google-cloud-dns-healthcheck-0.1.2.tgz
+    version: 0.1.2
+  hue:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2019-06-18T11:18:17.881380104+02:00
+    description: A Helm chart for Hue
+    digest: 64488f2bed1ce796196d6a624ecdb91173759f58602c2bb2e4057a021c842a33
+    home: http://gethue.com/
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: hue
+    urls:
+    - https://src-d.github.io/charts/infra/hue-0.5.0.tgz
+    version: 0.5.0
+  kubernetes-local-pv-provisioner:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2019-06-18T11:18:17.881591117+02:00
+    description: A Helm chart for kubernetes-local-pv-provisioner
+    digest: 1989fcec2cacbd901e82f8fb4397999aa7c23357b3e3b4262393166c860163f4
+    home: https://github.com/src-d/kubernetes-local-pv-provisioner
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: kubernetes-local-pv-provisioner
+    urls:
+    - https://src-d.github.io/charts/infra/kubernetes-local-pv-provisioner-0.1.2.tgz
+    version: 0.1.2
+  nfs-gluster-bridge:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2019-06-18T11:18:17.881800838+02:00
+    description: A Helm chart for Kubernetes
+    digest: fb3c6e6d366e62fe7f22d28904ae05b7ea119f1a18783e0a738f68ac280747d7
+    home: https://github.com/src-d/charts
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: nfs-gluster-bridge
+    urls:
+    - https://src-d.github.io/charts/infra/nfs-gluster-bridge-0.1.1.tgz
+    version: 0.1.1
+  online-net-stock-alert:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2019-06-18T11:18:17.881992334+02:00
+    description: This chart deploys a cron that will check for online.net stock and
+      alerts on slack
+    digest: dd5c049cd11cf87ef3f9ea502e4094b6c5ce7b011c8ed73d02b13fe39a55db36
+    home: https://github.com/meyskens/online-net-stock-alert
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: online-net-stock-alert
+    urls:
+    - https://src-d.github.io/charts/infra/online-net-stock-alert-0.1.2.tgz
+    version: 0.1.2
+  prometheus-external-monitor:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2019-06-18T11:18:17.882193793+02:00
+    description: A Helm chart for external ServiceMonitor entries
+    digest: eb3c842a1b9d093af1facc735012fcd42f98b17a7cfe20d5d4e375c056cc493a
+    home: https://github.com/src-d/charts
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: prometheus-external-monitor
+    urls:
+    - https://src-d.github.io/charts/infra/prometheus-external-monitor-0.2.1.tgz
+    version: 0.2.1
+  scylla:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2019-06-18T11:18:17.882967103+02:00
+    description: A Helm chart for Scylla
+    digest: f28294817f81a0f09443d3a194004eed3814fb49f3d5fc2f20eaa8aeb03634a8
+    home: https://www.scylladb.com/
+    icon: https://www.scylladb.com/wp-content/uploads/logo-scylla.svg
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: scylla
+    sources:
+    - https://github.com/scylladb/scylla
+    - https://github.com/src-d/gemini/tree/master/k8s
+    urls:
+    - https://src-d.github.io/charts/infra/scylla-0.4.1.tgz
+    version: 0.4.1
+  website-redirect:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2019-06-18T11:18:17.883252257+02:00
+    description: A Helm chart to redirect all requests to another URL
+    digest: 6d0bd9e85222592a3fbd222df720b2d8f38a1fe70b5e1b6b68c0ebd2dab5f21f
+    home: https://github.com/src-d/charts
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: website-redirect
+    urls:
+    - https://src-d.github.io/charts/infra/website-redirect-1.0.1.tgz
+    version: 1.0.1
+generated: 2019-06-18T11:18:17.879613557+02:00
