@@ -15,7 +15,7 @@ log_error() {
 }
 
 helm init --client-only
-#helm repo add "srcd-$REPO_NAME" "$REPO_URL"
+helm repo add "srcd-$REPO_NAME" "$REPO_URL"
 
 packages_dir=$(mktemp -d)
 repo_packages_dir="$packages_dir/$REPO_NAME"
@@ -45,7 +45,7 @@ for dir in ./* ; do
 done
 popd
 
-if ! helm repo index --url "$REPO_URL" "$repo_packages_dir"; then # --merge "$index_dir/index.yaml"
+if ! helm repo index --url "$REPO_URL" --merge "$index_dir/index.yaml" "$repo_packages_dir"; then
     log_error "Exiting because unable to update index. Not safe to push update."
     exit 1
 fi
