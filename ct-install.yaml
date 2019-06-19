@@ -4,8 +4,15 @@ validate-maintainers: false
 chart-repos:
   - stable=https://kubernetes-charts.storage.googleapis.com/
   - incubator=https://kubernetes-charts-incubator.storage.googleapis.com/
-  - src-d=https://src-d.github.io/charts/
+  - srcd-legacy=https://src-d.github.io/charts/
+  - srcd-stable=https://src-d.github.io/charts/stable
+  - srcd-incubator=https://src-d.github.io/charts/incubator
+  - srcd-infra=https://src-d.github.io/charts/infra
 helm-extra-args: --timeout 600
+chart-dirs:
+  - stable
+  - incubator
+  - infra
 # These charts are excluded from being installed to test since they contain no useful tests
 # Some are included as they do not have the required dependancies to test
 excluded-charts:
