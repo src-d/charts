@@ -23,6 +23,15 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ required "missing image.tag" .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{- if  .Values.app.podAnnotation }}
+            - name: POD_ANNOTATION
+             value: {{ .Values.app.podAnnotation }}
+            {{- end }}
+            {{- if  .Values.app.namespace }}
+            - name: NAMESPACE
+             value: {{ .Values.app.namespace }}
+            {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}

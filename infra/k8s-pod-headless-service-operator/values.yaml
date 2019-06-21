@@ -4,6 +4,10 @@ image:
   # tag: latest
   pullPolicy: IfNotPresent
 
+app: {}
+  # podAnnotation:
+  # namespace: 
+
 rbac:
   enabled: true
 
