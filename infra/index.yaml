@@ -3,9 +3,9 @@ entries:
   drone:
   - apiVersion: v1
     appVersion: 0.7.3
-    created: "2019-06-19T16:23:14.9570674Z"
+    created: 2019-06-21T10:42:42.033177832Z
     description: Drone CI
-    digest: 5b2fdb4c228a8e2ea3ebeb596a0d63ce119cfa0dc80b21301dcec24ff74c915f
+    digest: 23c946c4e8e26b920d40ce590122d393bb8da11d40ddde8972bcde2bca71fb8d
     home: https://drone.io/
     keywords:
     - continuous-deployment
@@ -24,7 +24,7 @@ entries:
     - https://src-d.github.io/charts/infra/drone-0.2.2.tgz
     version: 0.2.2
   - apiVersion: v1
-    created: "2019-06-19T16:23:14.9555Z"
+    created: 2019-06-21T10:42:42.032235566Z
     description: Drone CI
     digest: caa917ca890bb9a78986a8d761101608dc6a916376f6b4faf7403e6ae21cd209
     keywords:
@@ -42,7 +42,7 @@ entries:
     urls:
     - https://src-d.github.io/charts/infra/drone-0.2.1.tgz
     version: 0.2.1
-  - created: "2019-06-19T16:23:14.954965Z"
+  - created: 2019-06-21T10:42:42.031272258Z
     description: Drone CI
     digest: f0cff7a5e3ba1a20566b9abe028b82ecc120aada1da57e1dcec1af4476ae14ec
     keywords:
@@ -63,9 +63,9 @@ entries:
   ewbf-miner:
   - apiVersion: v1
     appVersion: 0.3.4
-    created: "2019-06-19T16:23:14.9576586Z"
+    created: 2019-06-21T10:42:42.034096073Z
     description: A Helm chart for Kubernetes
-    digest: 6950471487724987ffc99e3fb2499ad5536aa71b34aed845f5959876bb488426
+    digest: 722b9bbb463a80bc0c3f16013778b9575536b61ba114a475dc81e5c1fce54d75
     home: https://github.com/nanopool/ewbf-miner
     maintainers:
     - email: infra@sourced.tech
@@ -75,7 +75,7 @@ entries:
     - https://src-d.github.io/charts/infra/ewbf-miner-0.1.1.tgz
     version: 0.1.1
   - apiVersion: v1
-    created: "2019-06-19T16:23:14.957323Z"
+    created: 2019-06-21T10:42:42.03362232Z
     description: A Helm chart for Kubernetes
     digest: 956823a25c051eee4b8794bf71ef34cf60ed30edcd42190cea27e2e29e0faa39
     name: ewbf-miner
@@ -85,9 +85,9 @@ entries:
   ghost-gcs-backup:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2019-06-19T16:23:14.958365Z"
+    created: 2019-06-21T10:42:42.035078494Z
     description: A Helm chart for Kubernetes
-    digest: b403bee5ac55128711eefdf442166f5d096521c02775556781a581cad65f87ed
+    digest: 2d393833fc6673b846f8e02dca92cb8fc9b23781674c680f807a4e17821f7b85
     home: https://github.com/src-d/infrastructure-dockerfiles
     name: ghost-gcs-backup
     urls:
@@ -95,7 +95,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2019-06-19T16:23:14.9579376Z"
+    created: 2019-06-21T10:42:42.034609402Z
     description: A Helm chart for Kubernetes
     digest: bef63b55a603c2f7ea012c4c01c684f68ecab72b6c1d1eb719c5597d3abb3a98
     home: https://github.com/src-d/infrastructure-dockerfiles
@@ -106,9 +106,9 @@ entries:
   git-server:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2019-06-19T16:23:14.9588624Z"
+    created: 2019-06-21T10:42:42.03621756Z
     description: A Helm chart for Kubernetes
-    digest: a7f68f50f2e4c27ffc10384948505ad60a430d9ac8b176e3f80454acf406f025
+    digest: cb176edb1922eecb8ea3547acc1d38099ec8e019c953ba7c1de382c4d945076d
     home: https://github.com/src-d
     maintainers:
     - email: infra@sourced.tech
@@ -118,7 +118,7 @@ entries:
     - https://src-d.github.io/charts/infra/git-server-0.1.1.tgz
     version: 0.1.1
   - apiVersion: v1
-    created: "2019-06-19T16:23:14.9586095Z"
+    created: 2019-06-21T10:42:42.035536075Z
     description: A Helm chart for Kubernetes
     digest: 6ff0142ed4c35f230b7380e979c9efb0affe3e5c9134fa4a03bcab5282f66da9
     name: git-server
@@ -128,9 +128,9 @@ entries:
   google-cloud-dns-healthcheck:
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.959605Z"
+    created: 2019-06-21T10:42:42.037305961Z
     description: A Helm chart for Kubernetes
-    digest: 7fa4a212edb13d02c8f7b5e6fb9bc61b5dd8866631f0d298a4b9517fbb5f094f
+    digest: 401604f0033141ed4732d1f44deafdb0fea94a063bbab2249ecfe79767900597
     home: https://github.com/src-d/google-cloud-dns-healthcheck
     maintainers:
     - email: infra@sourced.tech
@@ -141,7 +141,7 @@ entries:
     version: 0.1.2
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9593577Z"
+    created: 2019-06-21T10:42:42.037045193Z
     description: A Helm chart for Kubernetes
     digest: 21ac891f57f35f82f7e975f420e739d024996c700aa97487be7cbba4f10fed88
     name: google-cloud-dns-healthcheck
@@ -150,7 +150,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.959146Z"
+    created: 2019-06-21T10:42:42.036570595Z
     description: A Helm chart for Kubernetes
     digest: 3481c5095ee0b790f4de5ab9615ba234faa0a21d3048c5d6d6baaf873d88951d
     name: google-cloud-dns-healthcheck
@@ -160,9 +160,9 @@ entries:
   hue:
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9631283Z"
+    created: 2019-06-21T10:42:42.040921856Z
     description: A Helm chart for Hue
-    digest: 55a6610a6135677604f8be68e3dbc3072e921b5ba77864a22c1eb23e04f5d006
+    digest: 64488f2bed1ce796196d6a624ecdb91173759f58602c2bb2e4057a021c842a33
     home: http://gethue.com/
     maintainers:
     - email: infra@sourced.tech
@@ -173,7 +173,7 @@ entries:
     version: 0.5.0
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9627344Z"
+    created: 2019-06-21T10:42:42.040540042Z
     description: A Helm chart for Hue
     digest: 083d53b25b76ce52cfdd3b830e8f39d26afd11e5cb8092bfb47488a5abfcbd57
     home: http://gethue.com/
@@ -186,7 +186,7 @@ entries:
     version: 0.4.2
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9623735Z"
+    created: 2019-06-21T10:42:42.040121625Z
     description: A Helm chart for Hue
     digest: a8d922f0a029f8e3482710d21ea015bda4e087ecc9e356a442e2a12db075acdb
     name: hue
@@ -195,7 +195,7 @@ entries:
     version: 0.4.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9620364Z"
+    created: 2019-06-21T10:42:42.039781328Z
     description: A Helm chart for Hue
     digest: 94631ad76d655b73352a660530322a13b0a14beab721786fc3aec2a65074f524
     name: hue
@@ -204,7 +204,7 @@ entries:
     version: 0.4.0
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9617077Z"
+    created: 2019-06-21T10:42:42.039442617Z
     description: A Helm chart for Hue
     digest: 6c4de9b620713dbb704aeda03f74cb3ad4fd3c991c663d41435d66fe52b13ab4
     name: hue
@@ -213,7 +213,7 @@ entries:
     version: 0.3.3
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9613527Z"
+    created: 2019-06-21T10:42:42.039094516Z
     description: A Helm chart for Hue
     digest: adc0f8e4eff054cebedb83f7e5bea87e61d91d67b1fce19e2680b1bbf079814c
     name: hue
@@ -222,7 +222,7 @@ entries:
     version: 0.3.2
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9608566Z"
+    created: 2019-06-21T10:42:42.038729979Z
     description: A Helm chart for Hue
     digest: dd3301dcca3969a087909b4d73298385d26666186e18cbc15afba7f3ac2dd50b
     name: hue
@@ -231,7 +231,7 @@ entries:
     version: 0.3.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9605476Z"
+    created: 2019-06-21T10:42:42.038375439Z
     description: A Helm chart for Hue
     digest: 2cfaf059a089916e3c43aa14521501d8ecca1128746e7f5e0a4154d381333915
     name: hue
@@ -240,7 +240,7 @@ entries:
     version: 0.3.0
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9602343Z"
+    created: 2019-06-21T10:42:42.038038012Z
     description: A Helm chart for Hue
     digest: 82fded22b681ce2e17ede6f8f03eea8eade39a320a9ddf9d11ae76950cdd99bb
     name: hue
@@ -249,19 +249,33 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9599177Z"
+    created: 2019-06-21T10:42:42.037679655Z
     description: A Helm chart for Hue
     digest: beb51886d7c41392c76b476a8af78f344121f69a2afdbbec9766e4ac24012136
     name: hue
     urls:
     - https://src-d.github.io/charts/infra/hue-0.1.0.tgz
     version: 0.1.0
+  k8s-pod-headless-service-operator:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2019-06-21T10:42:42.041171394Z
+    description: A Helm chart for k8s-pod-headless-service-operator
+    digest: 8e561180885357ce1807c9325c2d72d701751cbb5534a988958ade48efd86abb
+    home: https://github.com/src-d/k8s-pod-headless-service-operator
+    maintainers:
+    - email: infra@sourced.tech
+      name: Infrastructure Team
+    name: k8s-pod-headless-service-operator
+    urls:
+    - https://src-d.github.io/charts/infra/k8s-pod-headless-service-operator-0.1.0.tgz
+    version: 0.1.0
   kubernetes-local-pv-provisioner:
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9649273Z"
+    created: 2019-06-21T10:42:42.041897281Z
     description: A Helm chart for kubernetes-local-pv-provisioner
-    digest: decd5bcb7fe4826dad6fb61dcbce9cf26969f537ffc587deef08f9749570d090
+    digest: 1989fcec2cacbd901e82f8fb4397999aa7c23357b3e3b4262393166c860163f4
     home: https://github.com/src-d/kubernetes-local-pv-provisioner
     maintainers:
     - email: infra@sourced.tech
@@ -272,7 +286,7 @@ entries:
     version: 0.1.2
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9644546Z"
+    created: 2019-06-21T10:42:42.04165189Z
     description: A Helm chart for kubernetes-local-pv-provisioner
     digest: 6ffdd15f2aaa4c7e1fc5823167e57dfa683af474e33a822679adab4344a85e7a
     name: kubernetes-local-pv-provisioner
@@ -281,7 +295,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9639066Z"
+    created: 2019-06-21T10:42:42.041379528Z
     description: A Helm chart for kubernetes-local-pv-provisioner
     digest: 519f0e8925dba43605bcd428e1f4c6cf38881119e781743c60c397d7173945af
     name: kubernetes-local-pv-provisioner
@@ -291,9 +305,9 @@ entries:
   nfs-gluster-bridge:
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.966214Z"
+    created: 2019-06-21T10:42:42.04238997Z
     description: A Helm chart for Kubernetes
-    digest: cd071bc542ab199b3dd44dfe5ee02871102113b7129ff18fb5b203f61c92033f
+    digest: fb3c6e6d366e62fe7f22d28904ae05b7ea119f1a18783e0a738f68ac280747d7
     home: https://github.com/src-d/charts
     maintainers:
     - email: infra@sourced.tech
@@ -304,7 +318,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.965312Z"
+    created: 2019-06-21T10:42:42.042136696Z
     description: A Helm chart for Kubernetes
     digest: 08a3d49310eb3dd7dfbddb3d866816ba4e23ac2fe6f35a707c53e71b286b5a9e
     name: nfs-gluster-bridge
@@ -314,10 +328,10 @@ entries:
   online-net-stock-alert:
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9671072Z"
+    created: 2019-06-21T10:42:42.042873297Z
     description: This chart deploys a cron that will check for online.net stock and
       alerts on slack
-    digest: 3baf4442a7add2a766a895fd2c2b948194a9650367806a17592450ca6b009aeb
+    digest: dd5c049cd11cf87ef3f9ea502e4094b6c5ce7b011c8ed73d02b13fe39a55db36
     home: https://github.com/meyskens/online-net-stock-alert
     maintainers:
     - email: infra@sourced.tech
@@ -328,7 +342,7 @@ entries:
     version: 0.1.2
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.96675Z"
+    created: 2019-06-21T10:42:42.042630578Z
     description: This chart deploys a cron that will check for online.net stock and
       alerts on slack
     digest: edc1523b0da47f0d3d462e74952433bd601f1010c3f0f2cbdbf2a8091de7d2d1
@@ -340,9 +354,9 @@ entries:
   prometheus-external-monitor:
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9682043Z"
+    created: 2019-06-21T10:42:42.043492853Z
     description: A Helm chart for external ServiceMonitor entries
-    digest: 1d63db2452c7b301d7b176022aa6ae4effe060cbb6865cae621c0547182e69ae
+    digest: eb3c842a1b9d093af1facc735012fcd42f98b17a7cfe20d5d4e375c056cc493a
     home: https://github.com/src-d/charts
     maintainers:
     - email: infra@sourced.tech
@@ -353,7 +367,7 @@ entries:
     version: 0.2.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9679295Z"
+    created: 2019-06-21T10:42:42.043258568Z
     description: A Helm chart for external ServiceMonitor entries
     digest: 031b47e143f24eef9daf0ed0d884469c0a0004c73a3ec92f68dba58a72f7a776
     name: prometheus-external-monitor
@@ -362,7 +376,7 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9675512Z"
+    created: 2019-06-21T10:42:42.04306576Z
     description: A Helm chart for external ServiceMonitor entries
     digest: d1c260abe0c7e73ffd51d3f17c19acb844a97069a75fde8c5346573db249e726
     name: prometheus-external-monitor
@@ -372,9 +386,9 @@ entries:
   scylla:
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9719723Z"
+    created: 2019-06-21T10:42:42.047422996Z
     description: A Helm chart for Scylla
-    digest: defc319b9a484555f5270f438a82f9cf649d1621dbaaf2abe88f5ab77db6b9dc
+    digest: f28294817f81a0f09443d3a194004eed3814fb49f3d5fc2f20eaa8aeb03634a8
     home: https://www.scylladb.com/
     icon: https://www.scylladb.com/wp-content/uploads/logo-scylla.svg
     maintainers:
@@ -389,7 +403,7 @@ entries:
     version: 0.4.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9712778Z"
+    created: 2019-06-21T10:42:42.046555711Z
     description: A Helm chart for Scylla
     digest: e818b81b37fdee0b332fe6ce3713fc05ce91817c18872849c3daba9867ea4d4b
     home: https://www.scylladb.com/
@@ -403,7 +417,7 @@ entries:
     version: 0.4.0
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9705824Z"
+    created: 2019-06-21T10:42:42.0457103Z
     description: A Helm chart for Scylla
     digest: 18b9944c4bfc476a32fb5b6c3d165d94075a8515237b1cbacef537c6776b8532
     home: https://www.scylladb.com/
@@ -417,7 +431,7 @@ entries:
     version: 0.3.0
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9698428Z"
+    created: 2019-06-21T10:42:42.044853301Z
     description: A Helm chart for Scylla
     digest: ef813fd965916ec0d3345c727c5d7633ae4a0e1c9d835c72eb0a2e45dda8eba4
     home: https://www.scylladb.com/
@@ -431,7 +445,7 @@ entries:
     version: 0.2.3
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9695748Z"
+    created: 2019-06-21T10:42:42.044598465Z
     description: A Helm chart for Scylla
     digest: 5dd4497493db4bc7aee46395ac0f0bb5e0c49fb8d0e0e8cd0d0070ca4c6751e5
     home: https://www.scylladb.com/
@@ -445,7 +459,7 @@ entries:
     version: 0.2.2
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9691371Z"
+    created: 2019-06-21T10:42:42.044320601Z
     description: A Helm chart for Scylla
     digest: a40e884157af50851c0cafd8239b1ea8b9837c2dd7e939f71702125bf0bc7612
     home: https://www.scylladb.com/
@@ -459,7 +473,7 @@ entries:
     version: 0.2.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.96876Z"
+    created: 2019-06-21T10:42:42.044061117Z
     description: A Helm chart for Scylla
     digest: a5d4f334e18176ba9d1f20f8bbb84b41f2dbf49e3f3e22d874a10325a3d2e891
     home: https://www.scylladb.com/
@@ -473,7 +487,7 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9684729Z"
+    created: 2019-06-21T10:42:42.043755794Z
     description: A Helm chart for Scylla
     digest: 3163b4f55b0c5b411396a2e6b448b29df925fe56090fdc33d74683bba7a840fd
     home: https://www.scylladb.com/
@@ -488,9 +502,9 @@ entries:
   website-redirect:
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.973345Z"
+    created: 2019-06-21T10:42:42.049129641Z
     description: A Helm chart to redirect all requests to another URL
-    digest: 558fe64e895455b0ed5e392bc4d7f307c7b8b9ac8752d330a902ce0d050bfc7b
+    digest: 6d0bd9e85222592a3fbd222df720b2d8f38a1fe70b5e1b6b68c0ebd2dab5f21f
     home: https://github.com/src-d/charts
     maintainers:
     - email: infra@sourced.tech
@@ -501,7 +515,7 @@ entries:
     version: 1.0.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9724911Z"
+    created: 2019-06-21T10:42:42.048453403Z
     description: A Helm chart to redirect all requests to another URL
     digest: 12917128f048c1a52966428dfd3c3d3b6950f16d99462047f984ef8b6b4a73c8
     name: website-redirect
@@ -510,11 +524,11 @@ entries:
     version: 1.0.0
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-06-19T16:23:14.9722295Z"
+    created: 2019-06-21T10:42:42.047682897Z
     description: A Helm chart to redirect all requests to another URL
     digest: 6c966c971137e1d1d00a38ad11ecae95c41562a4fddd841b6ea655ea82201e83
     name: website-redirect
     urls:
     - https://src-d.github.io/charts/infra/website-redirect-0.3.1.tgz
     version: 0.3.1
-generated: "2019-06-19T16:23:14.953498Z"
+generated: 2019-06-21T10:42:42.029855022Z
