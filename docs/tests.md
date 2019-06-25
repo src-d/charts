@@ -9,7 +9,7 @@ Since running these tests require installing the charts in a cluster an appropri
 ## Writing tests
 For charts with required values a `<name>-values.yaml` file is needed in `<chart name>/ci`. This is also a requirement for chart linting. These values are used to install the chart inside the cluster.
 The tests themselves are Kubernetes resources and are placed in `<chart name>/templates/tests`, they follow the Helm templating system and have access to all values. The tests are run inside a Pod resource and it will be checked for exit status. This pod will run in the same environment where the chart is deployed.
-Inside the Pod it is advices to run a test framework like [bats](https://github.com/bats-core/bats-core) to test the behaviour of the deployed services. The used test framework and image is not a given, in certain situations using the same image as the deployment may be useful where as others another might be handy.
+Inside the Pod it is adviced to run a test framework like [bats](https://github.com/bats-core/bats-core) to test the behaviour of the deployed services. The used test framework and image is not a given, in certain situations using the same image as the deployment may be useful where as others another might be handy.
 
 It is important to keep in mind that the tests run inside Travis CI where resources and run time are limited.
 
