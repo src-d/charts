@@ -18,6 +18,8 @@ app:
   gitbaseUser: gitbase
   gitbasePassword: gitbase
   # gitbasePasswordSecretName:
+  # executorCores: 1
+  # maxCores: 1
 
 
 service:
