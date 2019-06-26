@@ -48,6 +48,14 @@ spec:
             - --packages
             - org.postgresql:postgresql:42.2.5
             - /opt/jars/gitbase-spark-connector-enterprise-uber.jar
+            {{- if .Values.app.executor-cores }}
+            - --conf
+            - spark.executor.cores={{ .Values.app.executorCores }}
+            {{- end }}
+            {{- if .Values.app.max-cores }}
+            - --conf
+            - spark.cores.max={{ .Values.app.maxCores}}
+            {{- end }}
           env:
             - name: POD_IP
               valueFrom:
