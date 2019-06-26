@@ -1,0 +1,16 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-test-webui
+data:
+  tests.sh: |
+    @test "redirect" {
+      statusCode=$(curl -I -X GET http://{{ template "webui-proxy-fullname" . }}:{{ .Values.webUIProxy.service.port }} | head -n 1 | cut -d$' ' -f2)
+      [ "$statusCode" == "302" ]
+    }
+
+    @test "Check if cluster reports alive" {
+      alive=$(curl http://{{ template "webui-proxy-fullname" . }}:{{ .Values.webUIProxy.service.port }}/proxy:{{ template "webui-fullname" . }}:{{ .Values.webUI.service.port }} | grep -c ALIVE)
+      [ "$alive" -ge 1 ]
+    }

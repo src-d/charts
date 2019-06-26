@@ -42,7 +42,6 @@ excluded-charts:
   - rovers
   - scylla
   - sourced-ui
-  - spark
   - spark-api-jupyter
   - spark-thrift-server
   - k8s-pod-headless-service-operator

@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ .Release.Name }}-test-job"
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+  - name: {{ .Release.Name }}-test-job
+    image: "{{ .Values.worker.image }}:{{ .Values.worker.imageTag }}"
+    env:
+      - name: POD_IP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.podIP
+    command: 
+        - spark-submit 
+        - --master
+        - spark://{{ template "master-fullname" . }}:{{ .Values.master.service.port }}  
+        - --class 
+        - org.apache.spark.examples.SparkPi 
+        - --executor-memory 
+        - 1G
+        - --total-executor-cores 
+        - "1"
+        - --conf
+        - "spark.driver.host=$(POD_IP)"
+        - /opt/spark-2.2.0-bin-hadoop2.7/examples/jars/spark-examples_2.11-2.2.0.jar
+        - "1"
+  restartPolicy: Never
