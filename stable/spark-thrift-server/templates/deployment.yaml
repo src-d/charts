@@ -31,6 +31,14 @@ spec:
             - /opt/spark-2.3.2-bin-hadoop2.7/bin/spark-submit
             - --master
             - {{ required "Missing app.sparkMasterURI" .Values.app.sparkMasterURI | quote }}
+            {{- if .Values.app.executorCores }}
+            - --conf
+            - spark.executor.cores={{ .Values.app.executorCores }}
+            {{- end }}
+            {{- if .Values.app.maxCores }}
+            - --conf
+            - spark.cores.max={{ .Values.app.maxCores}}
+            {{- end }}            
             - --conf
             - "spark.datasource.gitbase.user={{ .Values.app.gitbaseUser }}"
             - --conf
@@ -48,14 +56,6 @@ spec:
             - --packages
             - org.postgresql:postgresql:42.2.5
             - /opt/jars/gitbase-spark-connector-enterprise-uber.jar
-            {{- if .Values.app.executorCores }}
-            - --conf
-            - spark.executor.cores={{ .Values.app.executorCores }}
-            {{- end }}
-            {{- if .Values.app.maxCores }}
-            - --conf
-            - spark.cores.max={{ .Values.app.maxCores}}
-            {{- end }}
           env:
             - name: POD_IP
               valueFrom:
