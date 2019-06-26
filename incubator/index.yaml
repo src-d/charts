@@ -3,7 +3,7 @@ entries:
   jupyter-single:
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2019-06-25T16:16:01.737854327Z
+    created: 2019-06-26T14:23:01.40130348Z
     description: A Helm chart for a single Jupyter instance
     digest: 1dd1ec6fe8e71c9a801cd1ec9b0086001ac4d1e9d77d870ebaa52ddf2a484cc6
     home: https://jupyter.org/
@@ -16,7 +16,7 @@ entries:
     version: 0.3.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2019-06-25T16:16:01.737217422Z
+    created: 2019-06-26T14:23:01.400574772Z
     description: A Helm chart for a single Jupyter instance
     digest: 7c00cf946fb367b758035663c80adef032e94566d9db37384183cc10c93eab6e
     name: jupyter-single
@@ -25,7 +25,7 @@ entries:
     version: 0.3.0
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2019-06-25T16:16:01.736694463Z
+    created: 2019-06-26T14:23:01.399982953Z
     description: A Helm chart for a single Jupyter instance
     digest: 2bdc458d0c3322d4bc079c8f0dc80c6266b41c3b10c9236321be66ab8835e221
     name: jupyter-single
@@ -34,7 +34,7 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2019-06-25T16:16:01.736159101Z
+    created: 2019-06-26T14:23:01.39938497Z
     description: A Helm chart for a single Jupyter instance
     digest: 06b369045e960ce4af42e4ff34174bf0830ff7680c8636d6e02dc19d352d598e
     name: jupyter-single
@@ -43,7 +43,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2019-06-25T16:16:01.735646054Z
+    created: 2019-06-26T14:23:01.398700898Z
     description: A Helm chart for a single Jupyter instance
     digest: c8417a8316b280bb8e3a8252bf8996411463391bc4261eceaaff735df6d55386
     name: jupyter-single
@@ -53,7 +53,7 @@ entries:
   spark-api-jupyter:
   - apiVersion: v1
     appVersion: 0.0.6
-    created: 2019-06-25T16:16:01.739077405Z
+    created: 2019-06-26T14:23:01.402514297Z
     description: A Helm chart for Kubernetes
     digest: 03e7b1f855f764bc114b52b74ead625f70bd2b3aa24a0df02bc9d99901ed8d97
     home: https://github.com/src-d
@@ -65,11 +65,11 @@ entries:
     - https://src-d.github.io/charts/incubator/spark-api-jupyter-0.1.2.tgz
     version: 0.1.2
   - apiVersion: v1
-    created: 2019-06-25T16:16:01.738400474Z
+    created: 2019-06-26T14:23:01.401892062Z
     description: A Helm chart for Kubernetes
     digest: 32e0d463d4e91644a82297634ee13714a47bcb94ebd8bf68da04665e05ca54e6
     name: spark-api-jupyter
     urls:
     - https://src-d.github.io/charts/incubator/spark-api-jupyter-0.1.1.tgz
     version: 0.1.1
-generated: 2019-06-25T16:16:01.734860355Z
+generated: 2019-06-26T14:23:01.397794475Z
