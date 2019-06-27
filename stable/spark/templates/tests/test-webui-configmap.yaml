@@ -11,6 +11,6 @@ data:
     }
 
     @test "Check if cluster reports alive" {
-      alive=$(curl http://{{ template "webui-proxy-fullname" . }}:{{ .Values.webUIProxy.service.port }}/proxy:{{ template "webui-fullname" . }}:{{ .Values.webUI.service.port }} | grep -c ALIVE)
+      alive=$(curl http://{{ template "webui-proxy-fullname" . }}:{{ .Values.webUIProxy.service.port }}/proxy:{{ template "webui-fullname" . }}:{{ .Values.webUI.service.port }} | grep -c "Status:.*ALIVE")
       [ "$alive" -ge 1 ]
     }
