@@ -17,7 +17,6 @@ chart-dirs:
 # Some are included as they do not have the required dependancies to test
 excluded-charts:
   - bblfsh-web
-  - bblfshd
   - bblfshd-sidecar
   - borges
   - drone
