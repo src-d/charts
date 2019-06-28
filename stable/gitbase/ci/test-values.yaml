@@ -1,0 +1,8 @@
+bblfshd-sidecar:
+  image:
+    tag: latest-drivers
+    pullPolicy: Always
+
+image:
+  tag: latest
+  pullPolicy: Always
