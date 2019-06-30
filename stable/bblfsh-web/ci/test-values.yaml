@@ -1,6 +1,6 @@
 image:
-  tag: v0.8.0
+  tag: latest
+  pullPolicy: Always
 
 ingress:
-  hostname: drone.test.com
-  globalStaticIpName: test
+  enabled: false
