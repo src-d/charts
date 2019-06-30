@@ -22,7 +22,6 @@ spec:
         # copy bats to tools dir
         cp -R /usr/local/libexec/ /tools/bats/
     volumeMounts:
-    volumeMounts:
       - name: tools
         mountPath: /tools
   containers:

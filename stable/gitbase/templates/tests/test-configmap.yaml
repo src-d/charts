@@ -10,5 +10,10 @@ metadata:
 data:
   tests.sh: |-
     @test "Testing gitbase connection" {
-      mysql --host={{ template "gitbase.fullname" . }} --port={{ .Values.service.port }} -u {{ .Values.settings.user }} -p{{ .Values.settings.password }} -e "SELECT 1;"
+      command="echo SELECT 1 | mysql --host={{ template "gitbase.fullname" . }} --port={{ .Values.service.port }} -u {{ .Values.settings.user }} -p{{ .Values.settings.password }}"
+      run ${command}
+      echo "command = [${command}]"
+      echo "output = [${output}]"
+      echo "status = [${status}]"
+      [ "${status}" -eq "0" ]
     }
