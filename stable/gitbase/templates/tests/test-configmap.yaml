@@ -10,8 +10,19 @@ metadata:
 data:
   tests.sh: |-
     @test "Testing gitbase connection" {
-      command="echo SELECT 1 | mysql --host={{ template "gitbase.fullname" . }} --port={{ .Values.service.port }} -u {{ .Values.settings.user }} -p{{ .Values.settings.password }}"
-      run ${command}
+      command="echo 'SELECT 1;' | mysql --host={{ template "gitbase.fullname" . }} --port={{ .Values.service.port }} -u {{ .Values.settings.user }} -p{{ .Values.settings.password }}"
+      run bash -c "${command}"
+      echo "command = [${command}]"
+      echo "output = [${output}]"
+      echo "status = [${status}]"
+      [ "${status}" -eq "0" ]
+    }
+
+    @test "Testing gitbase and bblfshd" {
+      temp_file=$(mktemp)
+      echo 'SELECT uast("print f", "python");' > "${temp_file}"
+      command="cat ${temp_file} | mysql --host={{ template "gitbase.fullname" . }} --port={{ .Values.service.port }} -u {{ .Values.settings.user }} -p{{ .Values.settings.password }}"
+      run bash -c "${command}"
       echo "command = [${command}]"
       echo "output = [${output}]"
       echo "status = [${status}]"
