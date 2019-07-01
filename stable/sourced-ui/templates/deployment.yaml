@@ -19,8 +19,14 @@ spec:
         app: {{ template "sourced-ui.name" . }}
         release: {{ .Release.Name }}
     spec:
-      {{- if .Values.postgres.cloudSQL.enabled }}
       volumes:
+        - configMap:
+            name: {{ template "sourced-ui.fullname" . }}-warmup
+            items:
+            - key: warmup.sh
+              path: warmup.sh
+          name: warmup
+      {{- if .Values.postgres.cloudSQL.enabled }}
         - name: cloudsql-instance-credentials
           secret:
             secretName: {{ required "missing postgres.cloudSQL.serviceAccountSecret" .Values.postgres.cloudSQL.serviceAccountSecret }}
@@ -29,6 +35,14 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: warmup
+              mountPath: /opt/warmup.sh
+              subPath: warmup.sh
+          lifecycle:
+            postStart:
+              exec:
+                command: [ "bash", "/opt/warmup.sh" ]
           env:
             - name: MODE
               value: "{{ default "Community" .Values.app.mode }}"
