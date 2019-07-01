@@ -26,11 +26,11 @@ spec:
             - key: warmup.sh
               path: warmup.sh
           name: warmup
-      {{- if .Values.postgres.cloudSQL.enabled }}
+        {{- if .Values.postgres.cloudSQL.enabled }}
         - name: cloudsql-instance-credentials
           secret:
             secretName: {{ required "missing postgres.cloudSQL.serviceAccountSecret" .Values.postgres.cloudSQL.serviceAccountSecret }}
-      {{- end }}
+        {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
