@@ -20,18 +20,21 @@ These parts are needed to instert bblfsh
 */}}
 
 {{- define "bblfshd-sidecar.volumes" -}}
+{{- if .Values.drivers.install }}
 - name: install-bblfshd-drivers-volume
   configMap:
     name: {{.Release.Name}}-bblfshd-sidecar-install-drivers
     items:
     - key: install-bblfshd-drivers.sh
       path: install-bblfshd-drivers.sh
+{{- end }}
 {{- end -}}
 
 {{- define "bblfshd-sidecar.containers" -}}
 - name: bblfshd
   image: "{{index .Values "bblfshd-sidecar" "image" "repository" }}:{{index .Values "bblfshd-sidecar" "image" "tag" }}"
   imagePullPolicy: {{index .Values "bblfshd-sidecar" "image" "pullPolicy" }}
+  {{- if .Values.drivers.install }}
   volumeMounts:
     - name: install-bblfshd-drivers-volume
       mountPath: /opt/install-bblfshd-drivers.sh
@@ -40,6 +43,7 @@ These parts are needed to instert bblfsh
     postStart:
       exec:
         command: [ "sh", "/opt/install-bblfshd-drivers.sh" ]
+  {{- end }}
   livenessProbe:
     tcpSocket:
       port: 9432

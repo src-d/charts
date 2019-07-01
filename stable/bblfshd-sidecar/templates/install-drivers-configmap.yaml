@@ -1,3 +1,4 @@
+{{- if .Values.drivers.install }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -9,3 +10,4 @@ data:
     {{- range $language, $driver := .Values.drivers.languages }}
     bblfshctl driver install {{ $language }} {{ $driver.repository }}:{{ $driver.tag }}
     {{- end }}
+{{- end }}
