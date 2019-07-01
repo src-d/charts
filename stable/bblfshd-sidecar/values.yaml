@@ -9,6 +9,33 @@ image:
 drivers:
   install: false
   languages: {}
+  #  python:
+  #     repository: bblfsh/python-driver
+  #     tag: latest
+  #   java:
+  #     repository: bblfsh/java-driver
+  #     tag: latest
+  #   javascript:
+  #     repository: bblfsh/javascript-driver
+  #     tag: latest
+  #   typescript:
+  #     repository: bblfsh/typescript-driver
+  #     tag: latest
+  #   bash:
+  #     repository: bblfsh/bash-driver
+  #     tag: latest
+  #   ruby:
+  #     repository: bblfsh/ruby-driver
+  #     tag: latest
+  #   go:
+  #     repository: bblfsh/go-driver
+  #     tag: latest
+  #   php:
+  #     repository: bblfsh/php-driver
+  #     tag: latest
+  #   csharp:
+  #     repository: bblfsh/csharp-driver
+  #     tag: latest
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
