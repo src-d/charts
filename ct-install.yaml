@@ -16,7 +16,6 @@ chart-dirs:
 # These charts are excluded from being installed to test since they contain no useful tests
 # Some are included as they do not have the required dependancies to test
 excluded-charts:
-  - bblfshd
   - bblfshd-sidecar
   - borges
   - drone
