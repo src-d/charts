@@ -13,3 +13,5 @@
   You can access bblfsh server in localhost:9432
   kubectl port-forward $POD_NAME 9432:{{ .Values.service.externalPort }}
 {{- end }}
+
+YOU SHOULD NEVER EVERRR SEE THIS ON MASTER
