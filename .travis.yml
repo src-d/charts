@@ -45,6 +45,8 @@ jobs:
         - sudo apt-get update
         - sudo apt-get install -y socat
       before_script:
+        - git config remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # Configure Travis CI to pull all branches, needed for CT to compare changes
+        - git fetch
         - sudo pip install yq
         - curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
         - chmod 700 get_helm.sh
@@ -55,8 +57,6 @@ jobs:
         - sudo chmod +x ct && sudo mv ct /usr/local/bin/
         - sudo mv etc /etc/ct
         - rm -f chart-testing_${CT_VERSION}_linux_amd64.tar.gz
-        - git config remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # Configure Travis CI to pull all branches, needed for CT to compare changes
-        - git fetch
       script:
         - ct install --config ct-install.yaml
     - name: Repo sync
