@@ -20,7 +20,7 @@ These parts are needed to instert bblfsh
 */}}
 
 {{- define "bblfshd-sidecar.volumes" -}}
-{{- if .Values.drivers.install }}
+{{- if index .Values "bblfshd-sidecar" "drivers" "install" }}
 - name: install-bblfshd-drivers-volume
   configMap:
     name: {{.Release.Name}}-bblfshd-sidecar-install-drivers
@@ -34,7 +34,7 @@ These parts are needed to instert bblfsh
 - name: bblfshd
   image: "{{index .Values "bblfshd-sidecar" "image" "repository" }}:{{index .Values "bblfshd-sidecar" "image" "tag" }}"
   imagePullPolicy: {{index .Values "bblfshd-sidecar" "image" "pullPolicy" }}
-  {{- if .Values.drivers.install }}
+  {{- if index .Values "bblfshd-sidecar" "drivers" "install" }}
   volumeMounts:
     - name: install-bblfshd-drivers-volume
       mountPath: /opt/install-bblfshd-drivers.sh
