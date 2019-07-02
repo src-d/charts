@@ -4,13 +4,17 @@ set -e
 echo $TRAVIS_COMMIT_RANGE
 CHANGED_FILES=$(git diff --name-only "$TRAVIS_COMMIT_RANGE")
 
+if [ "$TRAVIS_BRANCH" != "master" ]; then
+    CHANGED_FILES=$(git diff --name-only "HEAD...$TRAVIS_BRANCH")
+fi
+
 # Remove excluded charts from the changes list
 excluded_charts=$(yq -r ".\"excluded-charts\" | .[]" ct-install.yaml)
 for chart in $excluded_charts
 do
     CHANGED_FILES=$(echo "$CHANGED_FILES" | grep -v "$chart/Chart.yaml" )
 done
-
+echo "$CHANGED_FILES" 
 echo "$CHANGED_FILES" | grep 'Chart.yaml$' || { echo "No Chart.yaml files changed. No need to have Kubernetes. Exiting."; exit 0; }
 
 curl -Lo kubectl "https://storage.googleapis.com/kubernetes-release/release/${KUBERNETES_VERSION}/bin/linux/amd64/kubectl"
