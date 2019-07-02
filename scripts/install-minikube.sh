@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-
+echo $TRAVIS_COMMIT_RANGE
 CHANGED_FILES=$(git diff --name-only "$TRAVIS_COMMIT_RANGE")
 
 # Remove excluded charts from the changes list
