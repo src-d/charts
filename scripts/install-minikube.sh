@@ -2,19 +2,16 @@
 
 set -e
 
-CHANGED_FILES=$(mktemp)
-trap "rm -f $CHANGED_FILES" EXIT
-
-git diff --name-only "$TRAVIS_COMMIT_RANGE" > "$CHANGED_FILES"
+CHANGED_FILES=$(git diff --name-only "$TRAVIS_COMMIT_RANGE")
 
 # Remove excluded charts from the changes list
 excluded_charts=$(yq -r ".\"excluded-charts\" | .[]" ct-install.yaml)
 for chart in $excluded_charts
 do
-    CHANGED_FILES=$(grep -v "$chart/Chart.yaml" )
+    CHANGED_FILES=$(echo "$CHANGED_FILES" | grep -v "$chart/Chart.yaml" )
 done
 
-grep 'Chart.yaml$' "$CHANGED_FILES" || { echo "No Chart.yaml files changed. No need to have Kubernetes. Exiting."; exit 0; }
+echo "$CHANGED_FILES" | grep 'Chart.yaml$' || { echo "No Chart.yaml files changed. No need to have Kubernetes. Exiting."; exit 0; }
 
 curl -Lo kubectl "https://storage.googleapis.com/kubernetes-release/release/${KUBERNETES_VERSION}/bin/linux/amd64/kubectl"
 sudo chmod +x kubectl && sudo mv kubectl /usr/local/bin/
