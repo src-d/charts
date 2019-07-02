@@ -14,20 +14,25 @@ service:
   internalPort: 8080
 
 ingress:
-  enabled: true
+  enabled: false
   # globalStaticIpName must be received as a parameter
-  # hostname must be received as a parameter
-  # hosts defined in templates/ingress.yml. Do not override here.
   annotations:
     kubernetes.io/ingress.class: gce
     kubernetes.io/tls-acme: "true"
-    # kubernetes.io/ingress.global-static-ip-name is defined in templates/ingress.yml. Do not override here.
-  tls: true
-    # secretName and hosts are defined in templates/ingress.yml. Do not override here.
+  path: /
+  hosts:
+    - chart-example.local
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
 
 bblfshd-sidecar:
   image:
-    tag: v2.9.1
+    tag: v2.14.0-drivers
+  drivers:
+    install: false
 
 settings:
   ## serverAddr is the address to a bblfsh server, if empty a bblfsh server
