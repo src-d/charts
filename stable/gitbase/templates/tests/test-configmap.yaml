@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "gitbase.fullname" . }}-test
+  labels:
+    app: {{ template "gitbase.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+data:
+  tests.sh: |-
+    @test "Testing gitbase connection" {
+      command="echo 'SELECT 1;' | mysql --host={{ template "gitbase.fullname" . }} --port={{ .Values.service.port }} --user={{ .Values.settings.user }} --password={{ .Values.settings.password }}"
+      run bash -c "${command}"
+      echo "command = [${command}]"
+      echo "output = [${output}]"
+      echo "status = [${status}]"
+      [ "${status}" -eq "0" ]
+    }
+
+    @test "Testing gitbase and bblfshd" {
+      temp_file=$(mktemp)
+      echo 'SELECT uast("print f", "python");' > "${temp_file}"
+      command="cat ${temp_file} | mysql --host={{ template "gitbase.fullname" . }} --port={{ .Values.service.port }} --user={{ .Values.settings.user }} --password={{ .Values.settings.password }}"
+      run bash -c "${command}"
+      echo "command = [${command}]"
+      echo "output = [${output}]"
+      echo "status = [${status}]"
+      [ "${status}" -eq "0" ]
+    }
