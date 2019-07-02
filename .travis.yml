@@ -45,18 +45,10 @@ jobs:
         - sudo apt-get update
         - sudo apt-get install -y socat
       before_script:
-        - curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/${KUBERNETES_VERSION}/bin/linux/amd64/kubectl
-        - sudo chmod +x kubectl && sudo mv kubectl /usr/local/bin/
-        - curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 
-        - sudo chmod +x minikube && sudo mv minikube /usr/local/bin/
-        - sudo minikube start --vm-driver=none --kubernetes-version=${KUBERNETES_VERSION}
-        - sudo chown -R travis /home/travis/.minikube/
-        - minikube update-context
-        # wait till node is ready
-        - JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; until kubectl get nodes -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"; do sleep 1; done
         - curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
         - chmod 700 get_helm.sh
         - DESIRED_VERSION=$HELM_VERSION ./get_helm.sh
+        - ./scripts/install-minikube.sh
         - curl -Lo chart-testing_${CT_VERSION}_linux_amd64.tar.gz https://github.com/helm/chart-testing/releases/download/v${CT_VERSION}/chart-testing_${CT_VERSION}_linux_amd64.tar.gz
         - tar xzf chart-testing_${CT_VERSION}_linux_amd64.tar.gz
         - sudo chmod +x ct && sudo mv ct /usr/local/bin/
@@ -65,9 +57,6 @@ jobs:
         - git config remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # Configure Travis CI to pull all branches, needed for CT to compare changes
         - git fetch
       script:
-        - helm init
-        # wait till the tiller is ready
-        - JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; until kubectl get pods -n kube-system -l name=tiller -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"; do sleep 1; done
         - ct install --config ct-install.yaml
     - name: Repo sync
       stage: repo-sync
