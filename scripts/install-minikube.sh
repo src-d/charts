@@ -3,6 +3,9 @@
 set -e
 
 CHANGED_FILES=$(git diff --name-only "$TRAVIS_COMMIT_RANGE")
+if [ "$TRAVIS_BRANCH" != "master" ]; then
+    CHANGED_FILES=$(git diff --name-only "HEAD...$TRAVIS_BRANCH")
+fi
 
 # Remove excluded charts from the changes list
 excluded_charts=$(yq -r ".\"excluded-charts\" | .[]" ct-install.yaml)
