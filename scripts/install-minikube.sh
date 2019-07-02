@@ -3,6 +3,9 @@
 set -e
 echo $TRAVIS_COMMIT_RANGE
 CHANGED_FILES=$(git diff --name-only "$TRAVIS_COMMIT_RANGE")
+if [ "$TRAVIS_BRANCH" != "master" ]; then
+    CHANGED_FILES=$(git diff --name-only "HEAD...$TRAVIS_BRANCH")
+fi
 
 if [ "$TRAVIS_BRANCH" != "master" ]; then
     CHANGED_FILES=$(git diff --name-only "HEAD...$TRAVIS_BRANCH")
