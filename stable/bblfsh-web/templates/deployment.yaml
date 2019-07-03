@@ -1,18 +1,22 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ template "fullname" . }}
+  name: {{ template "bblfsh-web.fullname" . }}
   labels:
-    app: {{ template "fullname" . }}
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    app: {{ template "bblfsh-web.name" . }}
+    chart: {{ template "bblfsh-web.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "bblfsh-web.fullname" . }}
+      release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "fullname" . }}
+        app: {{ template "bblfsh-web.fullname" . }}
         release: {{ .Release.Name }}
     spec:
       volumes:
@@ -32,6 +36,20 @@ spec:
         - name: http
           containerPort: {{ .Values.service.internalPort }}
           protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: {{ default 10 .Values.livenessProbe.initialDelaySeconds }}
+          timeoutSeconds: {{ default 1 .Values.livenessProbe.timeoutSeconds }}
+          periodSeconds: {{ default 10 .Values.livenessProbe.timeoutSeconds }}
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: {{ default 10 .Values.readinessProbe.initialDelaySeconds }}
+          timeoutSeconds: {{ default 1 .Values.readinessProbe.timeoutSeconds }}
+          periodSeconds: {{ default 10 .Values.readinessProbe.timeoutSeconds }}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
     {{- with .Values.nodeSelector }}
