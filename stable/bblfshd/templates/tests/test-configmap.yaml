@@ -14,7 +14,7 @@ data:
 
     class TestConnection(unittest.TestCase):
         def test_connection(self):
-            client = bblfsh.BblfshClient("{{ template "bblfshd.fullname" . }}:{{ .Values.service.externalPort }}")
+            client = bblfsh.BblfshClient("{{ template "bblfshd.fullname" . }}:{{ .Values.service.port }}")
             self.assertNotEqual(client.parse(__file__), '')
 
     if __name__ == '__main__':
