@@ -2,46 +2,48 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 replicaCount: 1
+
 image:
   repository: bblfsh/bblfshd
-  tag: v2.14.0
+  tag: v2.14.0-drivers
   pullPolicy: IfNotPresent
+
 service:
-  name: bblfshd
   type: ClusterIP
-  externalPort: 9432
-  internalPort: 9432
-  # loadBalancerIP: 1.2.3.4
+  port: 80
+  # loadBalancerIP
+
 drivers:
-  install: true
-  languages:
-    python:
-      repository: bblfsh/python-driver
-      tag: latest
-    java:
-      repository: bblfsh/java-driver
-      tag: latest
-    javascript:
-      repository: bblfsh/javascript-driver
-      tag: latest
-    typescript:
-      repository: bblfsh/typescript-driver
-      tag: latest
-    bash:
-      repository: bblfsh/bash-driver
-      tag: latest
-    ruby:
-      repository: bblfsh/ruby-driver
-      tag: latest
-    go:
-      repository: bblfsh/go-driver
-      tag: latest
-    php:
-      repository: bblfsh/php-driver
-      tag: latest
-    csharp:
-      repository: bblfsh/csharp-driver
-      tag: latest
+  install: false
+  languages: {}
+    # python:
+    #   repository: bblfsh/python-driver
+    #   tag: latest
+    # java:
+    #   repository: bblfsh/java-driver
+    #   tag: latest
+    # javascript:
+    #   repository: bblfsh/javascript-driver
+    #   tag: latest
+    # typescript:
+    #   repository: bblfsh/typescript-driver
+    #   tag: latest
+    # bash:
+    #   repository: bblfsh/bash-driver
+    #   tag: latest
+    # ruby:
+    #   repository: bblfsh/ruby-driver
+    #   tag: latest
+    # go:
+    #   repository: bblfsh/go-driver
+    #   tag: latest
+    # php:
+    #   repository: bblfsh/php-driver
+    #   tag: latest
+    # csharp:
+    #   repository: bblfsh/csharp-driver
+    #   tag: latest
+
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -54,7 +56,9 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
   #
+
 affinity: {}
+
 metrics:
   enabled: false
   interval: 10s

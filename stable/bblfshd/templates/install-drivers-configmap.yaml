@@ -1,11 +1,16 @@
+{{- if .Values.drivers.install }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "fullname" . }}-install-drivers
+  name: {{ template "bblfshd.fullname" . }}-install-drivers
   labels:
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    app: {{ template "bblfshd.name" . }}
+    chart: {{ template "bblfshd.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 data:
   install-bblfshd-drivers.sh: |
     {{- range $language, $driver := .Values.drivers.languages }}
     bblfshctl driver install {{ $language }} {{ $driver.repository }}:{{ $driver.tag }}
     {{- end }}
+{{- end }}

@@ -1,34 +1,41 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ template "fullname" . }}
+  name: {{ template "bblfshd.fullname" . }}
   labels:
-    app: {{ template "name" . }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    app: {{ template "bblfshd.name" . }}
+    chart: {{ template "bblfshd.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "bblfshd.fullname" . }}
+      release: {{ .Release.Name }}
   template:
     metadata:
       # This is to upgrade the deployment if configmap changes
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/install-drivers-configmap.yaml") . | sha256sum }}
       labels:
-        app: {{ template "name" . }}
+        app: {{ template "bblfshd.name" . }}
         release: {{ .Release.Name }}
     spec:
+      {{- if .Values.drivers.install }}
       volumes:
         - configMap:
-            name: {{ template "fullname" . }}-install-drivers
+            name: {{ template "bblfshd.fullname" . }}-install-drivers
             items:
             - key: install-bblfshd-drivers.sh
               path: install-bblfshd-drivers.sh
           name: install-bblfshd-drivers-volume
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.drivers.install }}
           volumeMounts:
             - name: install-bblfshd-drivers-volume
               mountPath: /opt/install-bblfshd-drivers.sh
@@ -37,8 +44,10 @@ spec:
             postStart:
               exec:
                 command: [ "sh", "/opt/install-bblfshd-drivers.sh" ]
+          {{- end }}
           ports:
-            - containerPort: {{ .Values.service.internalPort }}
+            - name: bblfshd
+              containerPort: {{ .Values.service.internalPort }}
           {{- if .Values.metrics.enabled }}
             - name: metrics
               containerPort: 2112
