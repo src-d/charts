@@ -2,9 +2,10 @@
 
 set -e
 
-CHANGED_FILES=$(git diff --name-only "$TRAVIS_COMMIT_RANGE")
 if [ "$TRAVIS_BRANCH" != "master" ]; then
     CHANGED_FILES=$(git diff --name-only "origin/master..$TRAVIS_BRANCH")
+else 
+    CHANGED_FILES=$(git diff --name-only "$TRAVIS_COMMIT_RANGE")
 fi
 
 # Remove excluded charts from the changes list
