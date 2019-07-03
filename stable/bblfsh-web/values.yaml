@@ -15,7 +15,6 @@ service:
 
 ingress:
   enabled: false
-  # globalStaticIpName must be received as a parameter
   annotations:
     kubernetes.io/ingress.class: gce
     kubernetes.io/tls-acme: "true"
