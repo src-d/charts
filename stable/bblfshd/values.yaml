@@ -10,7 +10,7 @@ image:
 
 service:
   type: ClusterIP
-  port: 80
+  port: 9432
   # loadBalancerIP
 
 drivers:

@@ -47,17 +47,17 @@ spec:
           {{- end }}
           ports:
             - name: bblfshd
-              containerPort: {{ .Values.service.internalPort }}
+              containerPort: 9432
           {{- if .Values.metrics.enabled }}
             - name: metrics
               containerPort: 2112
           {{- end }}
           livenessProbe:
             tcpSocket:
-              port: {{ .Values.service.internalPort }}
+              port: 9432
           readinessProbe:
             tcpSocket:
-              port: {{ .Values.service.internalPort }}
+              port: 9432
           securityContext:
             privileged: true
           resources:
