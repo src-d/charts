@@ -45,6 +45,9 @@ nodeSelector: {}
 
 affinity: {}
 
+livenessProbe: {}
+readinessProbe: {}
+
 # configuration for build-in server if, settings.serverAddr is empty.
 server:
   image:

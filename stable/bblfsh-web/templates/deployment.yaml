@@ -36,6 +36,20 @@ spec:
         - name: http
           containerPort: {{ .Values.service.internalPort }}
           protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: {{ default 10 .Values.livenessProbe.initialDelaySeconds }}
+          timeoutSeconds: {{ default 1 .Values.livenessProbe.timeoutSeconds }}
+          periodSeconds: {{ default 10 .Values.livenessProbe.timeoutSeconds }}
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: {{ default 10 .Values.readinessProbe.initialDelaySeconds }}
+          timeoutSeconds: {{ default 1 .Values.readinessProbe.timeoutSeconds }}
+          periodSeconds: {{ default 10 .Values.readinessProbe.timeoutSeconds }}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
     {{- with .Values.nodeSelector }}
