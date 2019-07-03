@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "fullname" . }}-test
+  name: {{ template "bblfshd.fullname" . }}-test
   labels:
-    app: {{ template "fullname" . }}
+    app: {{ template "bblfshd.fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
@@ -14,7 +14,7 @@ data:
 
     class TestConnection(unittest.TestCase):
         def test_connection(self):
-            client = bblfsh.BblfshClient("{{ template "fullname" . }}:{{ .Values.service.externalPort }}")
+            client = bblfsh.BblfshClient("{{ template "bblfshd.fullname" . }}:{{ .Values.service.externalPort }}")
             self.assertNotEqual(client.parse(__file__), '')
 
     if __name__ == '__main__':
