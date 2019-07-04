@@ -15,9 +15,11 @@ spec:
       release: {{ .Release.Name }}
   template:
     metadata:
+      {{- if .Values.drivers.install }}
       # This is to upgrade the deployment if configmap changes
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/install-drivers-configmap.yaml") . | sha256sum }}
+      {{- end }}
       labels:
         app: {{ template "bblfshd.fullname" . }}
         release: {{ .Release.Name }}
