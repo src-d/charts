@@ -11,7 +11,7 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "bblfshd.name" . }}
+      app: {{ template "bblfshd.fullname" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
