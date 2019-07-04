@@ -19,7 +19,7 @@ spec:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/install-drivers-configmap.yaml") . | sha256sum }}
       labels:
-        app: {{ template "bblfshd.name" . }}
+        app: {{ template "bblfshd.fullname" . }}
         release: {{ .Release.Name }}
     spec:
       {{- if .Values.drivers.install }}
