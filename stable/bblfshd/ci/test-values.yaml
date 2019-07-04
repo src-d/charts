@@ -1,3 +1,0 @@
-image:
-  tag: latest-drivers
-  pullPolicy: Always
