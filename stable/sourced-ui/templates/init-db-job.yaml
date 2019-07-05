@@ -61,7 +61,7 @@ spec:
           args:
             - |
               trap "touch /tmp/pod/main-terminated" EXIT
-              /home/superset/docker-init.sh
+              python /home/superset/bootstrap.py
           env:
             - name: MODE
               value: "{{ default "Community" .Values.app.mode }}"
