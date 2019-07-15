@@ -18,7 +18,7 @@ ingress:
   annotations:
     kubernetes.io/ingress.class: gce
     kubernetes.io/tls-acme: "true"
-  path: /
+  path: /*
   hosts:
     - chart-example.local
   tls: []
