@@ -49,3 +49,9 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
   #
+
+metrics:
+  enabled: false
+  interval: 10s
+  namespace: monitoring
+  additionalServiceMatchLabels: {}
