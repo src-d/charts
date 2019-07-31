@@ -1,0 +1,22 @@
+{{- if .Values.metrics.enabled}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "bblfshd-sidecar.fullname" . }}-metrics
+  labels:
+    app: {{ template "bblfshd-sidecar.name" . }}-metrics
+    chart: {{ .Chart.Name }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: ClusterIP
+  ports:
+    - name: metrics
+      port: 2112
+      protocol: TCP
+      targetPort: metrics
+  selector:
+    release: {{ .Release.Name }}
+{{ toYaml .Values.metrics.additionalServiceMatchLabels | indent 4 }}
+{{- end }}

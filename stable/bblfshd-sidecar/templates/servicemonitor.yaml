@@ -1,0 +1,23 @@
+{{- if .Values.metrics.enabled}}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "bblfshd-sidecar.fullname" . }}
+  namespace: {{ .Values.metrics.namespace }}
+  labels:
+    app: {{ template "bblfshd-sidecar.name" . }}
+    chart: {{ .Chart.Name }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  selector:
+    matchLabels:
+        app: {{ template "bblfshd-sidecar.name" . }}-metrics
+        heritage: {{ .Release.Service }}
+  endpoints:
+    - port: metrics
+      interval: {{ .Values.metrics.interval | default "10s" }}
+  namespaceSelector:
+    matchNames:
+        - {{ .Release.Namespace }}
+{{- end }}

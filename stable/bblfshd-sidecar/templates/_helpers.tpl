@@ -44,6 +44,11 @@ These parts are needed to instert bblfsh
       exec:
         command: [ "sh", "/opt/install-bblfshd-drivers.sh" ]
   {{- end }}
+  {{- if index .Values "bblfshd-sidecar" "metrics" "enabled" }}
+  ports:
+    - name: metrics
+      containerPort: 2112
+  {{- end }}
   livenessProbe:
     tcpSocket:
       port: 9432
