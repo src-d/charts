@@ -21,6 +21,9 @@ spec:
     - port: metrics
       interval: {{ $root.Values.serviceMonitor.interval }}
       path: {{ .path | default "/metrics" }}
+      {{- if .scheme }}
+      scheme: {{ .scheme }}
+      {{- end }}
       {{- if .basicAuth }}
       basicAuth:
 {{ toYaml .basicAuth | indent 8 }}
