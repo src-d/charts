@@ -18,5 +18,7 @@ spec:
       targetPort: metrics
   selector:
     release: {{ .Release.Name }}
+    {{- if .Values.metrics.additionalServiceMatchLabels }}
 {{ toYaml .Values.metrics.additionalServiceMatchLabels | indent 4 }}
+    {{- end }}
 {{- end }}
