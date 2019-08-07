@@ -28,7 +28,7 @@ spec:
       basicAuth:
 {{ toYaml .basicAuth | indent 8 }}
       {{- end }}
-      {{- if .basicAuth }}
+      {{- if .tlsConfig }}
       tlsConfig:
 {{ toYaml .tlsConfig | indent 8 }}
       {{- end }}
