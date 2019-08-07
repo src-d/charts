@@ -28,6 +28,10 @@ spec:
       basicAuth:
 {{ toYaml .basicAuth | indent 8 }}
       {{- end }}
+      {{- if .basicAuth }}
+      tlsConfig:
+{{ toYaml .tlsConfig | indent 8 }}
+      {{- end }}
         
   namespaceSelector:
     any: true
