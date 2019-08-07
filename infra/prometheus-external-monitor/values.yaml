@@ -4,6 +4,9 @@ endpoints: []
 #   ip: 192.168.0.1
 #   port: 9100
 #   path: /metrics
+#   scheme: http
+#   tlsConfig:
+#     serverName: example.com
 #   basicAuth:
 #     username:
 #     password:
