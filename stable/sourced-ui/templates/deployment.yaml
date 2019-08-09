@@ -61,7 +61,7 @@ spec:
             - name: ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: password
+                  key: {{ default "password" .Values.admin.secretKey }}
                   name: "{{ default (include "sourced-ui.admin.secretName" .) .Values.admin.secretName }}"
             - name: POSTGRES_HOST
             {{- if .Values.postgres.cloudSQL.enabled }}
@@ -78,7 +78,7 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: password
+                  key: {{ default "password" .Values.postgres.secretKey }}
                   name: "{{ default (include "sourced-ui.postgres.secretName" .) .Values.postgres.secretName }}"
             - name: REDIS_HOST
               value: "{{ required "missing redis.host value" .Values.redis.host }}"
@@ -98,7 +98,7 @@ spec:
             - name: GITBASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: password
+                  key: {{ default "password" .Values.gitbase.secretKey }}
                   name: "{{ default (include "sourced-ui.gitbase.secretName" .) .Values.gitbase.secretName }}"
             {{- end }}
             - name: BBLFSH_WEB_HOST
