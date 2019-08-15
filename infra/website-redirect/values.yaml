@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: abiosoft/caddy
-  tag: 0.11.0
+  tag: 1.0.3
   pullPolicy: IfNotPresent
 
 redirects: []
