@@ -18,7 +18,7 @@ spec:
         app: {{ template "k8s-pod-headless-service-operator.name" . }}
         release: {{ .Release.Name }}
     spec:
-      serviceAccountName: {{ template "k8s-pod-headless-service-operator.name" . }}
+      serviceAccountName: {{ template "k8s-pod-headless-service-operator.fullname" . }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ required "missing image.tag" .Values.image.tag }}"
