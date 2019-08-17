@@ -26,11 +26,11 @@ spec:
           env:
             {{- if  .Values.app.podAnnotation }}
             - name: POD_ANNOTATION
-             value: {{ .Values.app.podAnnotation }}
+              value: {{ .Values.app.podAnnotation }}
             {{- end }}
             {{- if  .Values.app.namespace }}
             - name: NAMESPACE
-             value: {{ .Values.app.namespace }}
+              value: {{ .Values.app.namespace }}
             {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
