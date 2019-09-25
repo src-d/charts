@@ -1,0 +1,5 @@
+ingress:
+  hosts:
+  - unit.test.srcd.run
+  - www.unit.test.srcd.run
+  globalStaticIpName: "test-ip"

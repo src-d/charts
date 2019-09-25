@@ -42,3 +42,4 @@ excluded-charts:
   - spark-api-jupyter
   - spark-thrift-server
   - k8s-pod-headless-service-operator
+  - landing
