@@ -11,11 +11,11 @@ image:
   # tag must be received as a parameter
   pullPolicy: IfNotPresent
 deployment:
-    internalDatabasePath: "/var/code-annotation"
-    # gaTrackingID must be received as a parameter
+  internalDatabasePath: "/var/code-annotation"
+  # gaTrackingID must be received as a parameter
 authorization:
-    restrictAccessGroup: "org:src-d"
-    restrictRequesterGroup: ""
+  restrictAccessGroup: "org:src-d"
+  restrictRequesterGroup: ""
 service:
   type: NodePort
   codeAnnotation:
@@ -46,7 +46,7 @@ resources: {}
   # limits:
   #  cpu: 100m
   #  memory: 128Mi
-  #requests:
+  # requests:
   #  cpu: 100m
   #  memory: 128Mi
   #
