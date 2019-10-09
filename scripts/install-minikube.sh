@@ -19,11 +19,11 @@ echo "$CHANGED_FILES" | grep 'Chart.yaml$' || { echo "No Chart.yaml files change
 
 curl -Lo kubectl "https://storage.googleapis.com/kubernetes-release/release/${KUBERNETES_VERSION}/bin/linux/amd64/kubectl"
 sudo chmod +x kubectl && sudo mv kubectl /usr/local/bin/
-curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/${MINIKUBE_VERSION}/minikube-linux-amd64
 sudo chmod +x minikube && sudo mv minikube /usr/local/bin/
 sudo minikube start --vm-driver=none --kubernetes-version="${KUBERNETES_VERSION}"
 sudo chown -R travis /home/travis/.minikube/
-minikube update-context
+sudo chown -R travis /home/travis/.kube/
 
 # wait till node is ready
 JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; until kubectl get nodes -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"; do sleep 1; done
