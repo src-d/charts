@@ -22,7 +22,6 @@ excluded-charts:
   - ewbf-miner
   - gemini
   - git-server
-  - gitbase-web
   - google-cloud-dns-healthcheck
   - hue
   - jupyter-single
