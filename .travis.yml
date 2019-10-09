@@ -1,6 +1,6 @@
 sudo: required
 # We need the systemd for the kubeadm and it's default from 16.04+
-dist: xenial
+dist: bionic
 services:
 - docker
 language: go
@@ -38,9 +38,10 @@ jobs:
       stage: tests
       env:
         - CHANGE_MINIKUBE_NONE_USER=true # makes sure config files are owned by the travis user
-        - KUBERNETES_VERSION=v1.14.0
+        - KUBERNETES_VERSION=v1.15.4
         - CT_VERSION=2.3.3
         - HELM_VERSION=v2.14.0
+        - MINIKUBE_VERSION=v1.4.0
       install:
         - sudo apt-get update
         - sudo apt-get install -y socat
