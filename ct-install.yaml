@@ -18,7 +18,6 @@ chart-dirs:
 excluded-charts:
   - bblfshd-sidecar
   - borges
-  - drone
   - ewbf-miner
   - gemini
   - git-server
