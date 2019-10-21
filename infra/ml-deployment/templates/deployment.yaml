@@ -40,6 +40,10 @@ spec:
           {{- end }}
           {{- end }}
           env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
           {{- range $key, $value := .Values.env }}
             - name: {{ $key | upper }}
               value: {{ $value | quote }}
