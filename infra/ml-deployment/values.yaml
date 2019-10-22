@@ -38,3 +38,7 @@ resources: {}
 nodeSelector: {}
 
 tolerations: []
+
+serviceAccount:
+  name: reader
+  automountToken: true
