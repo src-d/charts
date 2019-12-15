@@ -7,7 +7,7 @@ set -o pipefail
 REPO_NAME="${REPO_NAME:-stable}"
 REPO_URL="${REPO_URL:-https://maartje.dev/charts-srcd/$REPO_NAME/}"
 TARGET_BRANCH="${TARGET_BRANCH:-gh-pages}"
-GH_REF="${GH_REF:-github.com/meyskens/charts.git}"
+GH_REF="${GH_REF:-github.com/meyskens/charts-srcd.git}"
 GH_REMOTE_URL="https://$GITHUB_TOKEN@$GH_REF"
 
 log_error() {
