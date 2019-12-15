@@ -30,6 +30,7 @@ excluded-charts:
   - lookout-sonarcheck-analyzer
   - lookout-style-analyzer
   - lookout-terraform-analyzer
+  - lookout-html-analyzer
   - lookout-typos-analyzer
   - nfs-gluster-bridge
   - online-net-stock-alert
