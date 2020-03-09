@@ -38,7 +38,7 @@ jobs:
       stage: tests
       env:
         - CHANGE_MINIKUBE_NONE_USER=true # makes sure config files are owned by the travis user
-        - KUBERNETES_VERSION=v1.17.0
+        - KUBERNETES_VERSION=v1.15.4
         - CT_VERSION=2.3.3
         - HELM_VERSION=v2.14.0
         - MINIKUBE_VERSION=v1.4.0
