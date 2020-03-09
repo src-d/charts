@@ -6,7 +6,7 @@
 {{- $user := default "gitbase" .Values.settings.gitbaseServer.user -}}
 {{- $database := default "none" .Values.settings.gitbaseServer.database -}}
 {{- $host := required "Missing settings.gitbaseServer.host" .Values.settings.gitbaseServer.host -}}
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "gitbase-web.fullname" . }}

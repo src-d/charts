@@ -1,5 +1,5 @@
 {{- if and (not .Values.settings.bblfshdServer) (not .Values.settings.gitbaseServer) }}
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ template "gitbase-web.fullname" . }}
