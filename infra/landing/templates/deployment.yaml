@@ -1,0 +1,61 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Values.image.landing.name }}
+          image: "{{ .Values.image.registry }}/{{ required "Missing .Values.image.landing.name" .Values.image.landing.name }}:{{ required "Missing .Values.image.tag" .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.landing.internalPort }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.service.landing.internalPort }}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.service.landing.internalPort }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+        - name: {{ .Values.image.landingApi.name }}
+          image: "{{ .Values.image.registry }}/{{ required "Missing .Values.image.landingApi.name" .Values.image.landingApi.name }}:{{ required "Missing .Values.image.tag" .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: ADDR
+              value: ":{{ .Values.service.landingApi.internalPort }}"
+          ports:
+            - containerPort: {{ .Values.service.landingApi.internalPort }}
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.service.landingApi.internalPort }}
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.service.landingApi.internalPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end}}

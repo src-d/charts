@@ -18,7 +18,7 @@ spec:
         app: {{ template "k8s-pod-headless-service-operator.name" . }}
         release: {{ .Release.Name }}
     spec:
-      serviceAccountName: {{ template "k8s-pod-headless-service-operator.name" . }}
+      serviceAccountName: {{ template "k8s-pod-headless-service-operator.fullname" . }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ required "missing image.tag" .Values.image.tag }}"
@@ -26,11 +26,11 @@ spec:
           env:
             {{- if  .Values.app.podAnnotation }}
             - name: POD_ANNOTATION
-             value: {{ .Values.app.podAnnotation }}
+              value: {{ .Values.app.podAnnotation }}
             {{- end }}
             {{- if  .Values.app.namespace }}
             - name: NAMESPACE
-             value: {{ .Values.app.namespace }}
+              value: {{ .Values.app.namespace }}
             {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}

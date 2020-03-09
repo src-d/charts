@@ -4,10 +4,10 @@ validate-maintainers: false
 chart-repos:
   - stable=https://kubernetes-charts.storage.googleapis.com/
   - incubator=https://kubernetes-charts-incubator.storage.googleapis.com/
-  - srcd-legacy=https://src-d.github.io/charts/
-  - srcd-stable=https://src-d.github.io/charts/stable
-  - srcd-incubator=https://src-d.github.io/charts/incubator
-  - srcd-infra=https://src-d.github.io/charts/infra
+  - srcd-legacy=https://maartje.dev/charts-srcd/
+  - srcd-stable=https://maartje.dev/charts-srcd/stable
+  - srcd-incubator=https://maartje.dev/charts-srcd/incubator
+  - srcd-infra=https://maartje.dev/charts-srcd/infra
 helm-extra-args: --timeout 600
 chart-dirs:
   - stable
@@ -18,11 +18,9 @@ chart-dirs:
 excluded-charts:
   - bblfshd-sidecar
   - borges
-  - drone
   - ewbf-miner
   - gemini
   - git-server
-  - gitbase-web
   - google-cloud-dns-healthcheck
   - hue
   - jupyter-single
@@ -32,6 +30,7 @@ excluded-charts:
   - lookout-sonarcheck-analyzer
   - lookout-style-analyzer
   - lookout-terraform-analyzer
+  - lookout-html-analyzer
   - lookout-typos-analyzer
   - nfs-gluster-bridge
   - online-net-stock-alert
@@ -42,3 +41,6 @@ excluded-charts:
   - spark-api-jupyter
   - spark-thrift-server
   - k8s-pod-headless-service-operator
+  - landing
+  - code-annotation
+  - ml-deployment

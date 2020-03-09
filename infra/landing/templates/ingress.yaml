@@ -1,0 +1,41 @@
+{{- $serviceName := include "fullname" . -}}
+{{- $apiPort := .Values.service.landingApi.externalPort -}}
+{{- $landingPort := .Values.service.landing.externalPort -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  annotations:
+    {{- range $key, $value := .Values.ingress.annotations }}
+      {{ $key }}: {{ $value | quote }}
+    {{- end }}
+      kubernetes.io/ingress.global-static-ip-name: {{ required "Missing .Values.ingress.globalStaticIpName" .Values.ingress.globalStaticIpName }}
+spec:
+  rules:
+  # Cannot specify multiple hosts. See https://github.com/kubernetes/kubernetes/issues/43633
+  {{- range $host :=  required "Missing .Values.ingress.hosts" .Values.ingress.hosts }}
+  - host: {{ $host }}
+    http:
+      paths:
+        - backend:
+            serviceName: {{ $serviceName }}
+            servicePort: {{ $landingPort }}
+          path: /*
+        - backend:
+            serviceName: {{ $serviceName }}
+            servicePort: {{ $apiPort }}
+          path: /api/*
+  {{- end }}
+  {{- if .Values.ingress.tls }}
+  tls:
+    - secretName: "{{ template "fullname" . }}-tls"
+      hosts:
+      {{- range $host :=  required "Missing .Values.ingress.hosts" .Values.ingress.hosts }}
+        - {{ $host }}
+      {{- end }}
+  {{- end }}
