@@ -5,9 +5,9 @@ set -o nounset
 set -o pipefail
 
 REPO_NAME="${REPO_NAME:-stable}"
-REPO_URL="${REPO_URL:-https://src-d.github.io/charts/$REPO_NAME/}"
+REPO_URL="${REPO_URL:-https://maartje.dev/charts-srcd/$REPO_NAME/}"
 TARGET_BRANCH="${TARGET_BRANCH:-gh-pages}"
-GH_REF="${GH_REF:-github.com/src-d/charts.git}"
+GH_REF="${GH_REF:-github.com/meyskens/charts-srcd.git}"
 GH_REMOTE_URL="https://$GITHUB_TOKEN@$GH_REF"
 
 log_error() {
@@ -24,8 +24,8 @@ trap "rm -rf $packages_dir $index_dir" EXIT
 
 pushd "$packages_dir"
 git clone --branch=gh-pages --depth=1 "$GH_REMOTE_URL" .
-git config user.email "infra@sourced.tech"
-git config user.name "Infra sourced{d}"
+git config user.email "infra@maartje.dev"
+git config user.name "Charts sourced{d}"
 [ -d "$REPO_NAME" ] || mkdir "$REPO_NAME"
 pushd "$REPO_NAME"
 [ -d "index.yaml" ] || touch index.yaml

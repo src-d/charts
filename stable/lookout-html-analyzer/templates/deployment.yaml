@@ -1,51 +1,44 @@
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "nfs-gluster-bridge.fullname" . }}
+  name: {{ template "lookout-html-analyzer.fullname" . }}
   labels:
-    app: {{ template "nfs-gluster-bridge.name" . }}
-    chart: {{ template "nfs-gluster-bridge.chart" . }}
+    app: {{ template "lookout-html-analyzer.name" . }}
+    chart: {{ template "lookout-html-analyzer.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "nfs-gluster-bridge.name" . }}
+      app: {{ template "lookout-html-analyzer.name" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "nfs-gluster-bridge.name" . }}
+        app: {{ template "lookout-html-analyzer.name" . }}
         release: {{ .Release.Name }}
     spec:
-      volumes:
-      - glusterfs:
-          endpoints: "{{ required "Missing gluster.endpoint" .Values.gluster.endpoint }}"
-          path: "{{ required "Missing gluster.volume" .Values.gluster.volume }}"
-        name: glusterfsvol
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          securityContext:
-            privileged: true
           env:
-            - name: SHARED_DIRECTORY
-              value: /user
-          volumeMounts:
-            - mountPath: /user
-              name: glusterfsvol
+            - name: LOOKOUT_HTML_DATA_SERVICE_URL
+              value: "{{ required "Missing app.dataServiceUrl" .Values.app.dataServiceUrl }}"
+            - name: LOOKOUT_HTML_PORT
+              value: "{{ .Values.app.port }}"
+            - name: LOOKOUT_HTML_LOG_LEVEL
+              value: "{{ .Values.app.logLevel }}"
           ports:
-            - name: nfs
-              containerPort: 2049
+            - containerPort: {{ .Values.app.port }}
               protocol: TCP
           livenessProbe:
             tcpSocket:
-              port: nfs
+              port: {{ .Values.app.port }}
           readinessProbe:
             tcpSocket:
-              port: nfs
+              port: {{ .Values.app.port }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
