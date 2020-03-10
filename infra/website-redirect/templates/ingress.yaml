@@ -1,6 +1,7 @@
 {{- if .Values.ingress.enabled -}}
 {{- $serviceName := include "website-redirect.fullname" . -}}
 {{- $servicePort := .Values.service.port -}}
+{{- $path := .Values.ingress.path -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -14,15 +15,13 @@ metadata:
     {{- range $key, $value := .Values.ingress.annotations }}
       {{ $key }}: {{ $value | quote }}
     {{- end }}
-      kubernetes.io/ingress.global-static-ip-name: {{ required "Static IP is missing" .Values.ingress.globalStaticIpName }}
-
 spec:
   rules:
     {{- range $redirect := .Values.redirects }}
     - host: {{ required "Hostname is missing" $redirect.hostname }}
       http:
         paths:
-          - path: /*
+          - path: {{ $path }}
             backend:
               serviceName: {{ $serviceName }}
               servicePort: {{ $servicePort }}

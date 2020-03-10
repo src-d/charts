@@ -21,10 +21,10 @@ service:
 
 ingress:
   enabled: true
-  # globalStaticIpName must be received as a parameter
   # hosts defined in templates/ingress.yml. Do not override here.
+  path: /
   annotations:
-    kubernetes.io/ingress.class: gce
+    kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: "true"
     # kubernetes.io/ingress.global-static-ip-name is defined in templates/ingress.yml. Do not override here.
   tls: true
