@@ -1,7 +1,7 @@
 {{- if eq (empty .Values.app.lookout.secretName) (empty .Values.providers.github.private_key) }}
 {{- fail "You have to set either app.lookout.secretName or providers.github.private_key but not both" }}
 {{- end }}
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "lookout.fullname" . }}-watch
